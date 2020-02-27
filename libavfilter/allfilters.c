@@ -394,6 +394,7 @@ extern AVFilter ff_vf_thistogram;
 extern AVFilter ff_vf_threshold;
 extern AVFilter ff_vf_thumbnail;
 extern AVFilter ff_vf_thumbnail_cuda;
+extern AVFilter ff_vf_thumbnail_opencl;
 extern AVFilter ff_vf_tile;
 extern AVFilter ff_vf_tinterlace;
 extern AVFilter ff_vf_tlut2;
