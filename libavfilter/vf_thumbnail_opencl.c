@@ -358,7 +358,7 @@ static const AVFilterPad thumbnail_opencl_outputs[] = {
 
 AVFilter ff_vf_thumbnail_opencl = {
     .name           = "thumbnail_opencl",
-    .description   = NULL_IF_CONFIG_SMALL("Select the most representative frame in a given sequence of consecutive frames."),
+    .description    = NULL_IF_CONFIG_SMALL("Select the most representative frame in a given sequence of consecutive frames."),
     .priv_size      = sizeof(ThumbnailOpenCLContext),
     .priv_class     = &thumbnail_opencl_class,
     .init           = &ff_opencl_filter_init,
