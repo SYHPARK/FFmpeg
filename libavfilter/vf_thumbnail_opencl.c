@@ -1,6 +1,4 @@
 /*
- * Copyright (c) 2011 Smartjog S.A.S, Clément Bœsch <clement.boesch@smartjog.com>
- *
  * This file is part of FFmpeg.
  *
  * FFmpeg is free software; you can redistribute it and/or
@@ -17,20 +15,15 @@
  * License along with FFmpeg; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-
-/**
- * @file
- * Potential thumbnail lookup filter to reduce the risk of an inappropriate
- * selection (such as a black frame) we could get with an absolute seek.
- *
- * Simplified version of algorithm by Vadim Zaliva <lord@crocodile.org>.
- * @see http://notbrainsurgery.livejournal.com/29773.html
- */
-
+#include "libavutil/common.h"
+#include "libavutil/imgutils.h"
 #include "libavutil/opt.h"
+#include "libavutil/pixdesc.h"
+
 #include "avfilter.h"
-// #include "opencl.h"
 #include "internal.h"
+#include "opencl.h"
+#include "opencl_source.h"
 
 #define HIST_SIZE (3*256)
 
@@ -39,36 +32,45 @@ struct thumb_frame {
     int histogram[HIST_SIZE];   ///< RGB color distribution histogram of the frame
 };
 
-typedef struct ThumbContext {
-    const AVClass *class;
-    int n;                      ///< current frame
-    int n_frames;               ///< number of frames for analysis
-    struct thumb_frame *frames; ///< the n_frames frames
-    AVRational tb;              ///< copy of the input timebase to ease access
-} ThumbContext;
+typedef struct ThumbnailOpenCLContext {
+    OpenCLFilterContext ocf;
+    int                   initialised;
 
-#define OFFSET(x) offsetof(ThumbContext, x)
-#define FLAGS AV_OPT_FLAG_VIDEO_PARAM|AV_OPT_FLAG_FILTERING_PARAM
+    int                   n_frames;
 
-static const AVOption thumbnail_opencl_options[] = {
-    { "n", "set the frames batch size", OFFSET(n_frames), AV_OPT_TYPE_INT, {.i64=100}, 2, INT_MAX, FLAGS },
-    { NULL }
-};
+    cl_kernel             kernel;
+    cl_command_queue      command_queue;
+} ThumbnailOpenCLContext;
 
-AVFILTER_DEFINE_CLASS(thumbnail_opencl);
-
-static av_cold int init(AVFilterContext *ctx)
+static int thumbnail_opencl_init(AVFilterContext *avctx)
 {
-    ThumbContext *s = ctx->priv;
+    ThumbnailOpenCLContext *ctx = avctx->priv;
+    cl_int cle;
+    int err;
 
-    s->frames = av_calloc(s->n_frames, sizeof(*s->frames));
-    if (!s->frames) {
-        av_log(ctx, AV_LOG_ERROR,
-               "Allocation failure, try to lower the number of frames\n");
-        return AVERROR(ENOMEM);
-    }
-    av_log(ctx, AV_LOG_VERBOSE, "batch size: %d frames\n", s->n_frames);
+    err = ff_opencl_filter_load_program(avctx, &ff_opencl_source_thumbnail, 1);
+    if (err < 0)
+        goto fail;
+
+    ctx->command_queue = clCreateCommandQueue(ctx->ocf.hwctx->context,
+                                              ctx->ocf.hwctx->device_id,
+                                              0, &cle);
+    CL_FAIL_ON_ERROR(AVERROR(EIO), "Failed to create OpenCL "
+                     "command queue %d.\n", cle);
+
+    ctx->kernel = clCreateKernel(ctx->ocf.program, "thumbnail", &cle);
+    CL_FAIL_ON_ERROR(AVERROR(EIO), "Failed to create kernel %d.\n", cle);
+
+
+    ctx->initialised = 1;
     return 0;
+
+fail:
+    if (ctx->command_queue)
+        clReleaseCommandQueue(ctx->command_queue);
+    if (ctx->kernel)
+        clReleaseKernel(ctx->kernel);
+    return err;
 }
 
 /**
@@ -77,6 +79,8 @@ static av_cold int init(AVFilterContext *ctx)
  * @param median average color distribution histogram
  * @return       sum of squared errors
  */
+
+/*
 static double frame_sum_square_err(const int *hist, const double *median)
 {
     int i;
@@ -92,7 +96,7 @@ static double frame_sum_square_err(const int *hist, const double *median)
 static AVFrame *get_best_frame(AVFilterContext *ctx)
 {
     AVFrame *picref;
-    ThumbContext *s = ctx->priv;
+    ThumbnailOpenCLContext *s = ctx->priv;
     int i, j, best_frame_idx = 0;
     int nb_frames = s->n;
     double avg_hist[HIST_SIZE] = {0}, sq_err, min_sq_err = -1;
@@ -128,90 +132,120 @@ static AVFrame *get_best_frame(AVFilterContext *ctx)
 
     return picref;
 }
+*/
 
-static int filter_frame(AVFilterLink *inlink, AVFrame *frame)
+static int thumbnail_opencl_filter_frame(AVFilterLink *inlink, AVFrame *input)
 {
-    int i, j;
-    AVFilterContext *ctx  = inlink->dst;
-    ThumbContext *s   = ctx->priv;
-    AVFilterLink *outlink = ctx->outputs[0];
-    int *hist = s->frames[s->n].histogram;
-    const uint8_t *p = frame->data[0];
+    AVFilterContext    *avctx = inlink->dst;
+    AVFilterLink     *outlink = avctx->outputs[0];
+    ThumbnailOpenCLContext *ctx = avctx->priv;
+    AVFrame *output = NULL;
+    int err, p;
+    cl_int cle;
+    cl_mem src, dst;
+    size_t origin[3] = {0, 0, 0};
+    size_t region[3] = {0, 0, 1};
 
-    // keep a reference of each frame
-    s->frames[s->n].buf = frame;
+    av_log(ctx, AV_LOG_DEBUG, "Filter input: %s, %ux%u (%"PRId64").\n",
+           av_get_pix_fmt_name(input->format),
+           input->width, input->height, input->pts);
 
-    // update current frame RGB histogram
-    for (j = 0; j < inlink->h; j++) {
-        for (i = 0; i < inlink->w; i++) {
-            hist[0*256 + p[i*3    ]]++;
-            hist[1*256 + p[i*3 + 1]]++;
-            hist[2*256 + p[i*3 + 2]]++;
-        }
-        p += frame->linesize[0];
+    if (!input->hw_frames_ctx)
+        return AVERROR(EINVAL);
+
+    if (!ctx->initialised) {
+        err = thumbnail_opencl_init(avctx);
+        if (err < 0)
+            goto fail;
     }
 
-    // no selection until the buffer of N frames is filled up
-    s->n++;
-    if (s->n < s->n_frames)
-        return 0;
-
-    return ff_filter_frame(outlink, get_best_frame(ctx));
-}
-
-static av_cold void uninit(AVFilterContext *ctx)
-{
-    int i;
-    ThumbContext *s = ctx->priv;
-    for (i = 0; i < s->n_frames && s->frames && s->frames[i].buf; i++)
-        av_frame_free(&s->frames[i].buf);
-    av_freep(&s->frames);
-}
-
-static int request_frame(AVFilterLink *link)
-{
-    AVFilterContext *ctx = link->src;
-    ThumbContext *s = ctx->priv;
-    int ret = ff_request_frame(ctx->inputs[0]);
-
-    if (ret == AVERROR_EOF && s->n) {
-        ret = ff_filter_frame(link, get_best_frame(ctx));
-        if (ret < 0)
-            return ret;
-        ret = AVERROR_EOF;
+    output = ff_get_video_buffer(outlink, outlink->w, outlink->h);
+    if (!output) {
+        err = AVERROR(ENOMEM);
+        goto fail;
     }
-    if (ret < 0)
-        return ret;
-    return 0;
+    for (p = 0; p < FF_ARRAY_ELEMS(output->data); p++) {
+        src = (cl_mem)input->data[p];
+        dst = (cl_mem)output->data[p];
+        if (!dst)
+            break;
+        err = ff_opencl_filter_work_size_from_image(avctx, region, output, p, 0);
+        if (err < 0)
+            goto fail;
+
+        cle = clEnqueueCopyImage(ctx->command_queue, src, dst,
+                                 origin, origin, region, 0, NULL, NULL);
+        CL_FAIL_ON_ERROR(AVERROR(EIO), "Failed to copy plane %d: %d.\n", p, cle);
+    }
+    cle = clFinish(ctx->command_queue);
+    CL_FAIL_ON_ERROR(AVERROR(EIO), "Failed to finish command queue %d.\n", cle);
+
+    err = av_frame_copy_props(output, input);
+    if (err < 0)
+        goto fail;
+
+    av_frame_free(&input);
+    av_log(ctx, AV_LOG_DEBUG, "Filter output: %s, %ux%u (%"PRId64").\n",
+           av_get_pix_fmt_name(output->format),
+           output->width, output->height, output->pts);
+
+    return ff_filter_frame(outlink, output);
+
+fail:
+    clFinish(ctx->command_queue);
+    av_frame_free(&input);
+    av_frame_free(&output);
+    return err;
 }
 
+static av_cold void thumbnail_opencl_uninit(AVFilterContext *avctx)
+{
+    ThumbnailOpenCLContext *ctx = avctx->priv;
+    cl_int cle;
+
+    if (ctx->kernel) {
+        cle = clReleaseKernel(ctx->kernel);
+        if (cle != CL_SUCCESS)
+            av_log(avctx, AV_LOG_ERROR, "Failed to release "
+                   "kernel: %d.\n", cle);
+    }
+
+    if (ctx->command_queue) {
+        cle = clReleaseCommandQueue(ctx->command_queue);
+        if (cle != CL_SUCCESS)
+            av_log(avctx, AV_LOG_ERROR, "Failed to release "
+                   "command queue: %d.\n", cle);
+    }
+
+    ff_opencl_filter_uninit(avctx);
+}
+
+/*
 static int config_props(AVFilterLink *inlink)
 {
     AVFilterContext *ctx = inlink->dst;
-    ThumbContext *s = ctx->priv;
+    ThumbnailOpenCLContext *s = ctx->priv;
 
     s->tb = inlink->time_base;
-    return 0;
+    return ff_opencl_filter_config_input(inlink);
 }
+*/
 
-static int query_formats(AVFilterContext *ctx)
-{
-    static const enum AVPixelFormat pix_fmts[] = {
-        AV_PIX_FMT_RGB24, AV_PIX_FMT_BGR24,
-        AV_PIX_FMT_NONE
-    };
-    AVFilterFormats *fmts_list = ff_make_format_list(pix_fmts);
-    if (!fmts_list)
-        return AVERROR(ENOMEM);
-    return ff_set_common_formats(ctx, fmts_list);
-}
+#define OFFSET(x) offsetof(ThumbnailOpenCLContext, x)
+#define FLAGS (AV_OPT_FLAG_FILTERING_PARAM | AV_OPT_FLAG_VIDEO_PARAM)
+static const AVOption thumbnail_opencl_options[] = {
+    { "n", "set the frames batch size", OFFSET(n_frames), AV_OPT_TYPE_INT, {.i64=100}, 2, INT_MAX, FLAGS },
+    { NULL }
+};
+
+AVFILTER_DEFINE_CLASS(thumbnail_opencl);
 
 static const AVFilterPad thumbnail_opencl_inputs[] = {
     {
         .name         = "default",
         .type         = AVMEDIA_TYPE_VIDEO,
-        .config_props = config_props,
-        .filter_frame = filter_frame,
+        .filter_frame = &thumbnail_opencl_filter_frame,
+        .config_props = &ff_opencl_filter_config_input,
     },
     { NULL }
 };
@@ -220,20 +254,20 @@ static const AVFilterPad thumbnail_opencl_outputs[] = {
     {
         .name          = "default",
         .type          = AVMEDIA_TYPE_VIDEO,
-        .request_frame = request_frame,
+        .config_props  = &ff_opencl_filter_config_output,
     },
     { NULL }
 };
 
 AVFilter ff_vf_thumbnail_opencl = {
-    .name          = "thumbnail_opencl",
+    .name           = "thumbnail_opencl",
     .description   = NULL_IF_CONFIG_SMALL("Select the most representative frame in a given sequence of consecutive frames."),
-    .priv_size     = sizeof(ThumbContext),
-    .init          = init,
-    .uninit        = uninit,
-    .query_formats = query_formats,
-    .inputs        = thumbnail_opencl_inputs,
-    .outputs       = thumbnail_opencl_outputs,
-    .priv_class    = &thumbnail_opencl_class,
-    .flags         = AVFILTER_FLAG_SUPPORT_TIMELINE_GENERIC,
+    .priv_size      = sizeof(ThumbnailOpenCLContext),
+    .priv_class     = &thumbnail_opencl_class,
+    .init           = &ff_opencl_filter_init,
+    .uninit         = &thumbnail_opencl_uninit,
+    .query_formats  = &ff_opencl_filter_query_formats,
+    .inputs         = thumbnail_opencl_inputs,
+    .outputs        = thumbnail_opencl_outputs,
+    .flags_internal = FF_FILTER_FLAG_HWFRAME_AWARE,
 };
