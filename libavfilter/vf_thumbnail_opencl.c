@@ -38,10 +38,10 @@ typedef struct ThumbnailOpenCLContext {
     OpenCLFilterContext ocf;
     int                   initialised;
 
-    int                   n;							///< current frame
-    int                   n_frames;				///< number of frames for analysis
-		struct thumb_frame   *frames;					///< the n_frames frames
-		AVRational            tb;							///< copy of the input timebase to ease access
+    int                   n;         ///< current frame
+    int                   n_frames;  ///< number of frames for analysis
+    struct thumb_frame   *frames;    ///< the n_frames frames
+    AVRational            tb;        ///< copy of the input timebase to ease access
 
     cl_kernel             kernel;
     cl_command_queue      command_queue;
@@ -187,8 +187,8 @@ static int thumbnail_opencl_filter_frame(AVFilterLink *inlink, AVFrame *input)
     for (j = 0; j < inlink->h; j++) {
         for (i = 0; i < inlink->w; i++) {
             hist[0*256 + pixel[i*3    ]]++;
-            hist[1*256 + pixel[i*3 + 1]]++; 
-            hist[2*256 + pixel[i*3 + 2]]++; 
+            hist[1*256 + pixel[i*3 + 1]]++;
+            hist[2*256 + pixel[i*3 + 2]]++;
         }
         pixel += input->linesize[0];
     }
