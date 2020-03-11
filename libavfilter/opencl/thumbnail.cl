@@ -15,7 +15,7 @@
  * License along with FFmpeg; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-kernel void thumbnail(__write_only image2d_t dst,
-                      __read_only image2d_t src) {
-
+kernel void thumbnail(__read_only image2d_t src,
+                      __write_only int *hist) {
+    // TODO(younghyun): Write a kernel function to calculate histogram.
 }

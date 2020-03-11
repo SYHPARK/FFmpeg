@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Wookhyun Han
+ * Copyright (c) 2020 Wookhyun Han <wookhyunhan@gmail.com>
  *
  * This file is part of FFmpeg.
  *
@@ -37,8 +37,11 @@ struct thumb_frame {
 typedef struct ThumbnailOpenCLContext {
     OpenCLFilterContext ocf;
     int                   initialised;
-
-    int                   n_frames;
+		
+		int                   n;							///< current frame
+    int                   n_frames;				///< number of frames for analysis
+		struct thumb_frame   *frames;					///< the n_frames frames
+		AVRational            tb;							///< copy of the input timebase to ease access
 
     cl_kernel             kernel;
     cl_command_queue      command_queue;
@@ -49,17 +52,29 @@ static int thumbnail_opencl_init(AVFilterContext *avctx)
     ThumbnailOpenCLContext *ctx = avctx->priv;
     cl_int cle;
     int err;
+    
+    // Allocate frame cache.
+		ctx->frames = av_calloc(ctx->n_frames, sizeof(*ctx->frames));
+	  if (!ctx->frames) {
+        av_log(avctx, AV_LOG_ERROR,
+               "Allocation failure, try to lower the number of frames\n");
+        return AVERROR(ENOMEM);
+    }
+    av_log(avctx, AV_LOG_VERBOSE, "batch size: %d frames\n", ctx->n_frames);
 
+    // Load OpenCL program.
     err = ff_opencl_filter_load_program(avctx, &ff_opencl_source_thumbnail, 1);
     if (err < 0)
         goto fail;
 
+    // Create command queue.
     ctx->command_queue = clCreateCommandQueue(ctx->ocf.hwctx->context,
                                               ctx->ocf.hwctx->device_id,
                                               0, &cle);
     CL_FAIL_ON_ERROR(AVERROR(EIO), "Failed to create OpenCL "
                      "command queue %d.\n", cle);
 
+    // Create kernel.
     ctx->kernel = clCreateKernel(ctx->ocf.program, "thumbnail", &cle);
     CL_FAIL_ON_ERROR(AVERROR(EIO), "Failed to create kernel %d.\n", cle);
 
@@ -82,7 +97,6 @@ fail:
  * @return       sum of squared errors
  */
 
-/*
 static double frame_sum_square_err(const int *hist, const double *median)
 {
     int i;
@@ -134,7 +148,6 @@ static AVFrame *get_best_frame(AVFilterContext *ctx)
 
     return picref;
 }
-*/
 
 static int thumbnail_opencl_filter_frame(AVFilterLink *inlink, AVFrame *input)
 {
@@ -142,15 +155,19 @@ static int thumbnail_opencl_filter_frame(AVFilterLink *inlink, AVFrame *input)
     AVFilterLink     *outlink = avctx->outputs[0];
     ThumbnailOpenCLContext *ctx = avctx->priv;
     AVFrame *output = NULL;
+    AVFrame *best = NULL;
     int err, p;
     cl_int cle;
     cl_mem src, dst;
     size_t origin[3] = {0, 0, 0};
     size_t region[3] = {0, 0, 1};
+    const uint8_t *pixel = input->data[0];
+    int *hist = NULL;
+    int i, j;
 
-    av_log(ctx, AV_LOG_DEBUG, "Filter input: %s, %ux%u (%"PRId64").\n",
+    av_log(ctx, AV_LOG_DEBUG, "Filter input: %s, %ux%u (%"PRId64") [%d] frame\n",
            av_get_pix_fmt_name(input->format),
-           input->width, input->height, input->pts);
+           input->width, input->height, input->pts, ctx->n);
 
     if (!input->hw_frames_ctx)
         return AVERROR(EINVAL);
@@ -161,13 +178,37 @@ static int thumbnail_opencl_filter_frame(AVFilterLink *inlink, AVFrame *input)
             goto fail;
     }
 
+    // keep a reference of each frame
+    ctx->frames[ctx->n].buf = input;
+    hist = ctx->frames[ctx->n].histogram;
+
+    // update current frame RGB histogram
+    // TODO(younghyun): Change this iteration to OpenCL kernel call
+    for (j = 0; j < inlink->h; j++) {
+        for (i = 0; i < inlink->w; i++) {
+            hist[0*256 + pixel[i*3    ]]++; 
+            hist[1*256 + pixel[i*3 + 1]]++; 
+            hist[2*256 + pixel[i*3 + 2]]++; 
+        }
+        pixel += input->linesize[0];
+    }
+
+    // no selection until the buffer of N frames is filled up
+    ctx->n++;
+    if (ctx->n < ctx->n_frames)
+        return 0;
+    
     output = ff_get_video_buffer(outlink, outlink->w, outlink->h);
     if (!output) {
         err = AVERROR(ENOMEM);
         goto fail;
     }
+    // Get best frame (Thumbnail).
+    best = get_best_frame(avctx);
+
+    // Copy the best frame to output.
     for (p = 0; p < FF_ARRAY_ELEMS(output->data); p++) {
-        src = (cl_mem)input->data[p];
+        src = (cl_mem)best->data[p];
         dst = (cl_mem)output->data[p];
         if (!dst)
             break;
@@ -182,20 +223,17 @@ static int thumbnail_opencl_filter_frame(AVFilterLink *inlink, AVFrame *input)
     cle = clFinish(ctx->command_queue);
     CL_FAIL_ON_ERROR(AVERROR(EIO), "Failed to finish command queue %d.\n", cle);
 
-    err = av_frame_copy_props(output, input);
+    err = av_frame_copy_props(output, best);
     if (err < 0)
         goto fail;
 
-    av_frame_free(&input);
     av_log(ctx, AV_LOG_DEBUG, "Filter output: %s, %ux%u (%"PRId64").\n",
            av_get_pix_fmt_name(output->format),
            output->width, output->height, output->pts);
-
     return ff_filter_frame(outlink, output);
 
 fail:
     clFinish(ctx->command_queue);
-    av_frame_free(&input);
     av_frame_free(&output);
     return err;
 }
@@ -204,6 +242,7 @@ static av_cold void thumbnail_opencl_uninit(AVFilterContext *avctx)
 {
     ThumbnailOpenCLContext *ctx = avctx->priv;
     cl_int cle;
+    int i;
 
     if (ctx->kernel) {
         cle = clReleaseKernel(ctx->kernel);
@@ -219,10 +258,13 @@ static av_cold void thumbnail_opencl_uninit(AVFilterContext *avctx)
                    "command queue: %d.\n", cle);
     }
 
+    for (i = 0; i < ctx->n_frames && ctx->frames && ctx->frames[i].buf; i++)
+        av_frame_free(&ctx->frames[i].buf);
+    av_freep(&ctx->frames);
+
     ff_opencl_filter_uninit(avctx);
 }
 
-/*
 static int config_props(AVFilterLink *inlink)
 {
     AVFilterContext *ctx = inlink->dst;
@@ -231,7 +273,59 @@ static int config_props(AVFilterLink *inlink)
     s->tb = inlink->time_base;
     return ff_opencl_filter_config_input(inlink);
 }
-*/
+
+static int request_frame(AVFilterLink *link)
+{
+    AVFilterContext *avctx = link->src;
+    ThumbnailOpenCLContext *ctx = avctx->priv;
+    AVFrame *best = NULL;
+    AVFrame *output = NULL;
+    int ret = ff_request_frame(avctx->inputs[0]);
+    int err, p;
+    cl_int cle;
+    cl_mem src, dst;
+    size_t origin[3] = {0, 0, 0};
+    size_t region[3] = {0, 0, 1};
+
+    if (ret == AVERROR_EOF && ctx->n) {
+        // n_frames is larger than the total frame.
+        output = ff_get_video_buffer(link, link->w, link->h);
+        // Get best frame.
+        best = get_best_frame(avctx);
+        // Copy the best frame to output.
+        for (p = 0; p < FF_ARRAY_ELEMS(output->data); p++) {
+            src = (cl_mem)best->data[p];
+            dst = (cl_mem)output->data[p];
+            if (!dst)
+                break;
+            err = ff_opencl_filter_work_size_from_image(avctx, region, output, p, 0);
+            if (err < 0)
+                goto fail;
+
+            cle = clEnqueueCopyImage(ctx->command_queue, src, dst,
+                                     origin, origin, region, 0, NULL, NULL);
+            CL_FAIL_ON_ERROR(AVERROR(EIO), "Failed to copy plane %d: %d.\n", p, cle);
+        }
+        cle = clFinish(ctx->command_queue);
+        CL_FAIL_ON_ERROR(AVERROR(EIO), "Failed to finish command queue %d.\n", cle);
+
+        err = av_frame_copy_props(output, best);
+        if (err < 0)
+            goto fail;
+        ret = ff_filter_frame(link, output);
+        if (ret < 0)
+            return ret;
+        ret = AVERROR_EOF;
+    }
+    if (ret < 0)
+        return ret;
+    return 0;
+
+fail:
+    clFinish(ctx->command_queue);
+    av_frame_free(&output);
+    return err;
+}
 
 #define OFFSET(x) offsetof(ThumbnailOpenCLContext, x)
 #define FLAGS (AV_OPT_FLAG_FILTERING_PARAM | AV_OPT_FLAG_VIDEO_PARAM)
@@ -246,8 +340,8 @@ static const AVFilterPad thumbnail_opencl_inputs[] = {
     {
         .name         = "default",
         .type         = AVMEDIA_TYPE_VIDEO,
+        .config_props = config_props,
         .filter_frame = &thumbnail_opencl_filter_frame,
-        .config_props = &ff_opencl_filter_config_input,
     },
     { NULL }
 };
@@ -256,6 +350,7 @@ static const AVFilterPad thumbnail_opencl_outputs[] = {
     {
         .name          = "default",
         .type          = AVMEDIA_TYPE_VIDEO,
+        .request_frame = request_frame,
         .config_props  = &ff_opencl_filter_config_output,
     },
     { NULL }
