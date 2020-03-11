@@ -37,8 +37,8 @@ struct thumb_frame {
 typedef struct ThumbnailOpenCLContext {
     OpenCLFilterContext ocf;
     int                   initialised;
-		
-		int                   n;							///< current frame
+
+    int                   n;							///< current frame
     int                   n_frames;				///< number of frames for analysis
 		struct thumb_frame   *frames;					///< the n_frames frames
 		AVRational            tb;							///< copy of the input timebase to ease access
@@ -52,7 +52,7 @@ static int thumbnail_opencl_init(AVFilterContext *avctx)
     ThumbnailOpenCLContext *ctx = avctx->priv;
     cl_int cle;
     int err;
-    
+
     // Allocate frame cache.
 		ctx->frames = av_calloc(ctx->n_frames, sizeof(*ctx->frames));
 	  if (!ctx->frames) {
@@ -186,7 +186,7 @@ static int thumbnail_opencl_filter_frame(AVFilterLink *inlink, AVFrame *input)
     // TODO(younghyun): Change this iteration to OpenCL kernel call
     for (j = 0; j < inlink->h; j++) {
         for (i = 0; i < inlink->w; i++) {
-            hist[0*256 + pixel[i*3    ]]++; 
+            hist[0*256 + pixel[i*3    ]]++;
             hist[1*256 + pixel[i*3 + 1]]++; 
             hist[2*256 + pixel[i*3 + 2]]++; 
         }
@@ -197,7 +197,7 @@ static int thumbnail_opencl_filter_frame(AVFilterLink *inlink, AVFrame *input)
     ctx->n++;
     if (ctx->n < ctx->n_frames)
         return 0;
-    
+
     output = ff_get_video_buffer(outlink, outlink->w, outlink->h);
     if (!output) {
         err = AVERROR(ENOMEM);
