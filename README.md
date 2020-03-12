@@ -47,7 +47,7 @@ avoided because they are not part of our review process and will be ignored.
 
 ## OpenCL Thumbnail
 
-* Currently supported formats: NV12, YUV420P, and YUV444P
+* Currently supported formats: NV12, YUV420P, YUV444P, P010, P016, and YUV444P16
 
 * Using Platform 0 (CPU)
 ```console
@@ -62,6 +62,3 @@ $ time ffmpeg -init_hw_device opencl=ocl:1.0 -filter_hw_device ocl -i sample.mp4
 
 1.53s user 0.21s system 178% cpu 0.972 total
 ```
-
-* TODO
-		- Supporting P010, P016, and YUV444P16
