@@ -75,7 +75,7 @@ static int thumbnail_opencl_init(AVFilterContext *avctx)
     int err;
 
     // Allocate frame cache.
-		ctx->frames = av_calloc(ctx->n_frames, sizeof(*ctx->frames));
+    ctx->frames = av_calloc(ctx->n_frames, sizeof(*ctx->frames));
 	  if (!ctx->frames) {
         av_log(avctx, AV_LOG_ERROR,
                "Allocation failure, try to lower the number of frames\n");
