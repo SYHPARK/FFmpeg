@@ -47,8 +47,21 @@ avoided because they are not part of our review process and will be ignored.
 
 ## OpenCL Thumbnail
 
-* Supported formats: NV12, YUV420P, and YUV444P
+* Currently supported formats: NV12, YUV420P, and YUV444P
 
+* Using Platform 0 (CPU)
 ```console
-$ ffmpeg -init_hw_device opencl=ocl:0.0 -filter_hw_device ocl -i sample.mp4 -vf "format=nv12,hwupload,thumbnail_opencl,hwdownload,format=nv12" -y thumbnail.mp4
+$ time ffmpeg -init_hw_device opencl=ocl:0.0 -filter_hw_device ocl -i sample.mp4 -vf "format=nv12,hwupload,thumbnail_opencl,hwdownload,format=nv12" -y thumbnail.mp4
+
+5.41s user 0.23s system 449% cpu 1.254 total
 ```
+
+* Using Platform 1 (GPU)
+```console
+$ time ffmpeg -init_hw_device opencl=ocl:1.0 -filter_hw_device ocl -i sample.mp4 -vf "format=nv12,hwupload,thumbnail_opencl,hwdownload,format=nv12" -y thumbnail.mp4
+
+1.53s user 0.21s system 178% cpu 0.972 total
+```
+
+* TODO
+		- Supporting P010, P016, and YUV444P16
