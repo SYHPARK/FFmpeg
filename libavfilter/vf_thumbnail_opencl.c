@@ -29,6 +29,29 @@
 
 #define HIST_SIZE (3*256)
 
+// TODO(yonghyun): support commented formats (refer vf_thumbnail_cuda.c)
+
+static const enum AVPixelFormat supported_formats[] = {
+    AV_PIX_FMT_NV12,
+    /*
+    AV_PIX_FMT_YUV420P,
+    AV_PIX_FMT_YUV444P,
+    AV_PIX_FMT_P010,
+    AV_PIX_FMT_P016,
+    AV_PIX_FMT_YUV444P16,
+    */
+};
+
+static int is_format_supported(enum AVPixelFormat fmt)
+{
+    int i;
+
+    for (i = 0; i < FF_ARRAY_ELEMS(supported_formats); i++)
+        if (supported_formats[i] == fmt)
+            return 1;
+    return 0;
+}
+
 struct thumb_frame {
     AVFrame *buf;               ///< cached frame
     int histogram[HIST_SIZE];   ///< RGB color distribution histogram of the frame
@@ -43,7 +66,9 @@ typedef struct ThumbnailOpenCLContext {
     struct thumb_frame   *frames;    ///< the n_frames frames
     AVRational            tb;        ///< copy of the input timebase to ease access
 
-    cl_kernel             kernel;
+    cl_kernel             kernel_uchar;
+    cl_kernel             kernel_uchar2;
+    cl_mem                hist;
     cl_command_queue      command_queue;
 } ThumbnailOpenCLContext;
 
@@ -75,9 +100,15 @@ static int thumbnail_opencl_init(AVFilterContext *avctx)
                      "command queue %d.\n", cle);
 
     // Create kernel.
-    ctx->kernel = clCreateKernel(ctx->ocf.program, "thumbnail", &cle);
+    ctx->kernel_uchar = clCreateKernel(ctx->ocf.program, "Thumbnail_uchar", &cle);
     CL_FAIL_ON_ERROR(AVERROR(EIO), "Failed to create kernel %d.\n", cle);
 
+    ctx->kernel_uchar2 = clCreateKernel(ctx->ocf.program, "Thumbnail_uchar2", &cle);
+    CL_FAIL_ON_ERROR(AVERROR(EIO), "Failed to create kernel %d.\n", cle);
+
+    ctx->hist = clCreateBuffer(ctx->ocf.hwctx->context, 0,
+                               sizeof(int) * HIST_SIZE, NULL, &cle);
+    CL_FAIL_ON_ERROR(AVERROR(EIO), "Failed to create hist buffer %d.\n", cle);
 
     ctx->initialised = 1;
     return 0;
@@ -85,8 +116,12 @@ static int thumbnail_opencl_init(AVFilterContext *avctx)
 fail:
     if (ctx->command_queue)
         clReleaseCommandQueue(ctx->command_queue);
-    if (ctx->kernel)
-        clReleaseKernel(ctx->kernel);
+    if (ctx->kernel_uchar)
+        clReleaseKernel(ctx->kernel_uchar);
+    if (ctx->kernel_uchar2)
+        clReleaseKernel(ctx->kernel_uchar2);
+    if (ctx->hist)
+        clReleaseMemObject(ctx->hist);
     return err;
 }
 
@@ -149,11 +184,37 @@ static AVFrame *get_best_frame(AVFilterContext *ctx)
     return picref;
 }
 
+static int thumbnail_kernel(AVFilterContext *avctx, AVFrame *in, cl_kernel kernel, cl_int offset, int pixel)
+{
+    int err;
+    cl_int cle;
+    ThumbnailOpenCLContext *ctx = avctx->priv;
+    size_t global_work[2];
+    cl_mem src = (cl_mem)in->data[pixel];
+
+    err = ff_opencl_filter_work_size_from_image(avctx, global_work, in, pixel, 0);
+    if (err < 0)
+        return err;
+    CL_SET_KERNEL_ARG(kernel, 0, cl_mem, &src);
+    CL_SET_KERNEL_ARG(kernel, 1, cl_mem, &ctx->hist);
+    CL_SET_KERNEL_ARG(kernel, 2, cl_int, &offset);
+
+    cle = clEnqueueNDRangeKernel(ctx->command_queue, kernel, 2, NULL,
+                                 global_work, NULL, 0, NULL, NULL);
+    CL_FAIL_ON_ERROR(AVERROR(EIO), "Failed to enqueue kernel: %d.\n", cle);
+    return 0;
+
+fail:
+    clFinish(ctx->command_queue);
+    return err;
+}
+
 static int thumbnail_opencl_filter_frame(AVFilterLink *inlink, AVFrame *input)
 {
     AVFilterContext    *avctx = inlink->dst;
     AVFilterLink     *outlink = avctx->outputs[0];
     ThumbnailOpenCLContext *ctx = avctx->priv;
+    AVHWFramesContext *input_frames_ctx;
     AVFrame *output = NULL;
     AVFrame *best = NULL;
     int err, p;
@@ -161,9 +222,8 @@ static int thumbnail_opencl_filter_frame(AVFilterLink *inlink, AVFrame *input)
     cl_mem src, dst;
     size_t origin[3] = {0, 0, 0};
     size_t region[3] = {0, 0, 1};
-    const uint8_t *pixel = input->data[0];
     int *hist = NULL;
-    int i, j;
+    enum AVPixelFormat in_format;
 
     av_log(ctx, AV_LOG_DEBUG, "Filter input: %s, %ux%u (%"PRId64") [%d] frame\n",
            av_get_pix_fmt_name(input->format),
@@ -172,7 +232,15 @@ static int thumbnail_opencl_filter_frame(AVFilterLink *inlink, AVFrame *input)
     if (!input->hw_frames_ctx)
         return AVERROR(EINVAL);
 
+    input_frames_ctx = (AVHWFramesContext*)input->hw_frames_ctx->data;
+    in_format = input_frames_ctx->sw_format;
     if (!ctx->initialised) {
+        if (!is_format_supported(in_format)) {
+            err = AVERROR(EINVAL);
+            av_log(avctx, AV_LOG_ERROR, "input format %s not supported\n",
+                   av_get_pix_fmt_name(in_format));
+            goto fail;
+        }
         err = thumbnail_opencl_init(avctx);
         if (err < 0)
             goto fail;
@@ -182,16 +250,27 @@ static int thumbnail_opencl_filter_frame(AVFilterLink *inlink, AVFrame *input)
     ctx->frames[ctx->n].buf = input;
     hist = ctx->frames[ctx->n].histogram;
 
-    // update current frame RGB histogram
-    // TODO(younghyun): Change this iteration to OpenCL kernel call
-    for (j = 0; j < inlink->h; j++) {
-        for (i = 0; i < inlink->w; i++) {
-            hist[0*256 + pixel[i*3    ]]++;
-            hist[1*256 + pixel[i*3 + 1]]++;
-            hist[2*256 + pixel[i*3 + 2]]++;
-        }
-        pixel += input->linesize[0];
+    // update current frame to histogram
+    cle = clEnqueueWriteBuffer(ctx->command_queue, ctx->hist, CL_FALSE,
+                               0, sizeof(int) * HIST_SIZE, hist, 0, NULL, NULL);
+    CL_FAIL_ON_ERROR(AVERROR(EIO), "Failed to initialize hist buffer %d.\n", cle);
+
+    switch(input_frames_ctx->sw_format) {
+        case AV_PIX_FMT_NV12:
+            err = thumbnail_kernel(avctx, input, ctx->kernel_uchar, 0, 0);
+            err |= thumbnail_kernel(avctx, input, ctx->kernel_uchar2, 256, 1);
+            if (err < 0)
+                goto fail;
+            break;
+        default:
+            return AVERROR_BUG;
     }
+    cle = clEnqueueReadBuffer(ctx->command_queue, ctx->hist, CL_FALSE,
+                              0, sizeof(int) * HIST_SIZE, hist, 0, NULL, NULL);
+    CL_FAIL_ON_ERROR(AVERROR(EIO), "Failed to read hist buffer: %d.\n", cle);
+
+    cle = clFinish(ctx->command_queue);
+    CL_FAIL_ON_ERROR(AVERROR(EIO), "Failed to finish command queue: %d.\n", cle);
 
     // no selection until the buffer of N frames is filled up
     ctx->n++;
@@ -244,8 +323,15 @@ static av_cold void thumbnail_opencl_uninit(AVFilterContext *avctx)
     cl_int cle;
     int i;
 
-    if (ctx->kernel) {
-        cle = clReleaseKernel(ctx->kernel);
+    if (ctx->kernel_uchar) {
+        cle = clReleaseKernel(ctx->kernel_uchar);
+        if (cle != CL_SUCCESS)
+            av_log(avctx, AV_LOG_ERROR, "Failed to release "
+                   "kernel: %d.\n", cle);
+    }
+
+    if (ctx->kernel_uchar2) {
+        cle = clReleaseKernel(ctx->kernel_uchar2);
         if (cle != CL_SUCCESS)
             av_log(avctx, AV_LOG_ERROR, "Failed to release "
                    "kernel: %d.\n", cle);
@@ -256,6 +342,13 @@ static av_cold void thumbnail_opencl_uninit(AVFilterContext *avctx)
         if (cle != CL_SUCCESS)
             av_log(avctx, AV_LOG_ERROR, "Failed to release "
                    "command queue: %d.\n", cle);
+    }
+
+    if (ctx->hist) {
+        cle = clReleaseMemObject(ctx->hist);
+        if (cle != CL_SUCCESS)
+            av_log(avctx, AV_LOG_ERROR, "Failed to release "
+                   "buffer: %d.\n", cle);
     }
 
     for (i = 0; i < ctx->n_frames && ctx->frames && ctx->frames[i].buf; i++)
@@ -271,6 +364,7 @@ static int config_props(AVFilterLink *inlink)
     ThumbnailOpenCLContext *s = ctx->priv;
 
     s->tb = inlink->time_base;
+
     return ff_opencl_filter_config_input(inlink);
 }
 

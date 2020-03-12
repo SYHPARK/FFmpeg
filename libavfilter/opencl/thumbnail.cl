@@ -1,4 +1,6 @@
 /*
+ * Copyright (c) 2020 Wookhyun Han
+ *
  * This file is part of FFmpeg.
  *
  * FFmpeg is free software; you can redistribute it and/or
@@ -15,7 +17,30 @@
  * License along with FFmpeg; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-kernel void thumbnail(__read_only image2d_t src,
-                      __global int *hist) {
-    // TODO(younghyun): Write a kernel function to calculate histogram.
+
+const sampler_t sampler = (CLK_NORMALIZED_COORDS_FALSE |
+                           CLK_FILTER_NEAREST);
+
+__kernel void Thumbnail_uchar(__read_only image2d_t src,
+                              __global int *histogram,
+                              int offset) {
+    int2 loc = (int2)(get_global_id(0), get_global_id(1));
+
+    if (loc.x < get_image_width(src) && loc.y < get_image_height(src)) {
+        uchar pixel = (uchar)(255 * read_imagef(src, sampler, loc).x);
+        atomic_add(&histogram[offset + pixel], 1);
+    }
+}
+
+__kernel void Thumbnail_uchar2(__read_only image2d_t src,
+                               __global int *histogram,
+                               int offset) {
+    int2 loc = (int2)(get_global_id(0), get_global_id(1));
+
+    if (loc.x < get_image_width(src) && loc.y < get_image_height(src)) {
+        float2 p = read_imagef(src, sampler, loc).xy;
+        uchar2 pixel = ((uchar)(255 * p.x), (uchar)(255 * p.y));
+        atomic_add(&histogram[offset + pixel.x], 1);
+        atomic_add(&histogram[offset + 256 + pixel.y], 1);
+    }
 }
