@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Wookhyun Han
+ * Copyright (c) 2020 Wookhyun Han <wookhyunhan@gmail.com>
  *
  * This file is part of FFmpeg.
  *
@@ -38,24 +38,8 @@ __kernel void Thumbnail_uchar2(__read_only image2d_t src,
     int2 loc = (int2)(get_global_id(0), get_global_id(1));
 
     if (loc.x < get_image_width(src) && loc.y < get_image_height(src)) {
-        float2 p = read_imagef(src, sampler, loc).xy;
-        uchar2 pixel = ((uchar)(255 * p.x), (uchar)(255 * p.y));
+        uchar2 pixel = convert_uchar2(read_imagef(src, sampler, loc).xy * 255);
         atomic_add(&histogram[offset + pixel.x], 1);
         atomic_add(&histogram[offset + 256 + pixel.y], 1);
     }
 }
-
-// TODO(yonghyun): Support following functions
-/*
-__kernel void Thumbnail_ushort(__read_only image2d_t src,
-                               __global int *histogram,
-                               int offset) {
-
-}
-
-__kernel void Thumbnail_ushort2(__read_only image2d_t src,
-                                __global int *histogram,
-                                int offset) {
-
-}
-*/

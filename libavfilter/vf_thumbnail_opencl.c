@@ -29,17 +29,13 @@
 
 #define HIST_SIZE (3*256)
 
-// TODO(yonghyun): support commented formats (refer vf_thumbnail_cuda.c)
-
 static const enum AVPixelFormat supported_formats[] = {
     AV_PIX_FMT_NV12,
     AV_PIX_FMT_YUV420P,
     AV_PIX_FMT_YUV444P,
-    /*
     AV_PIX_FMT_P010,
     AV_PIX_FMT_P016,
     AV_PIX_FMT_YUV444P16,
-    */
 };
 
 static int is_format_supported(enum AVPixelFormat fmt)
@@ -257,6 +253,8 @@ static int thumbnail_opencl_filter_frame(AVFilterLink *inlink, AVFrame *input)
 
     switch(input_frames_ctx->sw_format) {
         case AV_PIX_FMT_NV12:
+        case AV_PIX_FMT_P010LE:
+        case AV_PIX_FMT_P016LE:
             err = thumbnail_kernel(avctx, input, ctx->kernel_uchar, 0, 0);
             err |= thumbnail_kernel(avctx, input, ctx->kernel_uchar2, 256, 1);
             if (err < 0)
@@ -264,6 +262,7 @@ static int thumbnail_opencl_filter_frame(AVFilterLink *inlink, AVFrame *input)
             break;
         case AV_PIX_FMT_YUV420P:
         case AV_PIX_FMT_YUV444P:
+        case AV_PIX_FMT_YUV444P16:
             err = thumbnail_kernel(avctx, input, ctx->kernel_uchar, 0, 0);
             err |= thumbnail_kernel(avctx, input, ctx->kernel_uchar, 256, 1);
             err |= thumbnail_kernel(avctx, input, ctx->kernel_uchar, 512, 2);
