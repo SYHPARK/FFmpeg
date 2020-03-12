@@ -44,3 +44,11 @@ GPL. Please refer to the LICENSE file for detailed information.
 Patches should be submitted to the ffmpeg-devel mailing list using
 `git format-patch` or `git send-email`. Github pull requests should be
 avoided because they are not part of our review process and will be ignored.
+
+## OpenCL Thumbnail
+
+* Supported formats: NV12, YUV420P, and YUV444P
+
+```console
+$ ffmpeg -init_hw_device_openc=ocl:0.0 -filter_hw_device ocl -i sample.mp4 -vf "format=nv12,hwupload,thumbnail_opencl,hwdownload,format=nv12" -y thumbnail.mp4
+```
