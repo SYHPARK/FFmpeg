@@ -44,3 +44,18 @@ __kernel void Thumbnail_uchar2(__read_only image2d_t src,
         atomic_add(&histogram[offset + 256 + pixel.y], 1);
     }
 }
+
+// TODO(yonghyun): Support following functions
+/*
+__kernel void Thumbnail_ushort(__read_only image2d_t src,
+                               __global int *histogram,
+                               int offset) {
+
+}
+
+__kernel void Thumbnail_ushort2(__read_only image2d_t src,
+                                __global int *histogram,
+                                int offset) {
+
+}
+*/
