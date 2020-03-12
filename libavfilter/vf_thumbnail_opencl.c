@@ -33,9 +33,9 @@
 
 static const enum AVPixelFormat supported_formats[] = {
     AV_PIX_FMT_NV12,
-    /*
     AV_PIX_FMT_YUV420P,
     AV_PIX_FMT_YUV444P,
+    /*
     AV_PIX_FMT_P010,
     AV_PIX_FMT_P016,
     AV_PIX_FMT_YUV444P16,
@@ -259,6 +259,14 @@ static int thumbnail_opencl_filter_frame(AVFilterLink *inlink, AVFrame *input)
         case AV_PIX_FMT_NV12:
             err = thumbnail_kernel(avctx, input, ctx->kernel_uchar, 0, 0);
             err |= thumbnail_kernel(avctx, input, ctx->kernel_uchar2, 256, 1);
+            if (err < 0)
+                goto fail;
+            break;
+        case AV_PIX_FMT_YUV420P:
+        case AV_PIX_FMT_YUV444P:
+            err = thumbnail_kernel(avctx, input, ctx->kernel_uchar, 0, 0);
+            err |= thumbnail_kernel(avctx, input, ctx->kernel_uchar, 256, 1);
+            err |= thumbnail_kernel(avctx, input, ctx->kernel_uchar, 512, 2);
             if (err < 0)
                 goto fail;
             break;
