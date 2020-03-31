@@ -26,9 +26,9 @@ __kernel void Thumbnail_uchar(__read_only image2d_t src,
                               int offset) {
     int2 loc = (int2)(get_global_id(0), get_global_id(1));
 
-    if (loc.x < get_image_width(src) && loc.y < get_image_height(src)) {
-        uchar pixel = (uchar)(255 * read_imagef(src, sampler, loc).x);
-        atomic_add(&histogram[offset + pixel], 1);
+    if (loc.x < get_image_width(src) && loc.y < get_image_height(src)) {	//only use inlink->w
+        uchar pixel = (uchar)(255 * read_imagef(src, sampler, loc).x);		//so, float4.x
+        atomic_add(&histogram[offset + pixel], 1);				//[0:1]*255?
     }
 }
 

@@ -30,9 +30,9 @@
 #include "libavutil/opt.h"
 #include "avfilter.h"
 #include "internal.h"
-
+#include <time.h>
 #define HIST_SIZE (3*256)
-
+#define TEST
 struct thumb_frame {
     AVFrame *buf;               ///< cached frame
     int histogram[HIST_SIZE];   ///< RGB color distribution histogram of the frame
@@ -130,6 +130,26 @@ static AVFrame *get_best_frame(AVFilterContext *ctx)
 
 static int filter_frame(AVFilterLink *inlink, AVFrame *frame)
 {
+#ifdef TEST
+    static FILE* fp = NULL;//fopen("filter_frame.log", "w");
+    static int cnt = 0;
+    static time_t fftime;
+    static time_t prev_time;
+    time_t cur_time;
+    if(!cnt){
+        fp = fopen("filter_frame.log", "w");
+        time(&prev_time);
+        fftime = 0;
+    }
+    if(cnt>500)
+        exit(0);
+    time(&cur_time);
+    printf("count: %d\ttime elapsed: %ld\ttotal time: %ld\n", cnt, cur_time - prev_time, fftime);
+    fprintf(fp, "count: %d\ttime elapsed: %ld\ttotal time: %ld\n", cnt++, cur_time - prev_time, fftime);
+
+    fftime += (cur_time - prev_time);
+    prev_time = cur_time;
+#endif
     int i, j;
     AVFilterContext *ctx  = inlink->dst;
     ThumbContext *s   = ctx->priv;

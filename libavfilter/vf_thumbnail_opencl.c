@@ -26,8 +26,10 @@
 #include "internal.h"
 #include "opencl.h"
 #include "opencl_source.h"
+#include <time.h>
 
 #define HIST_SIZE (3*256)
+#define TEST
 
 static const enum AVPixelFormat supported_formats[] = {
     AV_PIX_FMT_NV12,
@@ -186,7 +188,7 @@ static int thumbnail_kernel(AVFilterContext *avctx, AVFrame *in, cl_kernel kerne
     cl_int cle;
     ThumbnailOpenCLContext *ctx = avctx->priv;
     size_t global_work[2];
-    cl_mem src = (cl_mem)in->data[pixel];
+    cl_mem src = (cl_mem)in->data[pixel];		//data[1]? data[2]?
 
     err = ff_opencl_filter_work_size_from_image(avctx, global_work, in, pixel, 0);
     if (err < 0)
@@ -207,6 +209,27 @@ fail:
 
 static int thumbnail_opencl_filter_frame(AVFilterLink *inlink, AVFrame *input)
 {
+#ifdef TEST
+    static FILE* fp = NULL;//fopen("filter_frame.log", "w");
+    static int cnt = 0;
+    static time_t fftime;
+    static time_t prev_time;
+    time_t cur_time;
+    if(!cnt){
+	fp = fopen("filter_frame.log", "w");
+	time(&prev_time);
+	fftime = 0;
+    }
+    if(cnt>400)
+	exit(0);
+    time(&cur_time);
+    printf("count: %d\ttime elapsed: %ld\ttotal time: %ld\n", cnt, cur_time - prev_time, fftime);
+    fprintf(fp, "count: %d\ttime elapsed: %ld\ttotal time: %ld\n", cnt++, cur_time - prev_time, fftime);
+
+    fftime += (cur_time - prev_time);
+    prev_time = cur_time;
+#endif
+
     AVFilterContext    *avctx = inlink->dst;
     AVFilterLink     *outlink = avctx->outputs[0];
     ThumbnailOpenCLContext *ctx = avctx->priv;
