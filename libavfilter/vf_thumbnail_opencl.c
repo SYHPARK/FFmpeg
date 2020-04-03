@@ -144,6 +144,16 @@ static double frame_sum_square_err(const int *hist, const double *median)
 
 static AVFrame *get_best_frame(AVFilterContext *ctx)
 {
+#ifdef TEST
+    static int cnt = 0;
+    static clock_t start;
+    start = clock();
+    static time_t t;
+    time(&t);
+    //fprintf(stdout, "%ld %d %s %s\n", t, cnt, __FUNCTION__, "start"); //time count
+    fprintf(stdout, "%d\t%lf\t%lf\t%s\t%s\n", cnt, (double)clock()/CLOCKS_PER_SEC, (double)(clock()-start)/CLOCKS_PER_SEC, __FUNCTION__, "start"); //time count
+ //   cnt++;
+#endif
     AVFrame *picref;
     ThumbnailOpenCLContext *s = ctx->priv;
     int i, j, best_frame_idx = 0;
@@ -178,6 +188,12 @@ static AVFrame *get_best_frame(AVFilterContext *ctx)
            "from a set of %d images\n", best_frame_idx,
            picref->pts * av_q2d(s->tb), nb_frames);
     s->frames[best_frame_idx].buf = NULL;
+#ifdef TEST
+    time(&t);
+    fprintf(stdout, "%d\t%lf\t%lf\t%s\t%s\n\n", cnt, (double)clock()/CLOCKS_PER_SEC, (double)(clock()-start)/CLOCKS_PER_SEC, __FUNCTION__, "end"); //time count
+    cnt++;
+//    fprintf(stdout, "%d %d %s %s\n", t, cnt, __FUNCTION__, "end"); //time count
+#endif
 
     return picref;
 }
@@ -210,24 +226,16 @@ fail:
 static int thumbnail_opencl_filter_frame(AVFilterLink *inlink, AVFrame *input)
 {
 #ifdef TEST
-    static FILE* fp = NULL;//fopen("filter_frame.log", "w");
     static int cnt = 0;
-    static time_t fftime;
-    static time_t prev_time;
-    time_t cur_time;
-    if(!cnt){
-	fp = fopen("filter_frame.log", "w");
-	time(&prev_time);
-	fftime = 0;
-    }
-    if(cnt>400)
-	exit(0);
-    time(&cur_time);
-    printf("count: %d\ttime elapsed: %ld\ttotal time: %ld\n", cnt, cur_time - prev_time, fftime);
-    fprintf(fp, "count: %d\ttime elapsed: %ld\ttotal time: %ld\n", cnt++, cur_time - prev_time, fftime);
-
-    fftime += (cur_time - prev_time);
-    prev_time = cur_time;
+    static clock_t start;
+    static time_t t;
+    time(&t);
+    start=clock();
+//    if(cnt>=500)
+//	exit(0);
+//    fprintf(stdout, "%ld %d %s %s\n", t, cnt, __FUNCTION__, "start"); //time count
+    fprintf(stdout, "%d\t%lf\t%lf\t%s\t%s\n", cnt, (double)clock()/CLOCKS_PER_SEC, (double)(clock()-start)/CLOCKS_PER_SEC, __FUNCTION__, "start");
+//    cnt++;
 #endif
 
     AVFilterContext    *avctx = inlink->dst;
@@ -303,6 +311,11 @@ static int thumbnail_opencl_filter_frame(AVFilterLink *inlink, AVFrame *input)
     CL_FAIL_ON_ERROR(AVERROR(EIO), "Failed to finish command queue: %d.\n", cle);
 
     // no selection until the buffer of N frames is filled up
+#ifdef TEST
+    time(&t);
+    fprintf(stdout, "%d\t%lf\t%lf\t%s\t%s\n\n", cnt, (double)clock()/CLOCKS_PER_SEC, (double)(clock()-start)/CLOCKS_PER_SEC, __FUNCTION__, "end");
+    cnt++;
+#endif
     ctx->n++;
     if (ctx->n < ctx->n_frames)
         return 0;
@@ -315,6 +328,9 @@ static int thumbnail_opencl_filter_frame(AVFilterLink *inlink, AVFrame *input)
     // Get best frame (Thumbnail).
     best = get_best_frame(avctx);
 
+#ifdef TEST
+    start=clock();
+    fprintf(stdout, "%d\t%lf\t%lf\tafter_%s\t%s\n\n", cnt, (double)clock()/CLOCKS_PER_SEC, (double)(clock()-start)/CLOCKS_PER_SEC, __FUNCTION__, "start");
     // Copy the best frame to output.
     for (p = 0; p < FF_ARRAY_ELEMS(output->data); p++) {
         src = (cl_mem)best->data[p];
@@ -335,7 +351,8 @@ static int thumbnail_opencl_filter_frame(AVFilterLink *inlink, AVFrame *input)
     err = av_frame_copy_props(output, best);
     if (err < 0)
         goto fail;
-
+    fprintf(stdout, "%d\t%lf\t%lf\tafter_%s\t%s\n\n", cnt, (double)clock()/CLOCKS_PER_SEC, (double)(clock()-start)/CLOCKS_PER_SEC, __FUNCTION__, "end");
+#endif
     av_log(ctx, AV_LOG_DEBUG, "Filter output: %s, %ux%u (%"PRId64").\n",
            av_get_pix_fmt_name(output->format),
            output->width, output->height, output->pts);

@@ -32,7 +32,7 @@
 #include "internal.h"
 #include <time.h>
 #define HIST_SIZE (3*256)
-#define TEST
+//#define TEST
 struct thumb_frame {
     AVFrame *buf;               ///< cached frame
     int histogram[HIST_SIZE];   ///< RGB color distribution histogram of the frame
