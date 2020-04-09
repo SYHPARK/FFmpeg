@@ -26,8 +26,33 @@
 #include "internal.h"
 #include "opencl.h"
 #include "opencl_source.h"
+#include <time.h>
 
 #define HIST_SIZE (3*256)
+//#define TEST
+#define CPU_UTIL
+
+double getMicroTimestamp(){
+    long long ns;
+    time_t s;  // Seconds
+    struct timespec spec;
+
+    clock_gettime(CLOCK_REALTIME, &spec);
+
+    s  = spec.tv_sec;
+    ns = spec.tv_nsec;
+
+//    printf("Current time: %"PRIdMAX".%03lld seconds since the Epoch\n",
+//           (intmax_t)s, ns);
+
+    double _current_time=0;
+
+    if(ns>99999999)
+        _current_time = s + (double)ns/1000000000;
+    else
+        _current_time = s + (double)ns/100000000;
+    return _current_time;
+}
 
 static const enum AVPixelFormat supported_formats[] = {
     AV_PIX_FMT_NV12,
@@ -142,6 +167,23 @@ static double frame_sum_square_err(const int *hist, const double *median)
 
 static AVFrame *get_best_frame(AVFilterContext *ctx)
 {
+#ifdef TEST
+    static int cnt = 0;
+//    static clock_t start;
+//    start = clock();
+//    static time_t t;
+//    time(&t);
+    double st = getMicroTimestamp();
+    fprintf(stdout, "%d\t%lf\t", cnt, st); //time count
+    fprintf(stdout, "%lf\t", 0);
+    fprintf(stdout, "%s\t%s\n", __FUNCTION__, "start"); //time count
+#endif
+#ifdef CPU_UTIL
+    double st = getMicroTimestamp();
+    fprintf(stdout, "%lf\t", st); //time count
+    fprintf(stdout, "\t");
+    fprintf(stdout, "%s\t%s\n", __FUNCTION__, "start"); //time count
+#endif
     AVFrame *picref;
     ThumbnailOpenCLContext *s = ctx->priv;
     int i, j, best_frame_idx = 0;
@@ -176,7 +218,19 @@ static AVFrame *get_best_frame(AVFilterContext *ctx)
            "from a set of %d images\n", best_frame_idx,
            picref->pts * av_q2d(s->tb), nb_frames);
     s->frames[best_frame_idx].buf = NULL;
+#ifdef TEST
+//    time(&t);
+    double dt = getMicroTimestamp();
+    fprintf(stdout, "%d\t%lf\t%lf\t", cnt, dt, dt-st); //time count
+    fprintf(stdout, "%s\t%s\n", __FUNCTION__, "end"); //time count
+    cnt++;
+#endif
+#ifdef CUP_UTIL
+    double dt = getMicroTimestamp();
+    fprintf(stdout, "%lf\t\t", dt); //time count
+    fprintf(stdout, "%s\t%s\n", __FUNCTION__, "end"); //time count
 
+#endif
     return picref;
 }
 
@@ -186,7 +240,7 @@ static int thumbnail_kernel(AVFilterContext *avctx, AVFrame *in, cl_kernel kerne
     cl_int cle;
     ThumbnailOpenCLContext *ctx = avctx->priv;
     size_t global_work[2];
-    cl_mem src = (cl_mem)in->data[pixel];
+    cl_mem src = (cl_mem)in->data[pixel];		//data[1]? data[2]?
 
     err = ff_opencl_filter_work_size_from_image(avctx, global_work, in, pixel, 0);
     if (err < 0)
@@ -207,6 +261,25 @@ fail:
 
 static int thumbnail_opencl_filter_frame(AVFilterLink *inlink, AVFrame *input)
 {
+#ifdef TEST
+    static int cnt = 0;
+    static clock_t start;
+    static time_t t;
+    double st = getMicroTimestamp();
+    time(&t);
+    start=clock();
+//    if(cnt>=500)
+//	exit(0);
+    //fprintf(stdout, "%d\t%lf\t%lf\t%s\t%s\n", cnt, (double)clock()/CLOCKS_PER_SEC, (double)(clock()-start)/CLOCKS_PER_SEC, __FUNCTION__, "start");
+    fprintf(stdout, "%d\t%lf\t%lf\t", cnt, st, 0);
+    fprintf(stdout, "%s\t%s\n", __FUNCTION__, "start");
+#endif
+#ifdef CPU_UTIL
+    double st = getMicroTimestamp();
+    fprintf(stdout, "%lf\t", st); //time count
+    fprintf(stdout, "\t");
+    fprintf(stdout, "%s\t%s\n", __FUNCTION__, "start"); //time count
+#endif
     AVFilterContext    *avctx = inlink->dst;
     AVFilterLink     *outlink = avctx->outputs[0];
     ThumbnailOpenCLContext *ctx = avctx->priv;
@@ -245,10 +318,22 @@ static int thumbnail_opencl_filter_frame(AVFilterLink *inlink, AVFrame *input)
     // keep a reference of each frame
     ctx->frames[ctx->n].buf = input;
     hist = ctx->frames[ctx->n].histogram;
+//////
+//    static int cnt = 0;
+//    double st = getMicroTimestamp();
+//    fprintf(stdout, "%d\t%lf\t", cnt, st); //time count
+//    fprintf(stdout, "%lf\t", 0);
+//    fprintf(stdout, "%s\t%s\n", "clEnqueueWriteBuffer", "start"); //time count
 
     // update current frame to histogram
     cle = clEnqueueWriteBuffer(ctx->command_queue, ctx->hist, CL_FALSE,
                                0, sizeof(int) * HIST_SIZE, hist, 0, NULL, NULL);
+
+//    double dt = getMicroTimestamp();
+//    fprintf(stdout, "%d\t%lf\t", cnt, st); //time count
+//    fprintf(stdout, "%lf\t", dt-st);
+//    fprintf(stdout, "%s\t%s\n", "clEnqueueWriteBuffer", "end"); //time count
+//////
     CL_FAIL_ON_ERROR(AVERROR(EIO), "Failed to initialize hist buffer %d.\n", cle);
 
     switch(input_frames_ctx->sw_format) {
@@ -272,14 +357,38 @@ static int thumbnail_opencl_filter_frame(AVFilterLink *inlink, AVFrame *input)
         default:
             return AVERROR_BUG;
     }
+//////
+//    st = getMicroTimestamp();
+//    fprintf(stdout, "%d\t%lf\t", cnt, st); //time count
+//    fprintf(stdout, "%lf\t", 0);
+//    fprintf(stdout, "%s\t%s\n", "clEnqueueReadBuffer", "start"); //time count
+
     cle = clEnqueueReadBuffer(ctx->command_queue, ctx->hist, CL_FALSE,
                               0, sizeof(int) * HIST_SIZE, hist, 0, NULL, NULL);
+
+//    dt = getMicroTimestamp();
+//    fprintf(stdout, "%d\t%lf\t", cnt++, st); //time count
+//    fprintf(stdout, "%lf\t", dt-st);
+//    fprintf(stdout, "%s\t%s\n", "clEnqueueReadBuffer", "end"); //time count
+//////
+
+
     CL_FAIL_ON_ERROR(AVERROR(EIO), "Failed to read hist buffer: %d.\n", cle);
 
     cle = clFinish(ctx->command_queue);
     CL_FAIL_ON_ERROR(AVERROR(EIO), "Failed to finish command queue: %d.\n", cle);
 
     // no selection until the buffer of N frames is filled up
+#ifdef TEST
+    double dt = getMicroTimestamp();
+    fprintf(stdout, "%d\t%lf\t%lf\t%s\t%s\n", cnt, dt, dt-st, __FUNCTION__, "end");
+    cnt++;
+#endif
+#ifdef CPU_UTIL
+    double dt = getMicroTimestamp();
+    fprintf(stdout, "%lf\t\t", dt); //time count
+    fprintf(stdout, "%s\t%s\n", __FUNCTION__, "end"); //time count
+#endif
     ctx->n++;
     if (ctx->n < ctx->n_frames)
         return 0;
@@ -312,7 +421,6 @@ static int thumbnail_opencl_filter_frame(AVFilterLink *inlink, AVFrame *input)
     err = av_frame_copy_props(output, best);
     if (err < 0)
         goto fail;
-
     av_log(ctx, AV_LOG_DEBUG, "Filter output: %s, %ux%u (%"PRId64").\n",
            av_get_pix_fmt_name(output->format),
            output->width, output->height, output->pts);
