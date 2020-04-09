@@ -53,7 +53,6 @@ double getMicroTimestamp(){
         _current_time = s + (double)ns/100000000;
     return _current_time;
 }
-#define TEST
 
 static const enum AVPixelFormat supported_formats[] = {
     AV_PIX_FMT_NV12,
@@ -170,10 +169,6 @@ static AVFrame *get_best_frame(AVFilterContext *ctx)
 {
 #ifdef TEST
     static int cnt = 0;
-//    static clock_t start;
-//    start = clock();
-//    static time_t t;
-//    time(&t);
     double st = getMicroTimestamp();
     fprintf(stdout, "%d\t%lf\t", cnt, st); //time count
     fprintf(stdout, "%lf\t", 0);
@@ -184,15 +179,6 @@ static AVFrame *get_best_frame(AVFilterContext *ctx)
     fprintf(stdout, "%lf\t", st); //time count
     fprintf(stdout, "\t");
     fprintf(stdout, "%s\t%s\n", __FUNCTION__, "start"); //time count
-/*=======
-    static clock_t start;
-    start = clock();
-    static time_t t;
-    time(&t);
-    //fprintf(stdout, "%ld %d %s %s\n", t, cnt, __FUNCTION__, "start"); //time count
-    fprintf(stdout, "%d\t%lf\t%lf\t%s\t%s\n", cnt, (double)clock()/CLOCKS_PER_SEC, (double)(clock()-start)/CLOCKS_PER_SEC, __FUNCTION__, "start"); //time count
- //   cnt++;
->>>>>>> 42a17e5e019d4e15247d6783bd5cf7db9e74a874*/
 #endif
     AVFrame *picref;
     ThumbnailOpenCLContext *s = ctx->priv;
@@ -229,7 +215,6 @@ static AVFrame *get_best_frame(AVFilterContext *ctx)
            picref->pts * av_q2d(s->tb), nb_frames);
     s->frames[best_frame_idx].buf = NULL;
 #ifdef TEST
-//    time(&t);
     double dt = getMicroTimestamp();
     fprintf(stdout, "%d\t%lf\t%lf\t", cnt, dt, dt-st); //time count
     fprintf(stdout, "%s\t%s\n", __FUNCTION__, "end"); //time count
@@ -241,14 +226,6 @@ static AVFrame *get_best_frame(AVFilterContext *ctx)
     fprintf(stdout, "%s\t%s\n", __FUNCTION__, "end"); //time count
 
 #endif
-/*=======
-    time(&t);
-    fprintf(stdout, "%d\t%lf\t%lf\t%s\t%s\n\n", cnt, (double)clock()/CLOCKS_PER_SEC, (double)(clock()-start)/CLOCKS_PER_SEC, __FUNCTION__, "end"); //time count
-    cnt++;
-//    fprintf(stdout, "%d %d %s %s\n", t, cnt, __FUNCTION__, "end"); //time count
-#endif
-
->>>>>>> 42a17e5e019d4e15247d6783bd5cf7db9e74a874*/
     return picref;
 }
 
@@ -281,14 +258,9 @@ static int thumbnail_opencl_filter_frame(AVFilterLink *inlink, AVFrame *input)
 {
 #ifdef TEST
     static int cnt = 0;
-    static clock_t start;
-    static time_t t;
     double st = getMicroTimestamp();
-    time(&t);
-    start=clock();
 //    if(cnt>=500)
 //	exit(0);
-    //fprintf(stdout, "%d\t%lf\t%lf\t%s\t%s\n", cnt, (double)clock()/CLOCKS_PER_SEC, (double)(clock()-start)/CLOCKS_PER_SEC, __FUNCTION__, "start");
     fprintf(stdout, "%d\t%lf\t%lf\t", cnt, st, 0);
     fprintf(stdout, "%s\t%s\n", __FUNCTION__, "start");
 #endif
@@ -298,13 +270,6 @@ static int thumbnail_opencl_filter_frame(AVFilterLink *inlink, AVFrame *input)
     fprintf(stdout, "\t");
     fprintf(stdout, "%s\t%s\n", __FUNCTION__, "start"); //time count
 #endif
-/*=======
-//    fprintf(stdout, "%ld %d %s %s\n", t, cnt, __FUNCTION__, "start"); //time count
-    fprintf(stdout, "%d\t%lf\t%lf\t%s\t%s\n", cnt, (double)clock()/CLOCKS_PER_SEC, (double)(clock()-start)/CLOCKS_PER_SEC, __FUNCTION__, "start");
-//    cnt++;
-#endif
-
->>>>>>> 42a17e5e019d4e15247d6783bd5cf7db9e74a874*/
     AVFilterContext    *avctx = inlink->dst;
     AVFilterLink     *outlink = avctx->outputs[0];
     ThumbnailOpenCLContext *ctx = avctx->priv;
@@ -414,12 +379,7 @@ static int thumbnail_opencl_filter_frame(AVFilterLink *inlink, AVFrame *input)
     fprintf(stdout, "%lf\t\t", dt); //time count
     fprintf(stdout, "%s\t%s\n", __FUNCTION__, "end"); //time count
 #endif
-/*=======
-    time(&t);
-    fprintf(stdout, "%d\t%lf\t%lf\t%s\t%s\n\n", cnt, (double)clock()/CLOCKS_PER_SEC, (double)(clock()-start)/CLOCKS_PER_SEC, __FUNCTION__, "end");
-    cnt++;
-#endif
->>>>>>> 42a17e5e019d4e15247d6783bd5cf7db9e74a874*/
+
     ctx->n++;
     if (ctx->n < ctx->n_frames)
         return 0;
@@ -432,9 +392,6 @@ static int thumbnail_opencl_filter_frame(AVFilterLink *inlink, AVFrame *input)
     // Get best frame (Thumbnail).
     best = get_best_frame(avctx);
 
-#ifdef TEST
-    start=clock();
-    fprintf(stdout, "%d\t%lf\t%lf\tafter_%s\t%s\n\n", cnt, (double)clock()/CLOCKS_PER_SEC, (double)(clock()-start)/CLOCKS_PER_SEC, __FUNCTION__, "start");
     // Copy the best frame to output.
     for (p = 0; p < FF_ARRAY_ELEMS(output->data); p++) {
         src = (cl_mem)best->data[p];
