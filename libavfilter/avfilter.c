@@ -42,8 +42,11 @@
 #include "filters.h"
 #include "formats.h"
 #include "internal.h"
-
+#include "libavfilter/vf_thumbnail_opencl.c"
 #include "libavutil/ffversion.h"
+
+//#define CPU_UTIL
+
 const char av_filter_ffversion[] = "FFmpeg version " FFMPEG_VERSION;
 
 void ff_tlog_ref(void *ctx, AVFrame *ref, int end)
@@ -449,6 +452,12 @@ static int64_t guess_status_pts(AVFilterContext *ctx, int status, AVRational lin
 
 static int ff_request_frame_to_filter(AVFilterLink *link)
 {
+#ifdef CPU_UTIL
+    double st = getMicroTimestamp();
+    fprintf(stdout, "%lf\t", st); //time count
+    fprintf(stdout, "\t");
+    fprintf(stdout, "%s\t%s\n", __FUNCTION__, "start"); //time count
+#endif
     int ret = -1;
 
     FF_TPRINTF_START(NULL, request_frame_to_filter); ff_tlog_link(NULL, link, 1);
@@ -464,6 +473,11 @@ static int ff_request_frame_to_filter(AVFilterLink *link)
         if (ret == AVERROR_EOF)
             ret = 0;
     }
+#ifdef CUP_UTIL
+    double dt = getMicroTimestamp();
+    fprintf(stdout, "%lf\t\t", dt); //time count
+    fprintf(stdout, "%s\t%s\n", __FUNCTION__, "end"); //time count
+#endif
     return ret;
 }
 
@@ -1043,6 +1057,12 @@ static int default_filter_frame(AVFilterLink *link, AVFrame *frame)
 
 static int ff_filter_frame_framed(AVFilterLink *link, AVFrame *frame)
 {
+#ifdef CPU_UTIL
+    double st = getMicroTimestamp();
+    fprintf(stdout, "%lf\t", st); //time count
+    fprintf(stdout, "\t");
+    fprintf(stdout, "%s\t%s\n", __FUNCTION__, "start"); //time count
+#endif
     int (*filter_frame)(AVFilterLink *, AVFrame *);
     AVFilterContext *dstctx = link->dst;
     AVFilterPad *dst = link->dstpad;
@@ -1065,9 +1085,19 @@ static int ff_filter_frame_framed(AVFilterLink *link, AVFrame *frame)
         filter_frame = default_filter_frame;
     ret = filter_frame(link, frame);
     link->frame_count_out++;
+#ifdef CUP_UTIL
+    double dt = getMicroTimestamp();
+    fprintf(stdout, "%lf\t\t", dt); //time count
+    fprintf(stdout, "%s\t%s\n", __FUNCTION__, "end"); //time count
+#endif
     return ret;
 
 fail:
+#ifdef CUP_UTIL
+    double dt = getMicroTimestamp();
+    fprintf(stdout, "%lf\t\t", dt); //time count
+    fprintf(stdout, "%s\t%s\n", __FUNCTION__, "end"); //time count
+#endif
     av_frame_free(&frame);
     return ret;
 }
@@ -1192,6 +1222,12 @@ static int take_samples(AVFilterLink *link, unsigned min, unsigned max,
 
 static int ff_filter_frame_to_filter(AVFilterLink *link)
 {
+#ifdef CPU_UTIL
+    double st = getMicroTimestamp();
+    fprintf(stdout, "%lf\t", st); //time count
+    fprintf(stdout, "\t");
+    fprintf(stdout, "%s\t%s\n", __FUNCTION__, "start"); //time count
+#endif
     AVFrame *frame = NULL;
     AVFilterContext *dst = link->dst;
     int ret;
@@ -1203,6 +1239,11 @@ static int ff_filter_frame_to_filter(AVFilterLink *link)
     av_assert1(ret);
     if (ret < 0) {
         av_assert1(!frame);
+#ifdef CUP_UTIL
+    double dt = getMicroTimestamp();
+    fprintf(stdout, "%lf\t\t", dt); //time count
+    fprintf(stdout, "%s\t%s\n", __FUNCTION__, "end"); //time count
+#endif
         return ret;
     }
     /* The filter will soon have received a new frame, that may allow it to
@@ -1219,17 +1260,34 @@ static int ff_filter_frame_to_filter(AVFilterLink *link)
            the input status has also changed, or any other reason. */
         ff_filter_set_ready(dst, 300);
     }
+
+#ifdef CUP_UTIL
+    double dt = getMicroTimestamp();
+    fprintf(stdout, "%lf\t\t", dt); //time count
+    fprintf(stdout, "%s\t%s\n", __FUNCTION__, "end"); //time count
+#endif
     return ret;
 }
 
 static int forward_status_change(AVFilterContext *filter, AVFilterLink *in)
 {
+#ifdef CPU_UTIL
+    double st = getMicroTimestamp();
+    fprintf(stdout, "%lf\t", st); //time count
+    fprintf(stdout, "\t");
+    fprintf(stdout, "%s\t%s\n", __FUNCTION__, "start"); //time count
+#endif
     unsigned out = 0, progress = 0;
     int ret;
 
     av_assert0(!in->status_out);
     if (!filter->nb_outputs) {
         /* not necessary with the current API and sinks */
+#ifdef CUP_UTIL
+    double dt = getMicroTimestamp();
+    fprintf(stdout, "%lf\t\t", dt); //time count
+    fprintf(stdout, "%s\t%s\n", __FUNCTION__, "end"); //time count
+#endif
         return 0;
     }
     while (!in->status_out) {
@@ -1244,6 +1302,11 @@ static int forward_status_change(AVFilterContext *filter, AVFilterLink *in)
                 /* Every output already closed: input no longer interesting
                    (example: overlay in shortest mode, other input closed). */
                 ff_avfilter_link_set_out_status(in, in->status_in, in->status_in_pts);
+#ifdef CUP_UTIL
+    double dt = getMicroTimestamp();
+    fprintf(stdout, "%lf\t\t", dt); //time count
+    fprintf(stdout, "%s\t%s\n", __FUNCTION__, "end"); //time count
+#endif
                 return 0;
             }
             progress = 0;
@@ -1251,13 +1314,23 @@ static int forward_status_change(AVFilterContext *filter, AVFilterLink *in)
         }
     }
     ff_filter_set_ready(filter, 200);
+#ifdef CUP_UTIL
+    double dt = getMicroTimestamp();
+    fprintf(stdout, "%lf\t\t", dt); //time count
+    fprintf(stdout, "%s\t%s\n", __FUNCTION__, "end"); //time count
+#endif
     return 0;
 }
 
 static int ff_filter_activate_default(AVFilterContext *filter)
 {
     unsigned i;
-
+#ifdef CPU_UTIL
+    double st = getMicroTimestamp();
+    fprintf(stdout, "%lf\t", st); //time count
+    fprintf(stdout, "\t");
+    fprintf(stdout, "%s\t%s\n", __FUNCTION__, "start"); //time count
+#endif
     for (i = 0; i < filter->nb_inputs; i++) {
         if (samples_ready(filter->inputs[i], filter->inputs[i]->min_samples)) {
             return ff_filter_frame_to_filter(filter->inputs[i]);
@@ -1266,7 +1339,13 @@ static int ff_filter_activate_default(AVFilterContext *filter)
     for (i = 0; i < filter->nb_inputs; i++) {
         if (filter->inputs[i]->status_in && !filter->inputs[i]->status_out) {
             av_assert1(!ff_framequeue_queued_frames(&filter->inputs[i]->fifo));
-            return forward_status_change(filter, filter->inputs[i]);
+            int temp = forward_status_change(filter, filter->inputs[i]);
+	    #ifdef CUP_UTIL
+    double dt = getMicroTimestamp();
+    fprintf(stdout, "%lf\t\t", dt); //time count
+    fprintf(stdout, "%s\t%s\n", __FUNCTION__, "end"); //time count
+#endif
+	    return temp;
         }
     }
     for (i = 0; i < filter->nb_outputs; i++) {
@@ -1415,6 +1494,12 @@ static int ff_filter_activate_default(AVFilterContext *filter)
 
 int ff_filter_activate(AVFilterContext *filter)
 {
+#ifdef CPU_UTIL
+    double st = getMicroTimestamp();
+    fprintf(stdout, "%lf\t", st); //time count
+    fprintf(stdout, "\t");
+    fprintf(stdout, "%s\t%s\n", __FUNCTION__, "start"); //time count
+#endif
     int ret;
 
     /* Generic timeline support is not yet implemented but should be easy */
@@ -1425,6 +1510,11 @@ int ff_filter_activate(AVFilterContext *filter)
           ff_filter_activate_default(filter);
     if (ret == FFERROR_NOT_READY)
         ret = 0;
+#ifdef CUP_UTIL
+    double dt = getMicroTimestamp();
+    fprintf(stdout, "%lf\t\t", dt); //time count
+    fprintf(stdout, "%s\t%s\n", __FUNCTION__, "end"); //time count
+#endif
     return ret;
 }
 

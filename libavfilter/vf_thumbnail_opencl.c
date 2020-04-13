@@ -30,7 +30,7 @@
 
 #define HIST_SIZE (3*256)
 //#define TEST
-#define CPU_UTIL
+//#define CPU_UTIL
 
 double getMicroTimestamp(){
     long long ns;
@@ -174,12 +174,12 @@ static AVFrame *get_best_frame(AVFilterContext *ctx)
     fprintf(stdout, "%lf\t", 0);
     fprintf(stdout, "%s\t%s\n", __FUNCTION__, "start"); //time count
 #endif
-#ifdef CPU_UTIL
+//#ifdef CPU_UTIL
     double st = getMicroTimestamp();
     fprintf(stdout, "%lf\t", st); //time count
     fprintf(stdout, "\t");
     fprintf(stdout, "%s\t%s\n", __FUNCTION__, "start"); //time count
-#endif
+//#endif
     AVFrame *picref;
     ThumbnailOpenCLContext *s = ctx->priv;
     int i, j, best_frame_idx = 0;
@@ -220,12 +220,11 @@ static AVFrame *get_best_frame(AVFilterContext *ctx)
     fprintf(stdout, "%s\t%s\n", __FUNCTION__, "end"); //time count
     cnt++;
 #endif
-#ifdef CUP_UTIL
+//#ifdef CUP_UTIL
     double dt = getMicroTimestamp();
     fprintf(stdout, "%lf\t\t", dt); //time count
     fprintf(stdout, "%s\t%s\n", __FUNCTION__, "end"); //time count
-
-#endif
+//#endif
     return picref;
 }
 

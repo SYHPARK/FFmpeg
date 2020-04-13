@@ -22,7 +22,6 @@
  * @file
  * memory buffer source filter
  */
-
 #include <float.h>
 
 #include "libavutil/avassert.h"
@@ -40,6 +39,9 @@
 #include "formats.h"
 #include "internal.h"
 #include "video.h"
+//#define CPU_UTIL
+
+extern double getMicroTimestamp();
 
 typedef struct BufferSourceContext {
     const AVClass    *class;
@@ -154,6 +156,12 @@ static int av_buffersrc_add_frame_internal(AVFilterContext *ctx,
 
 int attribute_align_arg av_buffersrc_add_frame_flags(AVFilterContext *ctx, AVFrame *frame, int flags)
 {
+#ifdef CPU_UTIL
+    double st = getMicroTimestamp();
+    fprintf(stdout, "%lf\t", st); //time count
+    fprintf(stdout, "\t");
+    fprintf(stdout, "%s\t%s\n", __FUNCTION__, "start"); //time count
+#endif
     AVFrame *copy = NULL;
     int ret = 0;
 
@@ -163,9 +171,14 @@ int attribute_align_arg av_buffersrc_add_frame_flags(AVFilterContext *ctx, AVFra
         return AVERROR(EINVAL);
     }
 
-    if (!(flags & AV_BUFFERSRC_FLAG_KEEP_REF) || !frame)
+    if (!(flags & AV_BUFFERSRC_FLAG_KEEP_REF) || !frame){
+#ifdef CUP_UTIL
+    double dt = getMicroTimestamp();
+    fprintf(stdout, "%lf\t\t", dt); //time count
+    fprintf(stdout, "%s\t%s\n", __FUNCTION__, "end"); //time count
+#endif
         return av_buffersrc_add_frame_internal(ctx, frame, flags);
-
+    }
     if (!(copy = av_frame_alloc()))
         return AVERROR(ENOMEM);
     ret = av_frame_ref(copy, frame);
@@ -173,11 +186,22 @@ int attribute_align_arg av_buffersrc_add_frame_flags(AVFilterContext *ctx, AVFra
         ret = av_buffersrc_add_frame_internal(ctx, copy, flags);
 
     av_frame_free(&copy);
+#ifdef CUP_UTIL
+    double dt = getMicroTimestamp();
+    fprintf(stdout, "%lf\t\t", dt); //time count
+    fprintf(stdout, "%s\t%s\n", __FUNCTION__, "end"); //time count
+#endif
     return ret;
 }
 
 static int push_frame(AVFilterGraph *graph)
 {
+#ifdef CPU_UTIL
+    double st = getMicroTimestamp();
+    fprintf(stdout, "%lf\t", st); //time count
+    fprintf(stdout, "\t");
+    fprintf(stdout, "%s\t%s\n", __FUNCTION__, "start"); //time count
+#endif
     int ret;
 
     while (1) {
@@ -187,12 +211,23 @@ static int push_frame(AVFilterGraph *graph)
         if (ret < 0)
             return ret;
     }
+#ifdef CUP_UTIL
+    double dt = getMicroTimestamp();
+    fprintf(stdout, "%lf\t\t", dt); //time count
+    fprintf(stdout, "%s\t%s\n", __FUNCTION__, "end"); //time count
+#endif
     return 0;
 }
 
 static int av_buffersrc_add_frame_internal(AVFilterContext *ctx,
                                            AVFrame *frame, int flags)
 {
+#ifdef CPU_UTIL
+    double st = getMicroTimestamp();
+    fprintf(stdout, "%lf\t", st); //time count
+    fprintf(stdout, "\t");
+    fprintf(stdout, "%s\t%s\n", __FUNCTION__, "start"); //time count
+#endif
     BufferSourceContext *s = ctx->priv;
     AVFrame *copy;
     int refcounted, ret;
@@ -245,10 +280,19 @@ static int av_buffersrc_add_frame_internal(AVFilterContext *ctx,
 
     if ((flags & AV_BUFFERSRC_FLAG_PUSH)) {
         ret = push_frame(ctx->graph);
+#ifdef CUP_UTIL
+    double dt = getMicroTimestamp();
+    fprintf(stdout, "%lf\t\t", dt); //time count
+    fprintf(stdout, "%s\t%s\n", __FUNCTION__, "end"); //time count
+#endif
         if (ret < 0)
             return ret;
     }
-
+#ifdef CUP_UTIL
+    double dt = getMicroTimestamp();
+    fprintf(stdout, "%lf\t\t", dt); //time count
+    fprintf(stdout, "%s\t%s\n", __FUNCTION__, "end"); //time count
+#endif
     return 0;
 }
 
