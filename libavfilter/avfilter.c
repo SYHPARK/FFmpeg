@@ -42,7 +42,7 @@
 #include "filters.h"
 #include "formats.h"
 #include "internal.h"
-#include "libavfilter/vf_thumbnail_opencl.c"
+//#include "libavfilter/vf_thumbnail_opencl.c"
 #include "libavutil/ffversion.h"
 
 //#define CPU_UTIL
