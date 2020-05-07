@@ -117,6 +117,7 @@ static int thumbnail_opencl_init(AVFilterContext *avctx)
     ctx->command_queue = clCreateCommandQueue(ctx->ocf.hwctx->context,
                                               ctx->ocf.hwctx->device_id,
                                               0, &cle);
+    printf("clCreateCommandQueue error code: %d\n\n", cle);
     CL_FAIL_ON_ERROR(AVERROR(EIO), "Failed to create OpenCL "
                      "command queue %d.\n", cle);
 
@@ -174,12 +175,12 @@ static AVFrame *get_best_frame(AVFilterContext *ctx)
     fprintf(stdout, "%lf\t", 0);
     fprintf(stdout, "%s\t%s\n", __FUNCTION__, "start"); //time count
 #endif
-//#ifdef CPU_UTIL
+#ifdef CPU_UTIL
     double st = getMicroTimestamp();
     fprintf(stdout, "%lf\t", st); //time count
     fprintf(stdout, "\t");
     fprintf(stdout, "%s\t%s\n", __FUNCTION__, "start"); //time count
-//#endif
+#endif
     AVFrame *picref;
     ThumbnailOpenCLContext *s = ctx->priv;
     int i, j, best_frame_idx = 0;
@@ -188,8 +189,11 @@ static AVFrame *get_best_frame(AVFilterContext *ctx)
 
     // average histogram of the N frames
     for (j = 0; j < FF_ARRAY_ELEMS(avg_hist); j++) {
-        for (i = 0; i < nb_frames; i++)
+        for (i = 0; i < nb_frames; i++){
             avg_hist[j] += (double)s->frames[i].histogram[j];
+	   // printf("%lf\t", (double)s->frames[i].histogram[j]);
+	}
+	//printf("\n");
         avg_hist[j] /= nb_frames;
     }
 
@@ -220,11 +224,11 @@ static AVFrame *get_best_frame(AVFilterContext *ctx)
     fprintf(stdout, "%s\t%s\n", __FUNCTION__, "end"); //time count
     cnt++;
 #endif
-//#ifdef CUP_UTIL
+#ifdef CUP_UTIL
     double dt = getMicroTimestamp();
     fprintf(stdout, "%lf\t\t", dt); //time count
     fprintf(stdout, "%s\t%s\n", __FUNCTION__, "end"); //time count
-//#endif
+#endif
     return picref;
 }
 
@@ -243,8 +247,26 @@ static int thumbnail_kernel(AVFilterContext *avctx, AVFrame *in, cl_kernel kerne
     CL_SET_KERNEL_ARG(kernel, 1, cl_mem, &ctx->hist);
     CL_SET_KERNEL_ARG(kernel, 2, cl_int, &offset);
 
+#ifdef CPU_UTIL
+    double st = getMicroTimestamp();
+    fprintf(stdout, "%lf\t", st); //time count
+    fprintf(stdout, "\t");
+    fprintf(stdout, "%s\t%s\n", __FUNCTION__, "start"); //time count
+#endif
+
+    //cle = clEnqueueNDRangeKernel(ctx->command_queue, kernel, 2, NULL,
+    //                             global_work, NULL, 0, NULL, NULL);
+    //size_t lw_size[3] = {320, 180, 1};
     cle = clEnqueueNDRangeKernel(ctx->command_queue, kernel, 2, NULL,
-                                 global_work, NULL, 0, NULL, NULL);
+				   global_work, NULL, 0, NULL, NULL);
+
+    //printf("clEnqueueNDRangeKernel Error message: %d\n\n", cle);
+#ifdef CPU_UTIL
+    double dt = getMicroTimestamp();
+    fprintf(stdout, "%lf\t\t", dt); //time count
+    fprintf(stdout, "%s\t%s\n", __FUNCTION__, "end"); //time count
+#endif
+
     CL_FAIL_ON_ERROR(AVERROR(EIO), "Failed to enqueue kernel: %d.\n", cle);
     return 0;
 
@@ -255,6 +277,11 @@ fail:
 
 static int thumbnail_opencl_filter_frame(AVFilterLink *inlink, AVFrame *input)
 {
+printf("REACH HERE\n");
+//    const uint8_t* ptr = input->data[0];
+//    printf("RED\tGREEN\tBLUE\n");
+//    for(int i=0; i< (inlink->w); i+=3)
+//	printf("%d\t%d\t%d\n", ptr[i], ptr[i+1], ptr[i+2]);
 #ifdef TEST
     static int cnt = 0;
     double st = getMicroTimestamp();

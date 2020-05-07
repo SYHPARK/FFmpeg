@@ -72,6 +72,7 @@
 #include "hwcontext_drm.h"
 #endif
 
+//#define HWDEBUG
 
 typedef struct OpenCLDeviceContext {
     // Default command queue to use for transfer/mapping operations on
@@ -148,12 +149,16 @@ static void CL_CALLBACK opencl_error_callback(const char *errinfo,
                                               size_t cb,
                                               void *user_data)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
     AVHWDeviceContext *ctx = user_data;
     av_log(ctx, AV_LOG_ERROR, "OpenCL error: %s\n", errinfo);
 }
 
 static void opencl_device_free(AVHWDeviceContext *hwdev)
 {
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
     AVOpenCLDeviceContext *hwctx = hwdev->hwctx;
     cl_int cle;
 
@@ -202,6 +207,10 @@ static struct {
 static char *opencl_get_platform_string(cl_platform_id platform_id,
                                         cl_platform_info key)
 {
+ #ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
     char *str;
     size_t size;
     cl_int cle;
@@ -223,6 +232,10 @@ static char *opencl_get_platform_string(cl_platform_id platform_id,
 static char *opencl_get_device_string(cl_device_id device_id,
                                       cl_device_info key)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
     char *str;
     size_t size;
     cl_int cle;
@@ -244,6 +257,10 @@ static char *opencl_get_device_string(cl_device_id device_id,
 static int opencl_check_platform_extension(cl_platform_id platform_id,
                                            const char *name)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
     char *str;
     int found = 0;
     str = opencl_get_platform_string(platform_id,
@@ -257,6 +274,10 @@ static int opencl_check_platform_extension(cl_platform_id platform_id,
 static int opencl_check_device_extension(cl_device_id device_id,
                                          const char *name)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
     char *str;
     int found = 0;
     str = opencl_get_device_string(device_id,
@@ -270,6 +291,10 @@ static int opencl_check_device_extension(cl_device_id device_id,
 static av_unused int opencl_check_extension(AVHWDeviceContext *hwdev,
                                             const char *name)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
     AVOpenCLDeviceContext *hwctx = hwdev->hwctx;
     OpenCLDeviceContext    *priv = hwdev->internal->priv;
 
@@ -293,6 +318,11 @@ static int opencl_enumerate_platforms(AVHWDeviceContext *hwdev,
                                       cl_platform_id **platforms,
                                       void *context)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     cl_int cle;
 
     cle = clGetPlatformIDs(0, NULL, nb_platforms);
@@ -324,6 +354,11 @@ static int opencl_filter_platform(AVHWDeviceContext *hwdev,
                                   const char *platform_name,
                                   void *context)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//  printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     AVDictionary *opts = context;
     const AVDictionaryEntry *param;
     char *str;
@@ -361,6 +396,11 @@ static int opencl_enumerate_devices(AVHWDeviceContext *hwdev,
                                     cl_device_id **devices,
                                     void *context)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     cl_int cle;
 
     cle = clGetDeviceIDs(platform_id, CL_DEVICE_TYPE_ALL,
@@ -399,6 +439,11 @@ static int opencl_filter_device(AVHWDeviceContext *hwdev,
                                 const char *device_name,
                                 void *context)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     AVDictionary *opts = context;
     const AVDictionaryEntry *param;
     char *str;
@@ -488,6 +533,11 @@ static int opencl_device_create_internal(AVHWDeviceContext *hwdev,
                                          const OpenCLDeviceSelector *selector,
                                          cl_context_properties *props)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     cl_uint      nb_platforms;
     cl_platform_id *platforms = NULL;
     cl_platform_id  platform_id;
@@ -565,6 +615,7 @@ static int opencl_device_create_internal(AVHWDeviceContext *hwdev,
                     continue;
             }
 
+	    printf("\n\n\n\n%d.%d: %s / %s\n\n\n\n\n", p, d, platform_name, device_name);
             av_log(hwdev, AV_LOG_VERBOSE, "%d.%d: %s / %s\n", p, d,
                    platform_name, device_name);
 
@@ -596,9 +647,13 @@ static int opencl_device_create_internal(AVHWDeviceContext *hwdev,
         if (props[0] == CL_CONTEXT_PLATFORM && props[1] == 0)
             props[1] = (intptr_t)platform_id;
     }
-
+    //printf("platform id at ffmpeg: %d\n\n", *platform_id);
     hwctx->context = clCreateContext(props, 1, &hwctx->device_id,
                                      &opencl_error_callback, hwdev, &cle);
+
+    //hwctx->context = clCreateContext(NULL, 1, &hwctx->device_id,
+    //                                 &opencl_error_callback, hwdev, &cle);
+
     if (!hwctx->context) {
         av_log(hwdev, AV_LOG_ERROR, "Failed to create OpenCL context: "
                "%d.\n", cle);
@@ -620,6 +675,11 @@ fail:
 static int opencl_device_create(AVHWDeviceContext *hwdev, const char *device,
                                 AVDictionary *opts, int flags)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     OpenCLDeviceSelector selector = {
         .context = opts,
         .enumerate_platforms = &opencl_enumerate_platforms,
@@ -652,6 +712,11 @@ static int opencl_device_create(AVHWDeviceContext *hwdev, const char *device,
 
 static int opencl_device_init(AVHWDeviceContext *hwdev)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     AVOpenCLDeviceContext *hwctx = hwdev->hwctx;
     OpenCLDeviceContext    *priv = hwdev->internal->priv;
     cl_int cle;
@@ -821,6 +886,7 @@ static int opencl_device_init(AVHWDeviceContext *hwdev)
     {
         const char *d3d11_ext = "cl_khr_d3d11_sharing";
         const char *nv12_ext  = "cl_intel_d3d11_nv12_media_sharing";
+	printf("%s %s %d\n", __FUNCTION__, d3d11_ext, __LINE__);
         int fail = 0;
 
         if (!opencl_check_extension(hwdev, d3d11_ext)) {
@@ -854,6 +920,7 @@ static int opencl_device_init(AVHWDeviceContext *hwdev)
     {
         const char *drm_arm_ext = "cl_arm_import_memory";
         const char *image_ext   = "cl_khr_image2d_from_buffer";
+	printf("%s %s %d\n", __FUNCTION__, image_ext, __LINE__);
         int fail = 0;
 
         if (!opencl_check_extension(hwdev, drm_arm_ext)) {
@@ -888,6 +955,11 @@ static int opencl_device_init(AVHWDeviceContext *hwdev)
 
 static void opencl_device_uninit(AVHWDeviceContext *hwdev)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     OpenCLDeviceContext *priv = hwdev->internal->priv;
     cl_int cle;
 
@@ -907,6 +979,11 @@ static int opencl_filter_intel_media_vaapi_platform(AVHWDeviceContext *hwdev,
                                                     const char *platform_name,
                                                     void *context)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     // This doesn't exist as a platform extension, so just test whether
     // the function we will use for device enumeration exists.
 
@@ -927,6 +1004,11 @@ static int opencl_enumerate_intel_media_vaapi_devices(AVHWDeviceContext *hwdev,
                                                       cl_device_id **devices,
                                                       void *context)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     VADisplay va_display = context;
     clGetDeviceIDsFromVA_APIMediaAdapterINTEL_fn
         clGetDeviceIDsFromVA_APIMediaAdapterINTEL;
@@ -977,7 +1059,14 @@ static int opencl_filter_intel_media_vaapi_device(AVHWDeviceContext *hwdev,
                                                   const char *device_name,
                                                   void *context)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     const char *va_ext = "cl_intel_va_api_media_sharing";
+
+    printf("%s %s %d\n", __FILE__, va_ext, __LINE__);
 
     if (opencl_check_device_extension(device_id, va_ext)) {
         return 0;
@@ -995,7 +1084,14 @@ static int opencl_filter_dxva2_platform(AVHWDeviceContext *hwdev,
                                         const char *platform_name,
                                         void *context)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     const char *dx9_ext = "cl_khr_dx9_media_sharing";
+
+    printf("%s %s %d\n", __FILE__, va_ext, __LINE__);
 
     if (opencl_check_platform_extension(platform_id, dx9_ext)) {
         return 0;
@@ -1013,6 +1109,11 @@ static int opencl_enumerate_dxva2_devices(AVHWDeviceContext *hwdev,
                                           cl_device_id **devices,
                                           void *context)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     IDirect3DDevice9 *device = context;
     clGetDeviceIDsFromDX9MediaAdapterKHR_fn
         clGetDeviceIDsFromDX9MediaAdapterKHR;
@@ -1068,6 +1169,11 @@ static int opencl_filter_d3d11_platform(AVHWDeviceContext *hwdev,
                                         const char *platform_name,
                                         void *context)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+    
     const char *d3d11_ext = "cl_khr_d3d11_sharing";
 
     if (opencl_check_platform_extension(platform_id, d3d11_ext)) {
@@ -1086,6 +1192,11 @@ static int opencl_enumerate_d3d11_devices(AVHWDeviceContext *hwdev,
                                           cl_device_id **devices,
                                           void *context)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     ID3D11Device *device = context;
     clGetDeviceIDsFromD3D11KHR_fn clGetDeviceIDsFromD3D11KHR;
     cl_int cle;
@@ -1139,6 +1250,11 @@ static int opencl_filter_gpu_device(AVHWDeviceContext *hwdev,
                                     const char *device_name,
                                     void *context)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     cl_device_type device_type;
     cl_int cle;
 
@@ -1165,6 +1281,11 @@ static int opencl_filter_drm_arm_platform(AVHWDeviceContext *hwdev,
                                           const char *platform_name,
                                           void *context)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     const char *drm_arm_ext = "cl_arm_import_memory";
 
     if (opencl_check_platform_extension(platform_id, drm_arm_ext)) {
@@ -1181,6 +1302,11 @@ static int opencl_filter_drm_arm_device(AVHWDeviceContext *hwdev,
                                         const char *device_name,
                                         void *context)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     const char *drm_arm_ext = "cl_arm_import_memory";
 
     if (opencl_check_device_extension(device_id, drm_arm_ext)) {
@@ -1197,6 +1323,11 @@ static int opencl_device_derive(AVHWDeviceContext *hwdev,
                                 AVHWDeviceContext *src_ctx,
                                 int flags)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     int err;
     switch (src_ctx->type) {
 
@@ -1371,6 +1502,15 @@ static int opencl_get_plane_format(enum AVPixelFormat pixfmt,
                                    cl_image_format *image_format,
                                    cl_image_desc *image_desc)
 {
+//printf("opencl_get_plane_format\n");
+#ifdef HWDEBUG 
+//    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+//    memset(image_format, 0, sizeof(*image_format));
+//    memset(image_desc,   0, sizeof(*image_desc));
+//    return CL_SUCCESS;
+ 
     const AVPixFmtDescriptor *desc;
     const AVComponentDescriptor *comp;
     int channels = 0, order = 0, depth = 0, step = 0;
@@ -1476,6 +1616,11 @@ static int opencl_frames_get_constraints(AVHWDeviceContext *hwdev,
                                          const void *hwconfig,
                                          AVHWFramesConstraints *constraints)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     AVOpenCLDeviceContext *hwctx = hwdev->hwctx;
     cl_uint nb_image_formats;
     cl_image_format *image_formats = NULL;
@@ -1601,6 +1746,11 @@ fail:
 
 static void opencl_pool_free(void *opaque, uint8_t *data)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     AVHWFramesContext       *hwfc = opaque;
     AVOpenCLFrameDescriptor *desc = (AVOpenCLFrameDescriptor*)data;
     cl_int cle;
@@ -1619,6 +1769,11 @@ static void opencl_pool_free(void *opaque, uint8_t *data)
 
 static AVBufferRef *opencl_pool_alloc(void *opaque, int size)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     AVHWFramesContext      *hwfc = opaque;
     AVOpenCLDeviceContext *hwctx = hwfc->device_ctx->hwctx;
     AVOpenCLFrameDescriptor *desc;
@@ -1646,8 +1801,15 @@ static AVBufferRef *opencl_pool_alloc(void *opaque, int size)
         // implementation.
         image_desc.image_row_pitch = 0;
 
+//yongbak
+/*
         image = clCreateImage(hwctx->context, CL_MEM_READ_WRITE,
                               &image_format, &image_desc, NULL, &cle);
+*/
+	printf("%s:%d image_desc={%d %d %d}\n", __FUNCTION__, __LINE__, image_desc.image_width, image_desc.image_height, image_desc.image_row_pitch);
+
+	image = clCreateBuffer(hwctx->context, CL_MEM_READ_WRITE, ((image_desc.image_height * image_desc.image_width) << 2), NULL, &cle);
+
         if (!image) {
             av_log(hwfc, AV_LOG_ERROR, "Failed to create image for "
                    "plane %d: %d.\n", p, cle);
@@ -1675,6 +1837,11 @@ fail:
 
 static int opencl_frames_init_command_queue(AVHWFramesContext *hwfc)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     AVOpenCLFramesContext *hwctx = hwfc->hwctx;
     OpenCLDeviceContext *devpriv = hwfc->device_ctx->internal->priv;
     OpenCLFramesContext    *priv = hwfc->internal->priv;
@@ -1694,6 +1861,11 @@ static int opencl_frames_init_command_queue(AVHWFramesContext *hwfc)
 
 static int opencl_frames_init(AVHWFramesContext *hwfc)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//  printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     if (!hwfc->pool) {
         hwfc->internal->pool_internal =
             av_buffer_pool_init2(sizeof(cl_mem), hwfc,
@@ -1707,6 +1879,11 @@ static int opencl_frames_init(AVHWFramesContext *hwfc)
 
 static void opencl_frames_uninit(AVHWFramesContext *hwfc)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//  printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     OpenCLFramesContext *priv = hwfc->internal->priv;
     cl_int cle;
 
@@ -1738,6 +1915,11 @@ static void opencl_frames_uninit(AVHWFramesContext *hwfc)
 
 static int opencl_get_buffer(AVHWFramesContext *hwfc, AVFrame *frame)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     AVOpenCLFrameDescriptor *desc;
     int p;
 
@@ -1761,6 +1943,11 @@ static int opencl_transfer_get_formats(AVHWFramesContext *hwfc,
                                        enum AVHWFrameTransferDirection dir,
                                        enum AVPixelFormat **formats)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     enum AVPixelFormat *fmts;
 
     fmts = av_malloc_array(2, sizeof(*fmts));
@@ -1777,6 +1964,11 @@ static int opencl_transfer_get_formats(AVHWFramesContext *hwfc,
 static int opencl_wait_events(AVHWFramesContext *hwfc,
                               cl_event *events, int nb_events)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     cl_int cle;
     int i;
 
@@ -1801,6 +1993,11 @@ static int opencl_wait_events(AVHWFramesContext *hwfc,
 static int opencl_transfer_data_from(AVHWFramesContext *hwfc,
                                      AVFrame *dst, const AVFrame *src)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     OpenCLFramesContext *priv = hwfc->internal->priv;
     cl_image_format image_format;
     cl_image_desc image_desc;
@@ -1834,12 +2031,19 @@ static int opencl_transfer_data_from(AVHWFramesContext *hwfc,
         region[1] = image_desc.image_height;
         region[2] = 1;
 
+//yongbak
+/*
         cle = clEnqueueReadImage(priv->command_queue,
                                  (cl_mem)src->data[p],
                                  CL_FALSE, origin, region,
                                  dst->linesize[p], 0,
                                  dst->data[p],
                                  0, NULL, &events[p]);
+*/
+	printf("%s:%d origin={%d %d %d}\n", __FUNCTION__, __LINE__, origin[0], origin[1], origin[2]);
+
+	cle = clEnqueueReadBuffer(priv->command_queue, (cl_mem)src->data[p], CL_FALSE, origin[0]*region[0]+origin[1], ((region[1]-origin[1])*(region[0]-origin[0]))<<2, src->data[p], 0, NULL, &events[p]); 
+
         if (cle != CL_SUCCESS) {
             av_log(hwfc, AV_LOG_ERROR, "Failed to enqueue read of "
                    "OpenCL image plane %d: %d.\n", p, cle);
@@ -1856,6 +2060,11 @@ static int opencl_transfer_data_from(AVHWFramesContext *hwfc,
 static int opencl_transfer_data_to(AVHWFramesContext *hwfc,
                                    AVFrame *dst, const AVFrame *src)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     OpenCLFramesContext *priv = hwfc->internal->priv;
     cl_image_format image_format;
     cl_image_desc image_desc;
@@ -1888,13 +2097,19 @@ static int opencl_transfer_data_to(AVHWFramesContext *hwfc,
         region[0] = image_desc.image_width;
         region[1] = image_desc.image_height;
         region[2] = 1;
-
+//yongbak
+/*
         cle = clEnqueueWriteImage(priv->command_queue,
                                   (cl_mem)dst->data[p],
                                   CL_FALSE, origin, region,
                                   src->linesize[p], 0,
                                   src->data[p],
                                   0, NULL, &events[p]);
+*/
+	printf("%s:%d origin={%d %d %d}\n", __FUNCTION__, __LINE__, origin[0], origin[1], origin[2]);
+
+	cle = clEnqueueWriteBuffer(priv->command_queue, (cl_mem)dst->data[p], CL_FALSE, origin[0]*region[0]+origin[1], ((region[1]-origin[1])*(region[0]-origin[0]))<<2, src->data[p], 0, NULL, &events[p]); 
+
         if (cle != CL_SUCCESS) {
             av_log(hwfc, AV_LOG_ERROR, "Failed to enqueue write of "
                    "OpenCL image plane %d: %d.\n", p, cle);
@@ -1918,6 +2133,11 @@ typedef struct OpenCLMapping {
 static void opencl_unmap_frame(AVHWFramesContext *hwfc,
                                HWMapDescriptor *hwmap)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     OpenCLFramesContext *priv = hwfc->internal->priv;
     OpenCLMapping *map = hwmap->priv;
     cl_event events[AV_NUM_DATA_POINTERS];
@@ -1947,6 +2167,11 @@ static void opencl_unmap_frame(AVHWFramesContext *hwfc,
 static int opencl_map_frame(AVHWFramesContext *hwfc, AVFrame *dst,
                             const AVFrame *src, int flags)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     OpenCLFramesContext *priv = hwfc->internal->priv;
     cl_map_flags map_flags;
     cl_image_format image_format;
@@ -1990,13 +2215,19 @@ static int opencl_map_frame(AVHWFramesContext *hwfc, AVFrame *dst,
         region[0] = image_desc.image_width;
         region[1] = image_desc.image_height;
         region[2] = 1;
-
+//yongbak
+/*
         map->address[p] =
             clEnqueueMapImage(priv->command_queue,
                               (cl_mem)src->data[p],
                               CL_FALSE, map_flags, origin, region,
                               &row_pitch, NULL, 0, NULL,
                               &events[p], &cle);
+*/
+	printf("%s:%d origin={%d %d %d}\n", __FUNCTION__, __LINE__, origin[0], origin[1], origin[2]);
+
+	map->address[p] = clEnqueueMapBuffer(priv->command_queue, (cl_mem)src->data[p], CL_FALSE, map_flags, origin[0]*region[0]+origin[1], ((region[1]-origin[1])*(region[0]-origin[0]))<<2, 0, NULL, &events[p], &cle); 
+
         if (!map->address[p]) {
             av_log(hwfc, AV_LOG_ERROR, "Failed to map OpenCL "
                    "image plane %d: %d.\n", p, cle);
@@ -2051,6 +2282,11 @@ typedef struct DRMBeignetToOpenCLMapping {
 static void opencl_unmap_from_drm_beignet(AVHWFramesContext *dst_fc,
                                           HWMapDescriptor *hwmap)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     DRMBeignetToOpenCLMapping *mapping = hwmap->priv;
     cl_int cle;
     int i;
@@ -2070,6 +2306,11 @@ static int opencl_map_from_drm_beignet(AVHWFramesContext *dst_fc,
                                        AVFrame *dst, const AVFrame *src,
                                        int flags)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     AVOpenCLDeviceContext *hwctx = dst_fc->device_ctx->hwctx;
     OpenCLDeviceContext    *priv = dst_fc->device_ctx->internal->priv;
     DRMBeignetToOpenCLMapping *mapping;
@@ -2155,6 +2396,11 @@ static int opencl_map_from_vaapi(AVHWFramesContext *dst_fc,
                                  AVFrame *dst, const AVFrame *src,
                                  int flags)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     AVFrame *tmp;
     int err;
 
@@ -2184,6 +2430,11 @@ fail:
 
 static inline cl_mem_flags opencl_mem_flags_for_mapping(int map_flags)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     if ((map_flags & AV_HWFRAME_MAP_READ) &&
         (map_flags & AV_HWFRAME_MAP_WRITE))
         return CL_MEM_READ_WRITE;
@@ -2200,6 +2451,11 @@ static inline cl_mem_flags opencl_mem_flags_for_mapping(int map_flags)
 static void opencl_unmap_from_qsv(AVHWFramesContext *dst_fc,
                                   HWMapDescriptor *hwmap)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     AVOpenCLFrameDescriptor    *desc = hwmap->priv;
     OpenCLDeviceContext *device_priv = dst_fc->device_ctx->internal->priv;
     OpenCLFramesContext *frames_priv = dst_fc->internal->priv;
@@ -2234,6 +2490,11 @@ static void opencl_unmap_from_qsv(AVHWFramesContext *dst_fc,
 static int opencl_map_from_qsv(AVHWFramesContext *dst_fc, AVFrame *dst,
                                const AVFrame *src, int flags)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     AVHWFramesContext *src_fc =
         (AVHWFramesContext*)src->hw_frames_ctx->data;
     AVOpenCLDeviceContext   *dst_dev = dst_fc->device_ctx->hwctx;
@@ -2327,6 +2588,11 @@ fail:
 static void opencl_unmap_from_dxva2(AVHWFramesContext *dst_fc,
                                     HWMapDescriptor *hwmap)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     AVOpenCLFrameDescriptor    *desc = hwmap->priv;
     OpenCLDeviceContext *device_priv = dst_fc->device_ctx->internal->priv;
     OpenCLFramesContext *frames_priv = dst_fc->device_ctx->internal->priv;
@@ -2350,6 +2616,11 @@ static void opencl_unmap_from_dxva2(AVHWFramesContext *dst_fc,
 static int opencl_map_from_dxva2(AVHWFramesContext *dst_fc, AVFrame *dst,
                                  const AVFrame *src, int flags)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     AVHWFramesContext *src_fc =
         (AVHWFramesContext*)src->hw_frames_ctx->data;
     AVDXVA2FramesContext  *src_hwctx = src_fc->hwctx;
@@ -2413,6 +2684,11 @@ fail:
 static int opencl_frames_derive_from_dxva2(AVHWFramesContext *dst_fc,
                                            AVHWFramesContext *src_fc, int flags)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     AVOpenCLDeviceContext   *dst_dev = dst_fc->device_ctx->hwctx;
     AVDXVA2FramesContext  *src_hwctx = src_fc->hwctx;
     OpenCLDeviceContext *device_priv = dst_fc->device_ctx->internal->priv;
@@ -2491,6 +2767,11 @@ fail:
 static void opencl_unmap_from_d3d11(AVHWFramesContext *dst_fc,
                                     HWMapDescriptor *hwmap)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     AVOpenCLFrameDescriptor    *desc = hwmap->priv;
     OpenCLDeviceContext *device_priv = dst_fc->device_ctx->internal->priv;
     OpenCLFramesContext *frames_priv = dst_fc->device_ctx->internal->priv;
@@ -2511,6 +2792,11 @@ static void opencl_unmap_from_d3d11(AVHWFramesContext *dst_fc,
 static int opencl_map_from_d3d11(AVHWFramesContext *dst_fc, AVFrame *dst,
                                  const AVFrame *src, int flags)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     OpenCLDeviceContext  *device_priv = dst_fc->device_ctx->internal->priv;
     OpenCLFramesContext  *frames_priv = dst_fc->internal->priv;
     AVOpenCLFrameDescriptor *desc;
@@ -2568,6 +2854,11 @@ fail:
 static int opencl_frames_derive_from_d3d11(AVHWFramesContext *dst_fc,
                                            AVHWFramesContext *src_fc, int flags)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     AVOpenCLDeviceContext    *dst_dev = dst_fc->device_ctx->hwctx;
     AVD3D11VAFramesContext *src_hwctx = src_fc->hwctx;
     OpenCLDeviceContext  *device_priv = dst_fc->device_ctx->internal->priv;
@@ -2651,6 +2942,11 @@ typedef struct DRMARMtoOpenCLMapping {
 static void opencl_unmap_from_drm_arm(AVHWFramesContext *dst_fc,
                                       HWMapDescriptor *hwmap)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     DRMARMtoOpenCLMapping *mapping = hwmap->priv;
     int i;
 
@@ -2666,6 +2962,11 @@ static void opencl_unmap_from_drm_arm(AVHWFramesContext *dst_fc,
 static int opencl_map_from_drm_arm(AVHWFramesContext *dst_fc, AVFrame *dst,
                                    const AVFrame *src, int flags)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     AVHWFramesContext *src_fc =
         (AVHWFramesContext*)src->hw_frames_ctx->data;
     AVOpenCLDeviceContext *dst_dev = dst_fc->device_ctx->hwctx;
@@ -2751,10 +3052,15 @@ static int opencl_map_from_drm_arm(AVHWFramesContext *dst_fc, AVFrame *dst,
             }
 
             image_desc.buffer = plane_buffer;
-
+//yongbak
+/*
             mapping->plane_images[p] =
                 clCreateImage(dst_dev->context, cl_flags,
                               &image_format, &image_desc, NULL, &cle);
+*/
+		printf("%s:%d origin={%d %d %d}\n", __FUNCTION__, __LINE__, origin[0], origin[1], origin[2]);
+            mapping->plane_images[p] =
+                clCreateBuffer(dst_dev->context, cl_flags, ((image_desc.image_height * image_desc.image_width) << 2) , NULL, &cle);
 
             // Unreference the sub-buffer immediately - we don't need it
             // directly and a reference is held by the image.
@@ -2801,6 +3107,11 @@ fail:
 static int opencl_map_from(AVHWFramesContext *hwfc, AVFrame *dst,
                            const AVFrame *src, int flags)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     av_assert0(src->format == AV_PIX_FMT_OPENCL);
     if (hwfc->sw_format != dst->format)
         return AVERROR(ENOSYS);
@@ -2810,6 +3121,11 @@ static int opencl_map_from(AVHWFramesContext *hwfc, AVFrame *dst,
 static int opencl_map_to(AVHWFramesContext *hwfc, AVFrame *dst,
                          const AVFrame *src, int flags)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     av_unused OpenCLDeviceContext *priv = hwfc->device_ctx->internal->priv;
     av_assert0(dst->format == AV_PIX_FMT_OPENCL);
     switch (src->format) {
@@ -2851,6 +3167,11 @@ static int opencl_map_to(AVHWFramesContext *hwfc, AVFrame *dst,
 static int opencl_frames_derive_to(AVHWFramesContext *dst_fc,
                                    AVHWFramesContext *src_fc, int flags)
 {
+#ifdef HWDEBUG 
+    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+#endif
+//   printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
     av_unused OpenCLDeviceContext *priv = dst_fc->device_ctx->internal->priv;
     switch (src_fc->device_ctx->type) {
 #if HAVE_OPENCL_DRM_BEIGNET

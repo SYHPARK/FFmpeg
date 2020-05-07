@@ -28,7 +28,13 @@ kernel void transpose(__write_only image2d_t dst,
 
     int xin = (dir & 2) ? (size.y - 1 - y) : y;
     int yin = (dir & 1) ? (size.x - 1 - x) : x;
+
     float4 data = read_imagef(src, sampler, (int2)(xin, yin));
+
+//    data[0] = 1.0 - data[0];
+//    data[1] = 1.0 - data[1];
+//    data[2] = 1.0 - data[2];
+//    data[3] = 1.0 - data[3];
 
     if (x < size.x && y < size.y)
         write_imagef(dst, (int2)(x, y), data);
