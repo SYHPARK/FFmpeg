@@ -1802,14 +1802,17 @@ static AVBufferRef *opencl_pool_alloc(void *opaque, int size)
         image_desc.image_row_pitch = 0;
 
 //yongbak
-/*
+///*
         image = clCreateImage(hwctx->context, CL_MEM_READ_WRITE,
                               &image_format, &image_desc, NULL, &cle);
-*/
+//*/
+/*
 	printf("%s:%d image_desc={%d %d %d}\n", __FUNCTION__, __LINE__, image_desc.image_width, image_desc.image_height, image_desc.image_row_pitch);
 
 	image = clCreateBuffer(hwctx->context, CL_MEM_READ_WRITE, ((image_desc.image_height * image_desc.image_width) << 2), NULL, &cle);
 
+	printf("%s:%d cle: %d\n", __FUNCTION__, __LINE__, cle);
+*/
         if (!image) {
             av_log(hwfc, AV_LOG_ERROR, "Failed to create image for "
                    "plane %d: %d.\n", p, cle);
@@ -2032,18 +2035,21 @@ static int opencl_transfer_data_from(AVHWFramesContext *hwfc,
         region[2] = 1;
 
 //yongbak
-/*
+///*
         cle = clEnqueueReadImage(priv->command_queue,
                                  (cl_mem)src->data[p],
                                  CL_FALSE, origin, region,
                                  dst->linesize[p], 0,
                                  dst->data[p],
                                  0, NULL, &events[p]);
+//*/
+/*
+	printf("%s:%d origin={%d %d %d} region={%d %d %d}\n", __FUNCTION__, __LINE__, origin[0], origin[1], origin[2], region[0], region[1], region[2]);
+
+	cle = clEnqueueReadBuffer(priv->command_queue, (cl_mem)src->data[p], CL_TRUE, origin[0]*region[0]+origin[1], ((region[1]-origin[1])*(region[0]-origin[0]))<<2, src->data[p], 0, NULL, &events[p]); 
+
+	printf("%s:%d cle: %d\n", __FUNCTION__, __LINE__, cle);
 */
-	printf("%s:%d origin={%d %d %d}\n", __FUNCTION__, __LINE__, origin[0], origin[1], origin[2]);
-
-	cle = clEnqueueReadBuffer(priv->command_queue, (cl_mem)src->data[p], CL_FALSE, origin[0]*region[0]+origin[1], ((region[1]-origin[1])*(region[0]-origin[0]))<<2, src->data[p], 0, NULL, &events[p]); 
-
         if (cle != CL_SUCCESS) {
             av_log(hwfc, AV_LOG_ERROR, "Failed to enqueue read of "
                    "OpenCL image plane %d: %d.\n", p, cle);
@@ -2098,17 +2104,21 @@ static int opencl_transfer_data_to(AVHWFramesContext *hwfc,
         region[1] = image_desc.image_height;
         region[2] = 1;
 //yongbak
-/*
+///*
         cle = clEnqueueWriteImage(priv->command_queue,
                                   (cl_mem)dst->data[p],
                                   CL_FALSE, origin, region,
                                   src->linesize[p], 0,
                                   src->data[p],
                                   0, NULL, &events[p]);
-*/
-	printf("%s:%d origin={%d %d %d}\n", __FUNCTION__, __LINE__, origin[0], origin[1], origin[2]);
+//*/
+/*
+	printf("%s:%d origin={%d %d %d} region={%d %d %d}\n", __FUNCTION__, __LINE__, origin[0], origin[1], origin[2], region[0], region[1], region[2]);
 
-	cle = clEnqueueWriteBuffer(priv->command_queue, (cl_mem)dst->data[p], CL_FALSE, origin[0]*region[0]+origin[1], ((region[1]-origin[1])*(region[0]-origin[0]))<<2, src->data[p], 0, NULL, &events[p]); 
+	cle = clEnqueueWriteBuffer(priv->command_queue, (cl_mem)dst->data[p], CL_TRUE, origin[0]*region[0]+origin[1], ((region[1]-origin[1])*(region[0]-origin[0]))<<2, src->data[p], 0, NULL, &events[p]); 
+
+printf("%s:%d cle: %d\n", __FUNCTION__, __LINE__, cle);
+*/
 
         if (cle != CL_SUCCESS) {
             av_log(hwfc, AV_LOG_ERROR, "Failed to enqueue write of "
@@ -2216,18 +2226,20 @@ static int opencl_map_frame(AVHWFramesContext *hwfc, AVFrame *dst,
         region[1] = image_desc.image_height;
         region[2] = 1;
 //yongbak
-/*
+///*
         map->address[p] =
             clEnqueueMapImage(priv->command_queue,
                               (cl_mem)src->data[p],
                               CL_FALSE, map_flags, origin, region,
                               &row_pitch, NULL, 0, NULL,
                               &events[p], &cle);
-*/
+//*/
+/*
 	printf("%s:%d origin={%d %d %d}\n", __FUNCTION__, __LINE__, origin[0], origin[1], origin[2]);
 
-	map->address[p] = clEnqueueMapBuffer(priv->command_queue, (cl_mem)src->data[p], CL_FALSE, map_flags, origin[0]*region[0]+origin[1], ((region[1]-origin[1])*(region[0]-origin[0]))<<2, 0, NULL, &events[p], &cle); 
-
+	map->address[p] = clEnqueueMapBuffer(priv->command_queue, (cl_mem)src->data[p], CL_TRUE, map_flags, origin[0]*region[0]+origin[1], ((region[1]-origin[1])*(region[0]-origin[0]))<<2, 0, NULL, &events[p], &cle); 
+	printf("%s:%d cle: %d\n", __FUNCTION__, __LINE__, cle);
+*/
         if (!map->address[p]) {
             av_log(hwfc, AV_LOG_ERROR, "Failed to map OpenCL "
                    "image plane %d: %d.\n", p, cle);
@@ -3053,15 +3065,17 @@ static int opencl_map_from_drm_arm(AVHWFramesContext *dst_fc, AVFrame *dst,
 
             image_desc.buffer = plane_buffer;
 //yongbak
-/*
+///*
             mapping->plane_images[p] =
                 clCreateImage(dst_dev->context, cl_flags,
                               &image_format, &image_desc, NULL, &cle);
-*/
+//*/
+/*
 		printf("%s:%d origin={%d %d %d}\n", __FUNCTION__, __LINE__, origin[0], origin[1], origin[2]);
             mapping->plane_images[p] =
                 clCreateBuffer(dst_dev->context, cl_flags, ((image_desc.image_height * image_desc.image_width) << 2) , NULL, &cle);
-
+		printf("%s:%d cle: %d\n", __FUNCTION__, __LINE__, cle);
+*/
             // Unreference the sub-buffer immediately - we don't need it
             // directly and a reference is held by the image.
             clReleaseMemObject(plane_buffer);
