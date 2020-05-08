@@ -428,9 +428,12 @@ printf("REACH HERE\n");
         if (err < 0)
             goto fail;
 
-        cle = clEnqueueCopyImage(ctx->command_queue, src, dst,
-                                 origin, origin, region, 0, NULL, NULL);
-        CL_FAIL_ON_ERROR(AVERROR(EIO), "Failed to copy plane %d: %d.\n", p, cle);
+        cle = clEnqueueCopyBuffer(ctx->command_queue, src, dst, 0, 0, output->width * output->height, 0, NULL, NULL);
+//	printf("clEnqueueCopyBuffer success %d\n", cle);
+//        cle = clEnqueueCopyImage(ctx->command_queue, src, dst,
+//                                 origin, origin, region, 0, NULL, NULL);
+//        CL_FAIL_ON_ERROR(AVERROR(EIO), "Failed to copy plane %d: %d.\n", p, cle);
+
     }
     cle = clFinish(ctx->command_queue);
     CL_FAIL_ON_ERROR(AVERROR(EIO), "Failed to finish command queue %d.\n", cle);
@@ -528,9 +531,10 @@ static int request_frame(AVFilterLink *link)
             if (err < 0)
                 goto fail;
 
-            cle = clEnqueueCopyImage(ctx->command_queue, src, dst,
-                                     origin, origin, region, 0, NULL, NULL);
-            CL_FAIL_ON_ERROR(AVERROR(EIO), "Failed to copy plane %d: %d.\n", p, cle);
+	    cle = clEnqueueCopyBuffer(ctx->command_queue, src, dst, 0, 0, region[0] * region[1], 0, NULL, NULL);
+//            cle = clEnqueueCopyImage(ctx->command_queue, src, dst,
+//                                     origin, origin, region, 0, NULL, NULL);
+//            CL_FAIL_ON_ERROR(AVERROR(EIO), "Failed to copy plane %d: %d.\n", p, cle);
         }
         cle = clFinish(ctx->command_queue);
         CL_FAIL_ON_ERROR(AVERROR(EIO), "Failed to finish command queue %d.\n", cle);

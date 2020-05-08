@@ -282,7 +282,8 @@ int ff_opencl_filter_work_size_from_image(AVFilterContext *avctx,
 {
     cl_mem image;
     cl_mem_object_type type;
-    size_t width, height;
+    size_t width = frame -> width;
+    size_t height = frame -> height;
     cl_int cle;
 
     if (frame->format != AV_PIX_FMT_OPENCL) {
@@ -305,6 +306,7 @@ int ff_opencl_filter_work_size_from_image(AVFilterContext *avctx,
                "plane %d: %d.\n", plane, cle);
         return AVERROR_UNKNOWN;
     }
+/*
     if (type != CL_MEM_OBJECT_IMAGE2D) {
         av_log(avctx, AV_LOG_ERROR, "Plane %d is not a 2D image.\n",
                plane);
@@ -326,7 +328,7 @@ int ff_opencl_filter_work_size_from_image(AVFilterContext *avctx,
                plane, cle);
         return AVERROR_UNKNOWN;
     }
-
+*/
     if (block_alignment) {
         width  = FFALIGN(width,  block_alignment);
         height = FFALIGN(height, block_alignment);
