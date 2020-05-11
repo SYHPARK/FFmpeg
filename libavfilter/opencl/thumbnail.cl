@@ -1,5 +1,5 @@
 //__kernel void Thumbnail_uchar(__global char* src, const int offset, const int W, const int H, __global int* hist){
-__kernel void Thumbnail_uchar(const int offset, const int W, const int H, __global int* hist, __global char* src){
+__kernel void Thumbnail_uchar(const int offset, const int W, const int H, __global int* hist, __global unsigned char* src){
 	int w = get_global_id(0);
 	int h = get_global_id(1);
 	if (w < W && h < H){
@@ -8,7 +8,7 @@ __kernel void Thumbnail_uchar(const int offset, const int W, const int H, __glob
 }
 
 //__kernel void Thumbnail_uchar2(__global char* src, const int offset, const int W, const int H, __global int* hist){
-__kernel void Thumbnail_uchar2(const int offset, const int W, const int H, __global int* hist, __global char* src){
+__kernel void Thumbnail_uchar2(const int offset, const int W, const int H, __global int* hist, __global unsigned char* src){
 	int w = get_global_id(0);
 	int h = get_global_id(1);
 	if (w < W && h < H){

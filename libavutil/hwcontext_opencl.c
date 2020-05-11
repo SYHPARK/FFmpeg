@@ -1808,8 +1808,29 @@ static AVBufferRef *opencl_pool_alloc(void *opaque, int size)
 */
 ///*
 	printf("%s:%d image_desc={%d %d %d}\n", __FUNCTION__, __LINE__, image_desc.image_width, image_desc.image_height, image_desc.image_row_pitch);
+	int channels = 1;
+	switch(image_format.image_channel_order){
+		case CL_R:
+		case CL_A:
+			break;
+		case CL_RG:
+		case CL_RA:
+			channels <<= 1;
+			break;
+		case CL_RGB:
+			channels *= 3;
+			break;
+		case CL_RGBA:
+		case CL_ARGB:
+		case CL_BGRA:
+			channels <<= 2;
+			break;
+		default:
+			;
+	}
+	channels = 4;
 
-	image = clCreateBuffer(hwctx->context, CL_MEM_READ_WRITE, ((image_desc.image_height * image_desc.image_width) << 2), NULL, &cle);
+	image = clCreateBuffer(hwctx->context, CL_MEM_READ_WRITE, ((image_desc.image_height * image_desc.image_width) * channels), NULL, &cle);
 
 	printf("%s:%d cle: %d\n", __FUNCTION__, __LINE__, cle);
 //*/
@@ -2295,8 +2316,28 @@ static int opencl_map_frame(AVHWFramesContext *hwfc, AVFrame *dst,
 */
 ///*
 	printf("%s:%d origin={%d %d %d}\n", __FUNCTION__, __LINE__, origin[0], origin[1], origin[2]);
-
-	map->address[p] = clEnqueueMapBuffer(priv->command_queue, (cl_mem)src->data[p], CL_TRUE, map_flags, origin[0]*region[0]+origin[1], ((region[1]-origin[1])*(region[0]-origin[0]))<<2, 0, NULL, &events[p], &cle); 
+	int channels = 1;
+	switch(image_format.image_channel_order){
+		case CL_R:
+		case CL_A:
+			break;
+		case CL_RG:
+		case CL_RA:
+			channels <<= 1;
+			break;
+		case CL_RGB:
+			channels *= 3;
+			break;
+		case CL_RGBA:
+		case CL_ARGB:
+		case CL_BGRA:
+			channels <<= 2;
+			break;
+		default:
+			;
+	}
+	channels = 4;
+	map->address[p] = clEnqueueMapBuffer(priv->command_queue, (cl_mem)src->data[p], CL_TRUE, map_flags, origin[0]*region[0]+origin[1], ((region[1]-origin[1])*(region[0]-origin[0])) * channels, 0, NULL, &events[p], &cle); 
 	printf("%s:%d cle: %d\n", __FUNCTION__, __LINE__, cle);
 //*/
         if (!map->address[p]) {
@@ -3131,8 +3172,30 @@ static int opencl_map_from_drm_arm(AVHWFramesContext *dst_fc, AVFrame *dst,
 */
 ///*
 		printf("%s:%d origin={%d %d %d}\n", __FUNCTION__, __LINE__, origin[0], origin[1], origin[2]);
+	int channels = 1;
+	switch(image_format.image_channel_order){
+		case CL_R:
+		case CL_A:
+			break;
+		case CL_RG:
+		case CL_RA:
+			channels <<= 1;
+			break;
+		case CL_RGB:
+			channels *= 3;
+			break;
+		case CL_RGBA:
+		case CL_ARGB:
+		case CL_BGRA:
+			channels <<= 2;
+			break;
+		default:
+			;
+	}
+
+	channels = 4;
             mapping->plane_images[p] =
-                clCreateBuffer(dst_dev->context, cl_flags, ((image_desc.image_height * image_desc.image_width) << 2) , NULL, &cle);
+                clCreateBuffer(dst_dev->context, cl_flags, ((image_desc.image_height * image_desc.image_width) * channels) , NULL, &cle);
 		printf("%s:%d cle: %d\n", __FUNCTION__, __LINE__, cle);
 //*/
             // Unreference the sub-buffer immediately - we don't need it
