@@ -243,9 +243,12 @@ static int thumbnail_kernel(AVFilterContext *avctx, AVFrame *in, cl_kernel kerne
     err = ff_opencl_filter_work_size_from_image(avctx, global_work, in, pixel, 0);
     if (err < 0)
         return err;
-    CL_SET_KERNEL_ARG(kernel, 0, cl_mem, &src);
-    CL_SET_KERNEL_ARG(kernel, 1, cl_mem, &ctx->hist);
-    CL_SET_KERNEL_ARG(kernel, 2, cl_int, &offset);
+
+    CL_SET_KERNEL_ARG(kernel, 0, cl_int, &offset);
+    CL_SET_KERNEL_ARG(kernel, 1, cl_int, &(in->width));
+    CL_SET_KERNEL_ARG(kernel, 2, cl_int, &(in->height));
+    CL_SET_KERNEL_ARG(kernel, 3, cl_mem, &ctx->hist);
+    CL_SET_KERNEL_ARG(kernel, 4, cl_mem, &src);
 
 #ifdef CPU_UTIL
     double st = getMicroTimestamp();
