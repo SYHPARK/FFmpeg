@@ -3,7 +3,7 @@ __kernel void Thumbnail_uchar(const int offset, const int W, const int H, __glob
 	int w = get_global_id(0);
 	int h = get_global_id(1);
 	if (w < W && h < H){
-		atomic_add(&hist[offset + src[(w*H+h)*3+0]], 1);
+		atomic_add(&hist[offset + src[(w*H+h)+0]], 1);
 	}
 }
 
@@ -12,7 +12,7 @@ __kernel void Thumbnail_uchar2(const int offset, const int W, const int H, __glo
 	int w = get_global_id(0);
 	int h = get_global_id(1);
 	if (w < W && h < H){
-		atomic_add(&hist[offset + src[(w*H+h)*3+0]], 1);
-		atomic_add(&hist[offset + 256 + src[(w*H+h)*3+1]], 1);
+		atomic_add(&hist[offset + src[(w*H+h)+0]], 1);
+		atomic_add(&hist[offset + 256 + src[(w*H+h)+1]], 1);
 	}
 }
