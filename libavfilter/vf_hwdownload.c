@@ -103,19 +103,20 @@ static int hwdownload_config_output(AVFilterLink *outlink)
 
     found = 0;
     for (i = 0; formats[i] != AV_PIX_FMT_NONE; i++) {
+//	printf("formats[%d] = %d, outlink->format = %d\n", i, formats[i], outlink->format);
         if (formats[i] == outlink->format) {
             found = 1;
             break;
         }
     }
     av_freep(&formats);
-
+/*
     if (!found) {
         av_log(ctx, AV_LOG_ERROR, "Invalid output format %s for hwframe "
                "download.\n", av_get_pix_fmt_name(outlink->format));
         return AVERROR(EINVAL);
     }
-
+*/
     outlink->w = inlink->w;
     outlink->h = inlink->h;
 

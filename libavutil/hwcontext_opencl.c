@@ -615,7 +615,7 @@ static int opencl_device_create_internal(AVHWDeviceContext *hwdev,
                     continue;
             }
 
-	    printf("\n\n\n\n%d.%d: %s / %s\n\n\n\n\n", p, d, platform_name, device_name);
+//	    printf("\n\n\n\n%d.%d: %s / %s\n\n\n\n\n", p, d, platform_name, device_name);
             av_log(hwdev, AV_LOG_VERBOSE, "%d.%d: %s / %s\n", p, d,
                    platform_name, device_name);
 
@@ -1709,7 +1709,8 @@ static int opencl_frames_get_constraints(AVHWDeviceContext *hwdev,
                 break;
             }
         }
-        if (err != AVERROR(ENOENT))
+	//Use the type you want to use
+        if (err != AVERROR(ENOENT) || pix_fmt != AV_PIX_FMT_NV12)
             continue;
 
         av_log(hwdev, AV_LOG_DEBUG, "Format %s supported.\n",
@@ -1807,7 +1808,7 @@ static AVBufferRef *opencl_pool_alloc(void *opaque, int size)
                               &image_format, &image_desc, NULL, &cle);
 */
 ///*
-	printf("%s:%d image_desc={%d %d %d}\n", __FUNCTION__, __LINE__, image_desc.image_width, image_desc.image_height, image_desc.image_row_pitch);
+//	printf("%s:%d image_desc={%d %d %d}\n", __FUNCTION__, __LINE__, image_desc.image_width, image_desc.image_height, image_desc.image_row_pitch);
 	int channels = 1;
 	switch(image_format.image_channel_order){
 		case CL_R:
@@ -1832,7 +1833,7 @@ static AVBufferRef *opencl_pool_alloc(void *opaque, int size)
 
 	image = clCreateBuffer(hwctx->context, CL_MEM_READ_WRITE, ((image_desc.image_height * image_desc.image_width) * channels), NULL, &cle);
 
-	printf("%s:%d cle: %d\n", __FUNCTION__, __LINE__, cle);
+//	printf("%s:%d cle: %d\n", __FUNCTION__, __LINE__, cle);
 //*/
         if (!image) {
             av_log(hwfc, AV_LOG_ERROR, "Failed to create image for "
@@ -2020,8 +2021,8 @@ static int opencl_transfer_data_from(AVHWFramesContext *hwfc,
 #ifdef HWDEBUG 
     printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 #endif
-    sleep(0.1);				//Cache flush
-    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+//    sleep(0.1);				//Cache flush
+//    printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 
     OpenCLFramesContext *priv = hwfc->internal->priv;
     cl_image_format image_format;
@@ -2066,7 +2067,7 @@ static int opencl_transfer_data_from(AVHWFramesContext *hwfc,
                                  0, NULL, &events[p]);
 */
 ///*
-	printf("%s:%d origin={%d %d %d} region={%d %d %d}\n", __FUNCTION__, __LINE__, origin[0], origin[1], origin[2], region[0], region[1], region[2]);
+//	printf("%s:%d origin={%d %d %d} region={%d %d %d}\n", __FUNCTION__, __LINE__, origin[0], origin[1], origin[2], region[0], region[1], region[2]);
 
 //	memcpy(dst->data[p], src->data[p], ((region[1]-origin[1])*(region[0]-origin[0]))<<2);
 
@@ -2098,9 +2099,9 @@ static int opencl_transfer_data_from(AVHWFramesContext *hwfc,
 //		printf("src->data[%d]= {%d}\n\n", i, src->data[p][i]);
 //	}
 
-	cle = clEnqueueReadBuffer(priv->command_queue, (cl_mem)src->data[p], CL_TRUE, origin[0]*region[0]+origin[1], ((region[1]-origin[1])*(region[0]-origin[0])) * channels, dst->data[p], 0, NULL, &events[p]); 
+	cle = clEnqueueReadBuffer(priv->command_queue, (cl_mem)src->data[p], CL_FALSE, origin[0]*region[0]+origin[1], ((region[1]-origin[1])*(region[0]-origin[0])) * channels, dst->data[p], 0, NULL, &events[p]); 
 
-	printf("%s:%d cle: %d\n", __FUNCTION__, __LINE__, cle);
+//	printf("%s:%d cle: %d\n", __FUNCTION__, __LINE__, cle);
 //*/
         if (cle != CL_SUCCESS) {
             av_log(hwfc, AV_LOG_ERROR, "Failed to enqueue read of "
@@ -2139,7 +2140,7 @@ static int opencl_transfer_data_to(AVHWFramesContext *hwfc,
         err = opencl_get_plane_format(hwfc->sw_format, p,
                                       src->width, src->height,
                                       &image_format, &image_desc);
-	printf("hwfc->sw (pixel format) : %d\n", hwfc->sw_format);
+//	printf("hwfc->sw (pixel format) : %d\n", hwfc->sw_format);
         if (err < 0) {
             if (err == AVERROR(ENOENT))
                 err = 0;
@@ -2195,9 +2196,9 @@ static int opencl_transfer_data_to(AVHWFramesContext *hwfc,
 			;
 	}
 
-	cle = clEnqueueWriteBuffer(priv->command_queue, (cl_mem)dst->data[p], CL_TRUE, origin[0]*region[0]+origin[1], ((region[1]-origin[1])*(region[0]-origin[0])) * channels, src->data[p], 0, NULL, &events[p]); 
+	cle = clEnqueueWriteBuffer(priv->command_queue, (cl_mem)dst->data[p], CL_FALSE, origin[0]*region[0]+origin[1], ((region[1]-origin[1])*(region[0]-origin[0])) * channels, src->data[p], 0, NULL, &events[p]); 
 
-printf("%s:%d cle: %d\n", __FUNCTION__, __LINE__, cle);
+//printf("%s:%d cle: %d\n", __FUNCTION__, __LINE__, cle);
 //*/
 
         if (cle != CL_SUCCESS) {
@@ -2207,7 +2208,6 @@ printf("%s:%d cle: %d\n", __FUNCTION__, __LINE__, cle);
             break;
         }
     }
-
     opencl_wait_events(hwfc, events, p);
 
     return err;
@@ -2337,7 +2337,7 @@ static int opencl_map_frame(AVHWFramesContext *hwfc, AVFrame *dst,
 			;
 	}
 	channels = 4;
-	map->address[p] = clEnqueueMapBuffer(priv->command_queue, (cl_mem)src->data[p], CL_TRUE, map_flags, origin[0]*region[0]+origin[1], ((region[1]-origin[1])*(region[0]-origin[0])) * channels, 0, NULL, &events[p], &cle); 
+	map->address[p] = clEnqueueMapBuffer(priv->command_queue, (cl_mem)src->data[p], CL_FALSE, map_flags, origin[0]*region[0]+origin[1], ((region[1]-origin[1])*(region[0]-origin[0])) * channels, 0, NULL, &events[p], &cle); 
 	printf("%s:%d cle: %d\n", __FUNCTION__, __LINE__, cle);
 //*/
         if (!map->address[p]) {

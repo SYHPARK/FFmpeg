@@ -241,12 +241,23 @@ static int thumbnail_kernel(AVFilterContext *avctx, AVFrame *in, cl_kernel kerne
     cl_mem src = (cl_mem)in->data[pixel];		//data[1]? data[2]?
 
     err = ff_opencl_filter_work_size_from_image(avctx, global_work, in, pixel, 0);
+//    printf("global work = {%d, %d}\n", global_work[0], global_work[1]);
     if (err < 0)
         return err;
 
+    size_t memsize;
+    cle = clGetMemObjectInfo(src, CL_MEM_SIZE, sizeof(size_t), &memsize, NULL);
+    size_t width, height;
+    if(!pixel){
+	width = (in->width) >> 1;
+	height = (in->height) >> 1;
+    }
+    global_work[0] = width;
+    global_work[1] = height;
+
     CL_SET_KERNEL_ARG(kernel, 0, cl_int, &offset);
-    CL_SET_KERNEL_ARG(kernel, 1, cl_int, &(in->width));
-    CL_SET_KERNEL_ARG(kernel, 2, cl_int, &(in->height));
+    CL_SET_KERNEL_ARG(kernel, 1, cl_int, &width);
+    CL_SET_KERNEL_ARG(kernel, 2, cl_int, &height);
     CL_SET_KERNEL_ARG(kernel, 3, cl_mem, &ctx->hist);
     CL_SET_KERNEL_ARG(kernel, 4, cl_mem, &src);
 
@@ -280,7 +291,7 @@ fail:
 
 static int thumbnail_opencl_filter_frame(AVFilterLink *inlink, AVFrame *input)
 {
-printf("REACH HERE\n");
+//printf("REACH HERE\n");
 //    const uint8_t* ptr = input->data[0];
 //    printf("RED\tGREEN\tBLUE\n");
 //    for(int i=0; i< (inlink->w); i+=3)

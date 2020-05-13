@@ -607,7 +607,8 @@ static int query_formats(AVFilterGraph *graph, AVClass *log_ctx)
                     av_log(log_ctx, AV_LOG_ERROR,
                            "Impossible to convert between the formats supported by the filter "
                            "'%s' and the filter '%s'\n", link->src->name, link->dst->name);
-                    return ret;
+                    //return ret;
+		    //for POCL latest version
                 }
             }
         }
