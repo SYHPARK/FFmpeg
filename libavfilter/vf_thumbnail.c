@@ -32,6 +32,7 @@
 #include "internal.h"
 #include <time.h>
 #define HIST_SIZE (3*256)
+extern double getMicroTimestamp();
 //#define TEST
 struct thumb_frame {
     AVFrame *buf;               ///< cached frame
@@ -130,6 +131,7 @@ static AVFrame *get_best_frame(AVFilterContext *ctx)
 
 static int filter_frame(AVFilterLink *inlink, AVFrame *frame)
 {
+printf("Come into filter frame\n");
 #ifdef TEST
     static FILE* fp = NULL;//fopen("filter_frame.log", "w");
     static int cnt = 0;
@@ -161,6 +163,7 @@ static int filter_frame(AVFilterLink *inlink, AVFrame *frame)
     s->frames[s->n].buf = frame;
 
     // update current frame RGB histogram
+    printf("Native CPU FFrame start: %lf\n", getMicroTimestamp());
     for (j = 0; j < inlink->h; j++) {
         for (i = 0; i < inlink->w; i++) {
             hist[0*256 + p[i*3    ]]++;
@@ -169,7 +172,7 @@ static int filter_frame(AVFilterLink *inlink, AVFrame *frame)
         }
         p += frame->linesize[0];
     }
-
+    printf("Native CPU FFrame end: %lf\n", getMicroTimestamp());
     // no selection until the buffer of N frames is filled up
     s->n++;
     if (s->n < s->n_frames)

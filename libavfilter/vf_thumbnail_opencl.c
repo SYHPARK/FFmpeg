@@ -267,13 +267,11 @@ static int thumbnail_kernel(AVFilterContext *avctx, AVFrame *in, cl_kernel kerne
     fprintf(stdout, "\t");
     fprintf(stdout, "%s\t%s\n", __FUNCTION__, "start"); //time count
 #endif
-
-    //cle = clEnqueueNDRangeKernel(ctx->command_queue, kernel, 2, NULL,
-    //                             global_work, NULL, 0, NULL, NULL);
-    //size_t lw_size[3] = {320, 180, 1};
-    cle = clEnqueueNDRangeKernel(ctx->command_queue, kernel, 2, NULL,
-				   global_work, NULL, 0, NULL, NULL);
-
+    int gwsize=global_work[0];
+//    fprintf(stdout, "Opencl Kernel start: %lf\n", getMicroTimestamp());
+    cle = clEnqueueNDRangeKernel(ctx->command_queue, kernel, 1, NULL,		//yongbak
+				&gwsize, NULL, 0, NULL, NULL);
+//    fprintf(stdout, "Opencl Kernel end: %lf\n", getMicroTimestamp());
     //printf("clEnqueueNDRangeKernel Error message: %d\n\n", cle);
 #ifdef CPU_UTIL
     double dt = getMicroTimestamp();
@@ -291,16 +289,18 @@ fail:
 
 static int thumbnail_opencl_filter_frame(AVFilterLink *inlink, AVFrame *input)
 {
+printf("[*] input frame addr %p\n", input);
 //printf("REACH HERE\n");
 //    const uint8_t* ptr = input->data[0];
 //    printf("RED\tGREEN\tBLUE\n");
 //    for(int i=0; i< (inlink->w); i+=3)
 //	printf("%d\t%d\t%d\n", ptr[i], ptr[i+1], ptr[i+2]);
+	printf("[*] key_frame: %d\n", input->key_frame);
 #ifdef TEST
     static int cnt = 0;
     double st = getMicroTimestamp();
-//    if(cnt>=500)
-//	exit(0);
+//    if(ctx->n == 99)
+//	ctx->n = 0;
     fprintf(stdout, "%d\t%lf\t%lf\t", cnt, st, 0);
     fprintf(stdout, "%s\t%s\n", __FUNCTION__, "start");
 #endif
@@ -316,6 +316,7 @@ static int thumbnail_opencl_filter_frame(AVFilterLink *inlink, AVFrame *input)
     AVHWFramesContext *input_frames_ctx;
     AVFrame *output = NULL;
     AVFrame *best = NULL;
+    input->is_best_frame = 0;
     int err, p;
     cl_int cle;
     cl_mem src, dst;
@@ -365,7 +366,7 @@ static int thumbnail_opencl_filter_frame(AVFilterLink *inlink, AVFrame *input)
 //    fprintf(stdout, "%s\t%s\n", "clEnqueueWriteBuffer", "end"); //time count
 //////
     CL_FAIL_ON_ERROR(AVERROR(EIO), "Failed to initialize hist buffer %d.\n", cle);
-
+    fprintf(stdout, "%s:%d\n", __FUNCTION__, __LINE__);
     switch(input_frames_ctx->sw_format) {
         case AV_PIX_FMT_NV12:
         case AV_PIX_FMT_P010LE:
@@ -419,18 +420,24 @@ static int thumbnail_opencl_filter_frame(AVFilterLink *inlink, AVFrame *input)
     fprintf(stdout, "%lf\t\t", dt); //time count
     fprintf(stdout, "%s\t%s\n", __FUNCTION__, "end"); //time count
 #endif
-
+    fprintf(stdout, "%s:%d\n", __FUNCTION__, __LINE__);
     ctx->n++;
-    if (ctx->n < ctx->n_frames)
+    if (ctx->n < ctx->n_frames){
+//	ctx->n = 0;
         return 0;
+    }
 
+
+    fprintf(stdout, "%s:%d\n", __FUNCTION__, __LINE__);
     output = ff_get_video_buffer(outlink, outlink->w, outlink->h);
     if (!output) {
         err = AVERROR(ENOMEM);
         goto fail;
     }
     // Get best frame (Thumbnail).
+    fprintf(stdout, "%s:%d\n", __FUNCTION__, __LINE__);
     best = get_best_frame(avctx);
+    input->is_best_frame = 1;
 
     // Copy the best frame to output.
     for (p = 0; p < FF_ARRAY_ELEMS(output->data); p++) {

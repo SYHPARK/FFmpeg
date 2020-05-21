@@ -1,0 +1,33 @@
+diff --git a/hybridcl_thumbnail_4k.sh b/hybridcl_thumbnail_4k.sh
+index 79cce0a..f5fbdbe 100755
+--- a/hybridcl_thumbnail_4k.sh
++++ b/hybridcl_thumbnail_4k.sh
+@@ -1,10 +1,10 @@
+ #gpu ocl:0.0, cpu ocl: 1.0
+ 
+-time LD_PRELOAD=/home/odroid/workingDirectory/gpgpu/lib/libclsched.so ffmpeg -init_hw_device opencl=ocl:1.0 \
++time LD_PRELOAD=/home/odroid/workingDirectory/gpgpu/lib/libclsched.so gdb --args ./ffmpeg -init_hw_device opencl=ocl:1.0 \
+ -filter_hw_device ocl \
+--i 4kvideo.mp4 \
++-i bunny.mp4 \
+ -vf "format=nv12,hwupload,thumbnail_opencl,hwdownload,format=nv12" \
+--y ~/4kthumbnail.mp4 
++-y ~/thumbnail_hybrid.mp4 
+ 
+ #cpu
+ #time ffmpeg -i bunny.mp4 -vf thumbnail -y thumbnail_cpu.mp4
+diff --git a/opencl_debug.sh b/opencl_debug.sh
+index 467811e..03c2676 100755
+--- a/opencl_debug.sh
++++ b/opencl_debug.sh
+@@ -1,6 +1,6 @@
+ #gpu ocl:0.0, cpu ocl: 1.0
+ 
+-time gdb --args ./ffmpeg -init_hw_device opencl=ocl:1.0 \
++time gdb --args ./ffmpeg -init_hw_device opencl=ocl:0.0 \
+ -filter_hw_device ocl \
+ -i bunny.mp4 \
+ -vf "format=nv12,hwupload,thumbnail_opencl,hwdownload,format=nv12" \
+diff --git a/thumbnail.mp4 b/thumbnail.mp4
+index 17e5e5f..e69de29 100644
+Binary files a/thumbnail.mp4 and b/thumbnail.mp4 differ

@@ -2259,6 +2259,7 @@ static int send_frame_to_filters(InputStream *ist, AVFrame *decoded_frame)
                 break;
         } else
             f = decoded_frame;
+        printf("[*] next target filter %p\n", decoded_frame);
         ret = ifilter_send_frame(ist->filters[i], f);
         if (ret == AVERROR_EOF)
             ret = 0; /* ignore */
@@ -2336,6 +2337,7 @@ static int decode_audio(InputStream *ist, AVPacket *pkt, int *got_output,
 static int decode_video(InputStream *ist, AVPacket *pkt, int *got_output, int64_t *duration_pts, int eof,
                         int *decode_failed)
 {
+	printf("[*] decode_video start\n");
     AVFrame *decoded_frame;
     int i, ret = 0, err = 0;
     int64_t best_effort_timestamp;
@@ -2457,13 +2459,27 @@ static int decode_video(InputStream *ist, AVPacket *pkt, int *got_output, int64_
 
     if (ist->st->sample_aspect_ratio.num)
         decoded_frame->sample_aspect_ratio = ist->st->sample_aspect_ratio;
-
+//yongbak
+    if(!(decoded_frame -> key_frame))
+	goto fail;
+    printf("send_frame_to_filters before %d\n", decoded_frame->is_best_frame);
     err = send_frame_to_filters(ist, decoded_frame);
+    printf("[*] test decoded_frame addr %p\n", decoded_frame);
+    printf("send_frame_to_filters after %d\n", decoded_frame->is_best_frame);
+    if(decoded_frame->is_best_frame) {
+	    goto our_fail;
+    }
+	
 
 fail:
     av_frame_unref(ist->filter_frame);
     av_frame_unref(decoded_frame);
     return err < 0 ? err : ret;
+
+our_fail:
+    av_frame_unref(ist->filter_frame);
+    av_frame_unref(decoded_frame);
+    return 0x7eadbeef;
 }
 
 static int transcode_subtitles(InputStream *ist, AVPacket *pkt, int *got_output,
@@ -2683,6 +2699,13 @@ static int process_input_packet(InputStream *ist, const AVPacket *pkt, int no_eo
         // decoding API in a better way.
         if (!pkt)
             break;
+
+	if(ret==0x7eadbeef){
+		printf("[*] in deadbeef\n");
+		repeating = 0;
+		ist->decoding_needed = 0;
+		break;
+	}
 
         repeating = 1;
     }
