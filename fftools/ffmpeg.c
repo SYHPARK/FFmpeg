@@ -2337,7 +2337,6 @@ static int decode_audio(InputStream *ist, AVPacket *pkt, int *got_output,
 static int decode_video(InputStream *ist, AVPacket *pkt, int *got_output, int64_t *duration_pts, int eof,
                         int *decode_failed)
 {
-	printf("[*] decode_video start\n");
     AVFrame *decoded_frame;
     int i, ret = 0, err = 0;
     int64_t best_effort_timestamp;

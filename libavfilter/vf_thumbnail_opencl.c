@@ -182,7 +182,6 @@ int verify_frame(int* point, int* sum_diff, int height) {
         if(point[i] != -1) {
             _point += point[i];
             _sum_diff += sum_diff[i];
-            printf("[*] _point _sum_diff %d %d\n", _point, _sum_diff);
             if (_point >= _MM_CHUNK_LIMIT)
             {
                 if (_sum_diff > _MM_CHUNK_DIFF_LIMIT)
@@ -375,13 +374,11 @@ fail:
 
 static int thumbnail_opencl_filter_frame(AVFilterLink *inlink, AVFrame *input)
 {
-printf("[*] input frame addr %p\n", input);
 //printf("REACH HERE\n");
 //    const uint8_t* ptr = input->data[0];
 //    printf("RED\tGREEN\tBLUE\n");
 //    for(int i=0; i< (inlink->w); i+=3)
 //	printf("%d\t%d\t%d\n", ptr[i], ptr[i+1], ptr[i+2]);
-	printf("[*] key_frame: %d\n", input->key_frame);
 #ifdef TEST
     static int cnt = 0;
     double st = getMicroTimestamp();
@@ -470,9 +467,7 @@ printf("[*] input frame addr %p\n", input);
         case AV_PIX_FMT_NV12:
         case AV_PIX_FMT_P010LE:
         case AV_PIX_FMT_P016LE:
-            printf("[*] seralee thumbnail_is_good_pgm_kernel Start!\n");
             err = thumbnail_is_good_pgm_kernel(avctx, input, ctx->kernel_is_good_pgm, 0, 0);
-            printf("[*] seralee thumbnail_is_good_pgm_kernel End!\n");
             //err = thumbnail_kernel(avctx, input, ctx->kernel_uchar, 0, 0);
             //err |= thumbnail_kernel(avctx, input, ctx->kernel_uchar2, 256, 1);
             if (err < 0)
@@ -496,13 +491,11 @@ printf("[*] input frame addr %p\n", input);
 //    fprintf(stdout, "%lf\t", 0);
 //    fprintf(stdout, "%s\t%s\n", "clEnqueueReadBuffer", "start"); //time count
 
-    printf("[*] test read %d %d\n", point[0], point[1]);
 
     cle = clEnqueueReadBuffer(ctx->command_queue, ctx->point, CL_FALSE,
                               0, sizeof(int) * input->height, point, 0, NULL, NULL);
     cle = clEnqueueReadBuffer(ctx->command_queue, ctx->sum_diff, CL_FALSE,
                               0, sizeof(int) * input->height, sum_diff, 0, NULL, NULL);
-    printf("[*] test read after %d %d\n", point[0], point[1]);
 
     clReleaseMemObject(ctx->sum_diff);
     clReleaseMemObject(ctx->point);
@@ -532,17 +525,12 @@ printf("[*] input frame addr %p\n", input);
 #endif
     fprintf(stdout, "%s:%d\n", __FUNCTION__, __LINE__);
     ctx->n++;
-    printf("[*] seralee here is what i want\n");
-    printf("[*] test read after %d %d\n", point[0], point[1]);
     int ret_verifying = verify_frame(point, sum_diff, input->height);
-    printf("[*] ret %d\n", ret_verifying);
     cnt_iframes+=1;
-    printf("[*] inum %d\n",cnt_iframes);
     free(point);
     free(sum_diff);
 
     if((!ret_verifying) & (ctx->n != ctx->n_frames)) {
-        printf("[*] return 0 %d\n",ctx->n != ctx->n_frames);
         return 0;
     }
     //if (ctx->n < ctx->n_frames)
@@ -588,7 +576,6 @@ printf("[*] input frame addr %p\n", input);
     av_log(ctx, AV_LOG_DEBUG, "Filter output: %s, %ux%u (%"PRId64").\n",
            av_get_pix_fmt_name(output->format),
            output->width, output->height, output->pts);
-    printf("[*] seralee best done \n");
     return ff_filter_frame(outlink, output);
 
 fail:
