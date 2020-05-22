@@ -1,0 +1,1333 @@
+ffmpeg started on 2020-05-22 at 10:33:33
+Report written to "ffmpeg-20200522-103333.log"
+Log level: 48
+Command line:
+./ffmpeg -init_hw_device "opencl=ocl:0.0" -filter_hw_device ocl -report -i bunny.mp4 -vf "format=nv12,hwupload,thumbnail_opencl=2,hwdownload,format=nv12" -vframes 1 -y thumbnail.jpg
+ffmpeg version N-96869-gbbea5d6f4c Copyright (c) 2000-2020 the FFmpeg developers
+  built with gcc 7 (Ubuntu/Linaro 7.5.0-3ubuntu1~18.04)
+  configuration: --enable-gpl --enable-libx264 --enable-opencl
+  libavutil      56. 42.100 / 56. 42.100
+  libavcodec     58. 73.102 / 58. 73.102
+  libavformat    58. 39.101 / 58. 39.101
+  libavdevice    58.  9.103 / 58.  9.103
+  libavfilter     7. 77.100 /  7. 77.100
+  libswscale      5.  6.100 /  5.  6.100
+  libswresample   3.  6.100 /  3.  6.100
+  libpostproc    55.  6.100 / 55.  6.100
+Splitting the commandline.
+Reading option '-init_hw_device' ... matched as option 'init_hw_device' (initialise hardware device) with argument 'opencl=ocl:0.0'.
+Reading option '-filter_hw_device' ... matched as option 'filter_hw_device' (set hardware device used when filtering) with argument 'ocl'.
+Reading option '-report' ... matched as option 'report' (generate a report) with argument '1'.
+Reading option '-i' ... matched as input url with argument 'bunny.mp4'.
+Reading option '-vf' ... matched as option 'vf' (set video filters) with argument 'format=nv12,hwupload,thumbnail_opencl=2,hwdownload,format=nv12'.
+Reading option '-vframes' ... matched as option 'vframes' (set the number of video frames to output) with argument '1'.
+Reading option '-y' ... matched as option 'y' (overwrite output files) with argument '1'.
+Reading option 'thumbnail.jpg' ... matched as output url.
+Finished splitting the commandline.
+Parsing a group of options: global .
+Applying option init_hw_device (initialise hardware device) with argument opencl=ocl:0.0.
+[AVHWDeviceContext @ 0x1be6530] 2 OpenCL platforms found.
+[AVHWDeviceContext @ 0x1be6530] 2 OpenCL devices found on platform "ARM Platform".
+[AVHWDeviceContext @ 0x1be6530] 0.0: ARM Platform / Mali-T628
+Applying option filter_hw_device (set hardware device used when filtering) with argument ocl.
+Applying option report (generate a report) with argument 1.
+Applying option y (overwrite output files) with argument 1.
+Successfully parsed a group of options.
+Parsing a group of options: input url bunny.mp4.
+Successfully parsed a group of options.
+Opening an input file: bunny.mp4.
+[NULL @ 0x1c571c0] Opening 'bunny.mp4' for reading
+[file @ 0x1c5a7e0] Setting default whitelist 'file,crypto,data'
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] Format mov,mp4,m4a,3gp,3g2,mj2 probed with size=2048 and score=100
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] ISO: File Type Major Brand: isom
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] Unknown dref type 0x206c7275 size 12
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] Processing st: 0, edit list 0 - media time: 1024, duration: 380416
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 0 ctts: 1024, ctts_index: 0, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 512 ctts: 1536, ctts_index: 1, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 1024 ctts: 512, ctts_index: 2, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 1536 ctts: 2560, ctts_index: 3, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 2048 ctts: 1024, ctts_index: 4, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 2560 ctts: 0, ctts_index: 5, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 3072 ctts: 512, ctts_index: 6, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 3584 ctts: 2560, ctts_index: 7, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 4096 ctts: 1024, ctts_index: 8, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 4608 ctts: 0, ctts_index: 9, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 5120 ctts: 512, ctts_index: 10, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 5632 ctts: 2560, ctts_index: 11, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 6144 ctts: 1024, ctts_index: 12, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 6656 ctts: 0, ctts_index: 13, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 7168 ctts: 512, ctts_index: 14, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 7680 ctts: 2560, ctts_index: 15, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 8192 ctts: 1024, ctts_index: 16, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 8704 ctts: 0, ctts_index: 17, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 9216 ctts: 512, ctts_index: 18, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 9728 ctts: 2560, ctts_index: 19, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 10240 ctts: 1024, ctts_index: 20, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 10752 ctts: 0, ctts_index: 21, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 11264 ctts: 512, ctts_index: 22, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 11776 ctts: 2560, ctts_index: 23, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 12288 ctts: 1024, ctts_index: 24, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 12800 ctts: 0, ctts_index: 25, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 13312 ctts: 512, ctts_index: 26, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 13824 ctts: 2560, ctts_index: 27, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 14336 ctts: 1024, ctts_index: 28, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 14848 ctts: 0, ctts_index: 29, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 15360 ctts: 512, ctts_index: 30, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 15872 ctts: 2560, ctts_index: 31, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 16384 ctts: 1024, ctts_index: 32, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 16896 ctts: 0, ctts_index: 33, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 17408 ctts: 512, ctts_index: 34, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 17920 ctts: 2560, ctts_index: 35, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 18432 ctts: 1024, ctts_index: 36, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 18944 ctts: 0, ctts_index: 37, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 19456 ctts: 512, ctts_index: 38, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 19968 ctts: 2560, ctts_index: 39, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 20480 ctts: 1024, ctts_index: 40, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 20992 ctts: 0, ctts_index: 41, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 21504 ctts: 512, ctts_index: 42, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 22016 ctts: 2560, ctts_index: 43, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 22528 ctts: 1024, ctts_index: 44, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 23040 ctts: 0, ctts_index: 45, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 23552 ctts: 512, ctts_index: 46, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 24064 ctts: 2560, ctts_index: 47, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 24576 ctts: 1024, ctts_index: 48, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 25088 ctts: 0, ctts_index: 49, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 25600 ctts: 512, ctts_index: 50, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 26112 ctts: 2560, ctts_index: 51, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 26624 ctts: 1024, ctts_index: 52, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 27136 ctts: 0, ctts_index: 53, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 27648 ctts: 512, ctts_index: 54, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 28160 ctts: 1536, ctts_index: 55, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 28672 ctts: 512, ctts_index: 56, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 29184 ctts: 2560, ctts_index: 57, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 29696 ctts: 1024, ctts_index: 58, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 30208 ctts: 0, ctts_index: 59, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 30720 ctts: 512, ctts_index: 60, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 31232 ctts: 2560, ctts_index: 61, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 31744 ctts: 1024, ctts_index: 62, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 32256 ctts: 0, ctts_index: 63, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 32768 ctts: 512, ctts_index: 64, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 33280 ctts: 2560, ctts_index: 65, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 33792 ctts: 1024, ctts_index: 66, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 34304 ctts: 0, ctts_index: 67, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 34816 ctts: 512, ctts_index: 68, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 35328 ctts: 2560, ctts_index: 69, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 35840 ctts: 1024, ctts_index: 70, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 36352 ctts: 0, ctts_index: 71, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 36864 ctts: 512, ctts_index: 72, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 37376 ctts: 2560, ctts_index: 73, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 37888 ctts: 1024, ctts_index: 74, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 38400 ctts: 0, ctts_index: 75, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 38912 ctts: 512, ctts_index: 76, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 39424 ctts: 2560, ctts_index: 77, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 39936 ctts: 1024, ctts_index: 78, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 40448 ctts: 0, ctts_index: 79, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 40960 ctts: 512, ctts_index: 80, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 41472 ctts: 2560, ctts_index: 81, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 41984 ctts: 1024, ctts_index: 82, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 42496 ctts: 0, ctts_index: 83, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 43008 ctts: 512, ctts_index: 84, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 43520 ctts: 2048, ctts_index: 85, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 44032 ctts: 512, ctts_index: 86, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 44544 ctts: 512, ctts_index: 87, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 45056 ctts: 2560, ctts_index: 88, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 45568 ctts: 1024, ctts_index: 89, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 46080 ctts: 0, ctts_index: 90, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 46592 ctts: 512, ctts_index: 91, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 47104 ctts: 2560, ctts_index: 92, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 47616 ctts: 1024, ctts_index: 93, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 48128 ctts: 0, ctts_index: 94, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 48640 ctts: 512, ctts_index: 95, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 49152 ctts: 2560, ctts_index: 96, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 49664 ctts: 1024, ctts_index: 97, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 50176 ctts: 0, ctts_index: 98, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 50688 ctts: 512, ctts_index: 99, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 51200 ctts: 1024, ctts_index: 100, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 51712 ctts: 1024, ctts_index: 101, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 52224 ctts: 1024, ctts_index: 102, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 52736 ctts: 1024, ctts_index: 103, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 53248 ctts: 1024, ctts_index: 104, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 53760 ctts: 1024, ctts_index: 105, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 54272 ctts: 1536, ctts_index: 106, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 54784 ctts: 512, ctts_index: 107, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 55296 ctts: 1024, ctts_index: 108, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 55808 ctts: 1024, ctts_index: 109, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 56320 ctts: 1024, ctts_index: 110, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 56832 ctts: 1024, ctts_index: 111, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 57344 ctts: 1024, ctts_index: 112, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 57856 ctts: 2048, ctts_index: 113, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 58368 ctts: 512, ctts_index: 114, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 58880 ctts: 512, ctts_index: 115, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 59392 ctts: 2560, ctts_index: 116, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 59904 ctts: 1024, ctts_index: 117, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 60416 ctts: 0, ctts_index: 118, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 60928 ctts: 512, ctts_index: 119, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 61440 ctts: 1024, ctts_index: 120, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 61952 ctts: 1536, ctts_index: 121, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 62464 ctts: 512, ctts_index: 122, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 62976 ctts: 2560, ctts_index: 123, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 63488 ctts: 1024, ctts_index: 124, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 64000 ctts: 0, ctts_index: 125, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 64512 ctts: 512, ctts_index: 126, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 65024 ctts: 2048, ctts_index: 127, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 65536 ctts: 512, ctts_index: 128, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 66048 ctts: 512, ctts_index: 129, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 66560 ctts: 1024, ctts_index: 130, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 67072 ctts: 2048, ctts_index: 131, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 67584 ctts: 512, ctts_index: 132, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 68096 ctts: 512, ctts_index: 133, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 68608 ctts: 1024, ctts_index: 134, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 69120 ctts: 1024, ctts_index: 135, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 69632 ctts: 2560, ctts_index: 136, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 70144 ctts: 1024, ctts_index: 137, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 70656 ctts: 0, ctts_index: 138, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 71168 ctts: 512, ctts_index: 139, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 71680 ctts: 2560, ctts_index: 140, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 72192 ctts: 1024, ctts_index: 141, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 72704 ctts: 0, ctts_index: 142, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 73216 ctts: 512, ctts_index: 143, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 73728 ctts: 2560, ctts_index: 144, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 74240 ctts: 1024, ctts_index: 145, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 74752 ctts: 0, ctts_index: 146, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 75264 ctts: 512, ctts_index: 147, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 75776 ctts: 1536, ctts_index: 148, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 76288 ctts: 512, ctts_index: 149, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 76800 ctts: 2560, ctts_index: 150, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 77312 ctts: 1024, ctts_index: 151, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 77824 ctts: 0, ctts_index: 152, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 78336 ctts: 512, ctts_index: 153, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 78848 ctts: 1536, ctts_index: 154, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 79360 ctts: 512, ctts_index: 155, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 79872 ctts: 1536, ctts_index: 156, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 80384 ctts: 512, ctts_index: 157, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 80896 ctts: 1024, ctts_index: 158, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 81408 ctts: 1024, ctts_index: 159, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 81920 ctts: 1024, ctts_index: 160, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 82432 ctts: 1024, ctts_index: 161, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 82944 ctts: 1024, ctts_index: 162, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 83456 ctts: 1024, ctts_index: 163, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 83968 ctts: 1024, ctts_index: 164, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 84480 ctts: 1024, ctts_index: 165, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 84992 ctts: 1024, ctts_index: 166, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 85504 ctts: 1024, ctts_index: 167, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 86016 ctts: 1024, ctts_index: 168, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 86528 ctts: 1024, ctts_index: 169, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 87040 ctts: 1024, ctts_index: 170, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 87552 ctts: 1024, ctts_index: 171, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 88064 ctts: 1024, ctts_index: 172, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 88576 ctts: 1024, ctts_index: 173, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 89088 ctts: 1024, ctts_index: 174, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 89600 ctts: 1024, ctts_index: 175, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 90112 ctts: 1024, ctts_index: 176, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 90624 ctts: 1024, ctts_index: 177, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 91136 ctts: 1024, ctts_index: 178, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 91648 ctts: 1024, ctts_index: 179, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 92160 ctts: 1024, ctts_index: 180, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 92672 ctts: 1536, ctts_index: 181, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 93184 ctts: 512, ctts_index: 182, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 93696 ctts: 1024, ctts_index: 183, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 94208 ctts: 1024, ctts_index: 184, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 94720 ctts: 1024, ctts_index: 185, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 95232 ctts: 1024, ctts_index: 186, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 95744 ctts: 1024, ctts_index: 187, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 96256 ctts: 1024, ctts_index: 188, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 96768 ctts: 1024, ctts_index: 189, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 97280 ctts: 1024, ctts_index: 190, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 97792 ctts: 1024, ctts_index: 191, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 98304 ctts: 1024, ctts_index: 192, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 98816 ctts: 1024, ctts_index: 193, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 99328 ctts: 1024, ctts_index: 194, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 99840 ctts: 1024, ctts_index: 195, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 100352 ctts: 1024, ctts_index: 196, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 100864 ctts: 1024, ctts_index: 197, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 101376 ctts: 1024, ctts_index: 198, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 101888 ctts: 1024, ctts_index: 199, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 102400 ctts: 1024, ctts_index: 200, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 102912 ctts: 1024, ctts_index: 201, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 103424 ctts: 1024, ctts_index: 202, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 103936 ctts: 1024, ctts_index: 203, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 104448 ctts: 1024, ctts_index: 204, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 104960 ctts: 1024, ctts_index: 205, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 105472 ctts: 1536, ctts_index: 206, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 105984 ctts: 512, ctts_index: 207, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 106496 ctts: 1024, ctts_index: 208, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 107008 ctts: 1024, ctts_index: 209, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 107520 ctts: 1024, ctts_index: 210, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 108032 ctts: 2560, ctts_index: 211, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 108544 ctts: 1024, ctts_index: 212, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 109056 ctts: 0, ctts_index: 213, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 109568 ctts: 512, ctts_index: 214, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 110080 ctts: 2560, ctts_index: 215, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 110592 ctts: 1024, ctts_index: 216, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 111104 ctts: 0, ctts_index: 217, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 111616 ctts: 512, ctts_index: 218, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 112128 ctts: 2560, ctts_index: 219, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 112640 ctts: 1024, ctts_index: 220, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 113152 ctts: 0, ctts_index: 221, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 113664 ctts: 512, ctts_index: 222, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 114176 ctts: 2048, ctts_index: 223, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 114688 ctts: 512, ctts_index: 224, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 115200 ctts: 512, ctts_index: 225, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 115712 ctts: 1024, ctts_index: 226, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 116224 ctts: 1024, ctts_index: 227, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 116736 ctts: 1024, ctts_index: 228, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 117248 ctts: 1024, ctts_index: 229, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 117760 ctts: 1024, ctts_index: 230, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 118272 ctts: 1536, ctts_index: 231, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 118784 ctts: 512, ctts_index: 232, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 119296 ctts: 1024, ctts_index: 233, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 119808 ctts: 1024, ctts_index: 234, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 120320 ctts: 1024, ctts_index: 235, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 120832 ctts: 1024, ctts_index: 236, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 121344 ctts: 1024, ctts_index: 237, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 121856 ctts: 1024, ctts_index: 238, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 122368 ctts: 1024, ctts_index: 239, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 122880 ctts: 1024, ctts_index: 240, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 123392 ctts: 1024, ctts_index: 241, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 123904 ctts: 1024, ctts_index: 242, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 124416 ctts: 1024, ctts_index: 243, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 124928 ctts: 1024, ctts_index: 244, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 125440 ctts: 1024, ctts_index: 245, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 125952 ctts: 1024, ctts_index: 246, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 126464 ctts: 1024, ctts_index: 247, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 126976 ctts: 1024, ctts_index: 248, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 127488 ctts: 1024, ctts_index: 249, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 128000 ctts: 1024, ctts_index: 250, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 128512 ctts: 1024, ctts_index: 251, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 129024 ctts: 1024, ctts_index: 252, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 129536 ctts: 1024, ctts_index: 253, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 130048 ctts: 1024, ctts_index: 254, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 130560 ctts: 1024, ctts_index: 255, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 131072 ctts: 1536, ctts_index: 256, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 131584 ctts: 512, ctts_index: 257, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 132096 ctts: 1536, ctts_index: 258, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 132608 ctts: 512, ctts_index: 259, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 133120 ctts: 1024, ctts_index: 260, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 133632 ctts: 1024, ctts_index: 261, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 134144 ctts: 1024, ctts_index: 262, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 134656 ctts: 1024, ctts_index: 263, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 135168 ctts: 1536, ctts_index: 264, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 135680 ctts: 512, ctts_index: 265, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 136192 ctts: 2048, ctts_index: 266, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 136704 ctts: 512, ctts_index: 267, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 137216 ctts: 512, ctts_index: 268, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 137728 ctts: 1024, ctts_index: 269, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 138240 ctts: 1024, ctts_index: 270, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 138752 ctts: 1024, ctts_index: 271, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 139264 ctts: 1024, ctts_index: 272, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 139776 ctts: 1024, ctts_index: 273, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 140288 ctts: 1536, ctts_index: 274, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 140800 ctts: 512, ctts_index: 275, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 141312 ctts: 1536, ctts_index: 276, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 141824 ctts: 512, ctts_index: 277, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 142336 ctts: 2560, ctts_index: 278, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 142848 ctts: 1024, ctts_index: 279, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 143360 ctts: 0, ctts_index: 280, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 143872 ctts: 512, ctts_index: 281, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 144384 ctts: 2560, ctts_index: 282, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 144896 ctts: 1024, ctts_index: 283, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 145408 ctts: 0, ctts_index: 284, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 145920 ctts: 512, ctts_index: 285, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 146432 ctts: 2560, ctts_index: 286, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 146944 ctts: 1024, ctts_index: 287, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 147456 ctts: 0, ctts_index: 288, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 147968 ctts: 512, ctts_index: 289, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 148480 ctts: 2560, ctts_index: 290, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 148992 ctts: 1024, ctts_index: 291, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 149504 ctts: 0, ctts_index: 292, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 150016 ctts: 512, ctts_index: 293, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 150528 ctts: 2560, ctts_index: 294, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 151040 ctts: 1024, ctts_index: 295, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 151552 ctts: 0, ctts_index: 296, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 152064 ctts: 512, ctts_index: 297, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 152576 ctts: 2560, ctts_index: 298, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 153088 ctts: 1024, ctts_index: 299, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 153600 ctts: 0, ctts_index: 300, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 154112 ctts: 512, ctts_index: 301, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 154624 ctts: 2560, ctts_index: 302, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 155136 ctts: 1024, ctts_index: 303, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 155648 ctts: 0, ctts_index: 304, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 156160 ctts: 512, ctts_index: 305, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 156672 ctts: 2560, ctts_index: 306, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 157184 ctts: 1024, ctts_index: 307, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 157696 ctts: 0, ctts_index: 308, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 158208 ctts: 512, ctts_index: 309, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 158720 ctts: 2560, ctts_index: 310, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 159232 ctts: 1024, ctts_index: 311, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 159744 ctts: 0, ctts_index: 312, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 160256 ctts: 512, ctts_index: 313, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 160768 ctts: 2560, ctts_index: 314, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 161280 ctts: 1024, ctts_index: 315, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 161792 ctts: 0, ctts_index: 316, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 162304 ctts: 512, ctts_index: 317, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 162816 ctts: 1536, ctts_index: 318, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 163328 ctts: 512, ctts_index: 319, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 163840 ctts: 2560, ctts_index: 320, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 164352 ctts: 1024, ctts_index: 321, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 164864 ctts: 0, ctts_index: 322, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 165376 ctts: 512, ctts_index: 323, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 165888 ctts: 1024, ctts_index: 324, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 166400 ctts: 2560, ctts_index: 325, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 166912 ctts: 1024, ctts_index: 326, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 167424 ctts: 0, ctts_index: 327, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 167936 ctts: 512, ctts_index: 328, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 168448 ctts: 2048, ctts_index: 329, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 168960 ctts: 512, ctts_index: 330, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 169472 ctts: 512, ctts_index: 331, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 169984 ctts: 2560, ctts_index: 332, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 170496 ctts: 1024, ctts_index: 333, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 171008 ctts: 0, ctts_index: 334, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 171520 ctts: 512, ctts_index: 335, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 172032 ctts: 2560, ctts_index: 336, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 172544 ctts: 1024, ctts_index: 337, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 173056 ctts: 0, ctts_index: 338, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 173568 ctts: 512, ctts_index: 339, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 174080 ctts: 2560, ctts_index: 340, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 174592 ctts: 1024, ctts_index: 341, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 175104 ctts: 0, ctts_index: 342, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 175616 ctts: 512, ctts_index: 343, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 176128 ctts: 2560, ctts_index: 344, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 176640 ctts: 1024, ctts_index: 345, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 177152 ctts: 0, ctts_index: 346, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 177664 ctts: 512, ctts_index: 347, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 178176 ctts: 2560, ctts_index: 348, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 178688 ctts: 1024, ctts_index: 349, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 179200 ctts: 0, ctts_index: 350, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 179712 ctts: 512, ctts_index: 351, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 180224 ctts: 1536, ctts_index: 352, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 180736 ctts: 512, ctts_index: 353, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 181248 ctts: 2560, ctts_index: 354, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 181760 ctts: 1024, ctts_index: 355, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 182272 ctts: 0, ctts_index: 356, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 182784 ctts: 512, ctts_index: 357, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 183296 ctts: 2560, ctts_index: 358, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 183808 ctts: 1024, ctts_index: 359, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 184320 ctts: 0, ctts_index: 360, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 184832 ctts: 512, ctts_index: 361, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 185344 ctts: 2560, ctts_index: 362, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 185856 ctts: 1024, ctts_index: 363, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 186368 ctts: 0, ctts_index: 364, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 186880 ctts: 512, ctts_index: 365, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 187392 ctts: 2560, ctts_index: 366, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 187904 ctts: 1024, ctts_index: 367, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 188416 ctts: 0, ctts_index: 368, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 188928 ctts: 512, ctts_index: 369, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 189440 ctts: 2560, ctts_index: 370, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 189952 ctts: 1024, ctts_index: 371, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 190464 ctts: 0, ctts_index: 372, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 190976 ctts: 512, ctts_index: 373, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 191488 ctts: 1024, ctts_index: 374, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 192000 ctts: 1024, ctts_index: 375, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 192512 ctts: 1024, ctts_index: 376, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 193024 ctts: 1024, ctts_index: 377, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 193536 ctts: 1024, ctts_index: 378, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 194048 ctts: 1024, ctts_index: 379, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 194560 ctts: 1024, ctts_index: 380, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 195072 ctts: 1536, ctts_index: 381, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 195584 ctts: 512, ctts_index: 382, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 196096 ctts: 1024, ctts_index: 383, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 196608 ctts: 1024, ctts_index: 384, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 197120 ctts: 1024, ctts_index: 385, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 197632 ctts: 1024, ctts_index: 386, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 198144 ctts: 1024, ctts_index: 387, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 198656 ctts: 1536, ctts_index: 388, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 199168 ctts: 512, ctts_index: 389, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 199680 ctts: 2560, ctts_index: 390, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 200192 ctts: 1024, ctts_index: 391, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 200704 ctts: 0, ctts_index: 392, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 201216 ctts: 512, ctts_index: 393, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 201728 ctts: 2560, ctts_index: 394, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 202240 ctts: 1024, ctts_index: 395, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 202752 ctts: 0, ctts_index: 396, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 203264 ctts: 512, ctts_index: 397, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 203776 ctts: 2560, ctts_index: 398, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 204288 ctts: 1024, ctts_index: 399, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 204800 ctts: 0, ctts_index: 400, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 205312 ctts: 512, ctts_index: 401, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 205824 ctts: 1024, ctts_index: 402, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 206336 ctts: 2560, ctts_index: 403, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 206848 ctts: 1024, ctts_index: 404, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 207360 ctts: 0, ctts_index: 405, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 207872 ctts: 512, ctts_index: 406, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 208384 ctts: 2560, ctts_index: 407, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 208896 ctts: 1024, ctts_index: 408, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 209408 ctts: 0, ctts_index: 409, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 209920 ctts: 512, ctts_index: 410, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 210432 ctts: 2560, ctts_index: 411, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 210944 ctts: 1024, ctts_index: 412, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 211456 ctts: 0, ctts_index: 413, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 211968 ctts: 512, ctts_index: 414, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 212480 ctts: 2560, ctts_index: 415, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 212992 ctts: 1024, ctts_index: 416, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 213504 ctts: 0, ctts_index: 417, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 214016 ctts: 512, ctts_index: 418, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 214528 ctts: 2560, ctts_index: 419, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 215040 ctts: 1024, ctts_index: 420, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 215552 ctts: 0, ctts_index: 421, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 216064 ctts: 512, ctts_index: 422, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 216576 ctts: 2560, ctts_index: 423, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 217088 ctts: 1024, ctts_index: 424, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 217600 ctts: 0, ctts_index: 425, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 218112 ctts: 512, ctts_index: 426, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 218624 ctts: 2560, ctts_index: 427, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 219136 ctts: 1024, ctts_index: 428, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 219648 ctts: 0, ctts_index: 429, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 220160 ctts: 512, ctts_index: 430, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 220672 ctts: 1536, ctts_index: 431, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 221184 ctts: 512, ctts_index: 432, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 221696 ctts: 2560, ctts_index: 433, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 222208 ctts: 1024, ctts_index: 434, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 222720 ctts: 0, ctts_index: 435, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 223232 ctts: 512, ctts_index: 436, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 223744 ctts: 1024, ctts_index: 437, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 224256 ctts: 1024, ctts_index: 438, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 224768 ctts: 2560, ctts_index: 439, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 225280 ctts: 1024, ctts_index: 440, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 225792 ctts: 0, ctts_index: 441, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 226304 ctts: 512, ctts_index: 442, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 226816 ctts: 1024, ctts_index: 443, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 227328 ctts: 2048, ctts_index: 444, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 227840 ctts: 512, ctts_index: 445, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 228352 ctts: 512, ctts_index: 446, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 228864 ctts: 2560, ctts_index: 447, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 229376 ctts: 1024, ctts_index: 448, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 229888 ctts: 0, ctts_index: 449, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 230400 ctts: 512, ctts_index: 450, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 230912 ctts: 1024, ctts_index: 451, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 231424 ctts: 1024, ctts_index: 452, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 231936 ctts: 2048, ctts_index: 453, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 232448 ctts: 512, ctts_index: 454, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 232960 ctts: 512, ctts_index: 455, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 233472 ctts: 1536, ctts_index: 456, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 233984 ctts: 512, ctts_index: 457, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 234496 ctts: 1024, ctts_index: 458, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 235008 ctts: 1024, ctts_index: 459, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 235520 ctts: 1024, ctts_index: 460, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 236032 ctts: 1024, ctts_index: 461, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 236544 ctts: 1024, ctts_index: 462, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 237056 ctts: 1024, ctts_index: 463, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 237568 ctts: 1024, ctts_index: 464, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 238080 ctts: 1024, ctts_index: 465, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 238592 ctts: 1024, ctts_index: 466, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 239104 ctts: 1024, ctts_index: 467, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 239616 ctts: 1024, ctts_index: 468, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 240128 ctts: 1024, ctts_index: 469, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 240640 ctts: 1024, ctts_index: 470, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 241152 ctts: 1024, ctts_index: 471, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 241664 ctts: 1024, ctts_index: 472, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 242176 ctts: 1024, ctts_index: 473, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 242688 ctts: 1024, ctts_index: 474, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 243200 ctts: 1024, ctts_index: 475, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 243712 ctts: 1024, ctts_index: 476, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 244224 ctts: 1536, ctts_index: 477, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 244736 ctts: 512, ctts_index: 478, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 245248 ctts: 1024, ctts_index: 479, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 245760 ctts: 2560, ctts_index: 480, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 246272 ctts: 1024, ctts_index: 481, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 246784 ctts: 0, ctts_index: 482, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 247296 ctts: 512, ctts_index: 483, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 247808 ctts: 2560, ctts_index: 484, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 248320 ctts: 1024, ctts_index: 485, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 248832 ctts: 0, ctts_index: 486, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 249344 ctts: 512, ctts_index: 487, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 249856 ctts: 1024, ctts_index: 488, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 250368 ctts: 1024, ctts_index: 489, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 250880 ctts: 1024, ctts_index: 490, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 251392 ctts: 1024, ctts_index: 491, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 251904 ctts: 1536, ctts_index: 492, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 252416 ctts: 512, ctts_index: 493, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 252928 ctts: 1024, ctts_index: 494, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 253440 ctts: 1024, ctts_index: 495, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 253952 ctts: 1024, ctts_index: 496, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 254464 ctts: 1024, ctts_index: 497, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 254976 ctts: 2560, ctts_index: 498, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 255488 ctts: 1024, ctts_index: 499, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 256000 ctts: 0, ctts_index: 500, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 256512 ctts: 512, ctts_index: 501, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 257024 ctts: 2560, ctts_index: 502, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 257536 ctts: 1024, ctts_index: 503, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 258048 ctts: 0, ctts_index: 504, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 258560 ctts: 512, ctts_index: 505, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 259072 ctts: 1536, ctts_index: 506, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 259584 ctts: 512, ctts_index: 507, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 260096 ctts: 1024, ctts_index: 508, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 260608 ctts: 1536, ctts_index: 509, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 261120 ctts: 512, ctts_index: 510, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 261632 ctts: 1024, ctts_index: 511, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 262144 ctts: 1024, ctts_index: 512, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 262656 ctts: 1024, ctts_index: 513, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 263168 ctts: 1024, ctts_index: 514, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 263680 ctts: 1024, ctts_index: 515, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 264192 ctts: 1024, ctts_index: 516, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 264704 ctts: 2560, ctts_index: 517, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 265216 ctts: 1024, ctts_index: 518, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 265728 ctts: 0, ctts_index: 519, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 266240 ctts: 512, ctts_index: 520, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 266752 ctts: 1024, ctts_index: 521, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 267264 ctts: 1024, ctts_index: 522, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 267776 ctts: 1024, ctts_index: 523, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 268288 ctts: 1024, ctts_index: 524, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 268800 ctts: 1024, ctts_index: 525, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 269312 ctts: 1024, ctts_index: 526, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 269824 ctts: 1024, ctts_index: 527, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 270336 ctts: 1024, ctts_index: 528, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 270848 ctts: 1024, ctts_index: 529, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 271360 ctts: 1024, ctts_index: 530, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 271872 ctts: 1536, ctts_index: 531, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 272384 ctts: 512, ctts_index: 532, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 272896 ctts: 1024, ctts_index: 533, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 273408 ctts: 1024, ctts_index: 534, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 273920 ctts: 1024, ctts_index: 535, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 274432 ctts: 1536, ctts_index: 536, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 274944 ctts: 512, ctts_index: 537, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 275456 ctts: 1024, ctts_index: 538, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 275968 ctts: 1024, ctts_index: 539, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 276480 ctts: 1024, ctts_index: 540, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 276992 ctts: 1024, ctts_index: 541, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 277504 ctts: 1024, ctts_index: 542, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 278016 ctts: 1024, ctts_index: 543, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 278528 ctts: 2560, ctts_index: 544, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 279040 ctts: 1024, ctts_index: 545, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 279552 ctts: 0, ctts_index: 546, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 280064 ctts: 512, ctts_index: 547, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 280576 ctts: 2560, ctts_index: 548, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 281088 ctts: 1024, ctts_index: 549, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 281600 ctts: 0, ctts_index: 550, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 282112 ctts: 512, ctts_index: 551, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 282624 ctts: 2560, ctts_index: 552, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 283136 ctts: 1024, ctts_index: 553, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 283648 ctts: 0, ctts_index: 554, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 284160 ctts: 512, ctts_index: 555, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 284672 ctts: 2560, ctts_index: 556, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 285184 ctts: 1024, ctts_index: 557, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 285696 ctts: 0, ctts_index: 558, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 286208 ctts: 512, ctts_index: 559, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 286720 ctts: 2560, ctts_index: 560, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 287232 ctts: 1024, ctts_index: 561, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 287744 ctts: 0, ctts_index: 562, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 288256 ctts: 512, ctts_index: 563, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 288768 ctts: 2560, ctts_index: 564, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 289280 ctts: 1024, ctts_index: 565, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 289792 ctts: 0, ctts_index: 566, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 290304 ctts: 512, ctts_index: 567, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 290816 ctts: 2560, ctts_index: 568, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 291328 ctts: 1024, ctts_index: 569, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 291840 ctts: 0, ctts_index: 570, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 292352 ctts: 512, ctts_index: 571, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 292864 ctts: 2560, ctts_index: 572, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 293376 ctts: 1024, ctts_index: 573, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 293888 ctts: 0, ctts_index: 574, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 294400 ctts: 512, ctts_index: 575, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 294912 ctts: 2560, ctts_index: 576, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 295424 ctts: 1024, ctts_index: 577, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 295936 ctts: 0, ctts_index: 578, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 296448 ctts: 512, ctts_index: 579, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 296960 ctts: 2560, ctts_index: 580, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 297472 ctts: 1024, ctts_index: 581, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 297984 ctts: 0, ctts_index: 582, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 298496 ctts: 512, ctts_index: 583, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 299008 ctts: 2560, ctts_index: 584, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 299520 ctts: 1024, ctts_index: 585, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 300032 ctts: 0, ctts_index: 586, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 300544 ctts: 512, ctts_index: 587, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 301056 ctts: 1536, ctts_index: 588, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 301568 ctts: 512, ctts_index: 589, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 302080 ctts: 1024, ctts_index: 590, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 302592 ctts: 2560, ctts_index: 591, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 303104 ctts: 1024, ctts_index: 592, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 303616 ctts: 0, ctts_index: 593, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 304128 ctts: 512, ctts_index: 594, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 304640 ctts: 2560, ctts_index: 595, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 305152 ctts: 1024, ctts_index: 596, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 305664 ctts: 0, ctts_index: 597, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 306176 ctts: 512, ctts_index: 598, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 306688 ctts: 2560, ctts_index: 599, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 307200 ctts: 1024, ctts_index: 600, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 307712 ctts: 0, ctts_index: 601, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 308224 ctts: 512, ctts_index: 602, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 308736 ctts: 2560, ctts_index: 603, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 309248 ctts: 1024, ctts_index: 604, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 309760 ctts: 0, ctts_index: 605, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 310272 ctts: 512, ctts_index: 606, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 310784 ctts: 2560, ctts_index: 607, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 311296 ctts: 1024, ctts_index: 608, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 311808 ctts: 0, ctts_index: 609, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 312320 ctts: 512, ctts_index: 610, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 312832 ctts: 2560, ctts_index: 611, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 313344 ctts: 1024, ctts_index: 612, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 313856 ctts: 0, ctts_index: 613, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 314368 ctts: 512, ctts_index: 614, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 314880 ctts: 2560, ctts_index: 615, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 315392 ctts: 1024, ctts_index: 616, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 315904 ctts: 0, ctts_index: 617, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 316416 ctts: 512, ctts_index: 618, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 316928 ctts: 2560, ctts_index: 619, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 317440 ctts: 1024, ctts_index: 620, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 317952 ctts: 0, ctts_index: 621, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 318464 ctts: 512, ctts_index: 622, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 318976 ctts: 2560, ctts_index: 623, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 319488 ctts: 1024, ctts_index: 624, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 320000 ctts: 0, ctts_index: 625, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 320512 ctts: 512, ctts_index: 626, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 321024 ctts: 2560, ctts_index: 627, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 321536 ctts: 1024, ctts_index: 628, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 322048 ctts: 0, ctts_index: 629, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 322560 ctts: 512, ctts_index: 630, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 323072 ctts: 2560, ctts_index: 631, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 323584 ctts: 1024, ctts_index: 632, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 324096 ctts: 0, ctts_index: 633, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 324608 ctts: 512, ctts_index: 634, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 325120 ctts: 2560, ctts_index: 635, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 325632 ctts: 1024, ctts_index: 636, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 326144 ctts: 0, ctts_index: 637, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 326656 ctts: 512, ctts_index: 638, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 327168 ctts: 2560, ctts_index: 639, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 327680 ctts: 1024, ctts_index: 640, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 328192 ctts: 0, ctts_index: 641, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 328704 ctts: 512, ctts_index: 642, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 329216 ctts: 1024, ctts_index: 643, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 329728 ctts: 1024, ctts_index: 644, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 330240 ctts: 2560, ctts_index: 645, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 330752 ctts: 1024, ctts_index: 646, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 331264 ctts: 0, ctts_index: 647, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 331776 ctts: 512, ctts_index: 648, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 332288 ctts: 2560, ctts_index: 649, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 332800 ctts: 1024, ctts_index: 650, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 333312 ctts: 0, ctts_index: 651, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 333824 ctts: 512, ctts_index: 652, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 334336 ctts: 2560, ctts_index: 653, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 334848 ctts: 1024, ctts_index: 654, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 335360 ctts: 0, ctts_index: 655, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 335872 ctts: 512, ctts_index: 656, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 336384 ctts: 2560, ctts_index: 657, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 336896 ctts: 1024, ctts_index: 658, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 337408 ctts: 0, ctts_index: 659, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 337920 ctts: 512, ctts_index: 660, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 338432 ctts: 2560, ctts_index: 661, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 338944 ctts: 1024, ctts_index: 662, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 339456 ctts: 0, ctts_index: 663, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 339968 ctts: 512, ctts_index: 664, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 340480 ctts: 1536, ctts_index: 665, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 340992 ctts: 512, ctts_index: 666, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 341504 ctts: 2048, ctts_index: 667, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 342016 ctts: 512, ctts_index: 668, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 342528 ctts: 512, ctts_index: 669, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 343040 ctts: 1024, ctts_index: 670, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 343552 ctts: 1024, ctts_index: 671, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 344064 ctts: 1024, ctts_index: 672, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 344576 ctts: 1024, ctts_index: 673, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 345088 ctts: 1024, ctts_index: 674, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 345600 ctts: 1024, ctts_index: 675, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 346112 ctts: 1024, ctts_index: 676, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 346624 ctts: 1024, ctts_index: 677, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 347136 ctts: 1536, ctts_index: 678, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 347648 ctts: 512, ctts_index: 679, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 348160 ctts: 1024, ctts_index: 680, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 348672 ctts: 1536, ctts_index: 681, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 349184 ctts: 512, ctts_index: 682, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 349696 ctts: 1024, ctts_index: 683, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 350208 ctts: 1024, ctts_index: 684, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 350720 ctts: 1024, ctts_index: 685, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 351232 ctts: 2560, ctts_index: 686, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 351744 ctts: 1024, ctts_index: 687, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 352256 ctts: 0, ctts_index: 688, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 352768 ctts: 512, ctts_index: 689, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 353280 ctts: 2560, ctts_index: 690, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 353792 ctts: 1024, ctts_index: 691, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 354304 ctts: 0, ctts_index: 692, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 354816 ctts: 512, ctts_index: 693, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 355328 ctts: 1536, ctts_index: 694, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 355840 ctts: 512, ctts_index: 695, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 356352 ctts: 1024, ctts_index: 696, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 356864 ctts: 2560, ctts_index: 697, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 357376 ctts: 1024, ctts_index: 698, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 357888 ctts: 0, ctts_index: 699, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 358400 ctts: 512, ctts_index: 700, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 358912 ctts: 2560, ctts_index: 701, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 359424 ctts: 1024, ctts_index: 702, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 359936 ctts: 0, ctts_index: 703, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 360448 ctts: 512, ctts_index: 704, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 360960 ctts: 1536, ctts_index: 705, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 361472 ctts: 512, ctts_index: 706, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 361984 ctts: 2560, ctts_index: 707, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 362496 ctts: 1024, ctts_index: 708, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 363008 ctts: 0, ctts_index: 709, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 363520 ctts: 512, ctts_index: 710, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 364032 ctts: 2560, ctts_index: 711, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 364544 ctts: 1024, ctts_index: 712, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 365056 ctts: 0, ctts_index: 713, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 365568 ctts: 512, ctts_index: 714, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 366080 ctts: 2560, ctts_index: 715, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 366592 ctts: 1024, ctts_index: 716, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 367104 ctts: 0, ctts_index: 717, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 367616 ctts: 512, ctts_index: 718, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 368128 ctts: 2560, ctts_index: 719, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 368640 ctts: 1024, ctts_index: 720, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 369152 ctts: 0, ctts_index: 721, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 369664 ctts: 512, ctts_index: 722, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 370176 ctts: 2560, ctts_index: 723, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 370688 ctts: 1024, ctts_index: 724, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 371200 ctts: 0, ctts_index: 725, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 371712 ctts: 512, ctts_index: 726, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 372224 ctts: 2560, ctts_index: 727, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 372736 ctts: 1024, ctts_index: 728, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 373248 ctts: 0, ctts_index: 729, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 373760 ctts: 512, ctts_index: 730, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 374272 ctts: 2560, ctts_index: 731, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 374784 ctts: 1024, ctts_index: 732, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 375296 ctts: 0, ctts_index: 733, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 375808 ctts: 512, ctts_index: 734, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 376320 ctts: 2560, ctts_index: 735, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 376832 ctts: 1024, ctts_index: 736, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 377344 ctts: 0, ctts_index: 737, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 377856 ctts: 512, ctts_index: 738, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 378368 ctts: 2560, ctts_index: 739, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 378880 ctts: 1024, ctts_index: 740, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 379392 ctts: 0, ctts_index: 741, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] stts: 379904 ctts: 512, ctts_index: 742, ctts_count: 743
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] Offset DTS by 1024 to make first pts zero.
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] Setting codecpar->delay to 2 for stream st: 0
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] Unknown dref type 0x206c7275 size 12
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] Processing st: 1, edit list 0 - media time: 0, duration: 1426464
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] Before avformat_find_stream_info() pos: 7502332 bytes read:55448 seeks:1 nb_streams:2
+[h264 @ 0x1c65ed0] nal_unit_type: 7(SPS), nal_ref_idc: 3
+[h264 @ 0x1c65ed0] nal_unit_type: 8(PPS), nal_ref_idc: 3
+[h264 @ 0x1c65ed0] nal_unit_type: 6(SEI), nal_ref_idc: 0
+[h264 @ 0x1c65ed0] nal_unit_type: 5(IDR), nal_ref_idc: 3
+[h264 @ 0x1c65ed0] Format yuv420p chosen by get_format().
+[h264 @ 0x1c65ed0] Reinit context to 1280x720, pix_fmt: yuv420p
+[h264 @ 0x1c65ed0] no picture 
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] All info found
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x1c571c0] After avformat_find_stream_info() pos: 122210 bytes read:204583 seeks:2 frames:4
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'bunny.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf58.29.100
+  Duration: 00:00:29.72, start: 0.000000, bitrate: 2019 kb/s
+    Stream #0:0(und), 3, 1/12800: Video: h264 (High) (avc1 / 0x31637661), yuv420p, 1280x720 [SAR 1:1 DAR 16:9], 1629 kb/s, 25 fps, 25 tbr, 12800 tbn, 50 tbc (default)
+    Metadata:
+      handler_name    : VideoHandler
+    Stream #0:1(und), 1, 1/48000: Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, 5.1, fltp, 384 kb/s (default)
+    Metadata:
+      handler_name    : SoundHandler
+Successfully opened the file.
+Parsing a group of options: output url thumbnail.jpg.
+Applying option vf (set video filters) with argument format=nv12,hwupload,thumbnail_opencl=2,hwdownload,format=nv12.
+Applying option vframes (set the number of video frames to output) with argument 1.
+Successfully parsed a group of options.
+Opening an output file: thumbnail.jpg.
+Successfully opened the file.
+detected 8 logical cores
+[h264 @ 0x1c7c460] nal_unit_type: 7(SPS), nal_ref_idc: 3
+[h264 @ 0x1c7c460] nal_unit_type: 8(PPS), nal_ref_idc: 3
+Stream mapping:
+  Stream #0:0 -> #0:0 (h264 (native) -> mjpeg (native))
+Press [q] to stop, [?] for help
+cur_dts is invalid st:0 (0) [init:0 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+cur_dts is invalid st:0 (0) [init:0 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1c7c460] nal_unit_type: 6(SEI), nal_ref_idc: 0
+[h264 @ 0x1c7c460] nal_unit_type: 5(IDR), nal_ref_idc: 3
+[h264 @ 0x1c7c460] Format yuv420p chosen by get_format().
+[h264 @ 0x1c7c460] Reinit context to 1280x720, pix_fmt: yuv420p
+[h264 @ 0x1c7c460] no picture 
+cur_dts is invalid st:0 (0) [init:0 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1c7a600] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+[h264 @ 0x1c7a600] no picture 
+cur_dts is invalid st:0 (0) [init:0 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+cur_dts is invalid st:0 (0) [init:0 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d20c70] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:0 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1cb7e80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:0 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d249d0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:0 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d0f320] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:0 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d13dc0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:0 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d87c80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:0 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1da0310] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:0 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1c7c460] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+[h264 @ 0x1c7a600] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+[Parsed_format_0 @ 0x1d27350] Setting 'pix_fmts' to value 'nv12'
+[Parsed_thumbnail_opencl_2 @ 0x1cba0c0] Setting 'n' to value '2'
+[Parsed_format_4 @ 0x1cba9e0] Setting 'pix_fmts' to value 'nv12'
+[graph 0 input from stream 0:0 @ 0x1cbaf90] Setting 'video_size' to value '1280x720'
+[graph 0 input from stream 0:0 @ 0x1cbaf90] Setting 'pix_fmt' to value '0'
+[graph 0 input from stream 0:0 @ 0x1cbaf90] Setting 'time_base' to value '1/12800'
+[graph 0 input from stream 0:0 @ 0x1cbaf90] Setting 'pixel_aspect' to value '1/1'
+[graph 0 input from stream 0:0 @ 0x1cbaf90] Setting 'frame_rate' to value '25/1'
+[graph 0 input from stream 0:0 @ 0x1cbaf90] w:1280 h:720 pixfmt:yuv420p tb:1/12800 fr:25/1 sar:1/1
+[format @ 0x1cba430] Setting 'pix_fmts' to value 'yuvj420p|yuvj422p|yuvj444p'
+[AVHWDeviceContext @ 0x1be6530] Maximum supported image size 65536x65536.
+[AVHWDeviceContext @ 0x1be6530] Format nv12 supported.
+[auto_scaler_0 @ 0x1cbabd0] Setting 'flags' to value 'bicubic'
+[auto_scaler_0 @ 0x1cbabd0] w:iw h:ih flags:'bicubic' interl:0
+[Parsed_format_0 @ 0x1d27350] auto-inserting filter 'auto_scaler_0' between the filter 'graph 0 input from stream 0:0' and the filter 'Parsed_format_0'
+[auto_scaler_1 @ 0x1cbc470] Setting 'flags' to value 'bicubic'
+[auto_scaler_1 @ 0x1cbc470] w:iw h:ih flags:'bicubic' interl:0
+[format @ 0x1cba430] auto-inserting filter 'auto_scaler_1' between the filter 'Parsed_format_4' and the filter 'format'
+[AVFilterGraph @ 0x1d268d0] query_formats: 8 queried, 5 merged, 2 already done, 0 delayed
+[auto_scaler_1 @ 0x1cbc470] picking yuvj420p out of 3 ref:nv12 alpha:0
+[auto_scaler_0 @ 0x1cbabd0] w:1280 h:720 fmt:yuv420p sar:1/1 -> w:1280 h:720 fmt:nv12 sar:1/1 flags:0x4
+[hwupload @ 0x1c78070] Surface format is nv12.
+[swscaler @ 0x22116b0] deprecated pixel format used, make sure you did set range correctly
+[auto_scaler_1 @ 0x1cbc470] w:1280 h:720 fmt:nv12 sar:1/1 -> w:1280 h:720 fmt:yuvj420p sar:1/1 flags:0x4
+[thumbnail_opencl @ 0x1cba130] Filter input: opencl, 1280x720 (0) [0] frame
+[Parsed_thumbnail_opencl_2 @ 0x1cba0c0] batch size: 2 frames
+[mjpeg @ 0x1c6aa80] Forcing thread count to 1 for MJPEG encoding, use -thread_type slice or a constant quantizer if you want to use multiple cpu cores
+[mjpeg @ 0x1c6aa80] intra_quant_bias = 96 inter_quant_bias = 0
+Output #0, image2, to 'thumbnail.jpg':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf58.39.101
+    Stream #0:0(und), 0, 1/25: Video: mjpeg, yuvj420p(pc), 1280x720 [SAR 1:1 DAR 16:9], q=2-31, 200 kb/s, 25 fps, 25 tbn, 25 tbc (default)
+    Metadata:
+      handler_name    : VideoHandler
+      encoder         : Lavc58.73.102 mjpeg
+    Side data:
+      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d20c70] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1cb7e80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d249d0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d0f320] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d13dc0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d87c80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1da0310] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1c7c460] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1c7a600] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d20c70] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+[h264 @ 0x1cb7e80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d249d0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d0f320] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+[h264 @ 0x1d13dc0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d87c80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1da0310] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1c7c460] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1c7a600] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d20c70] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1cb7e80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+[h264 @ 0x1d249d0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d0f320] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d13dc0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d87c80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1da0310] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1c7c460] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1c7a600] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d20c70] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1cb7e80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d249d0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d0f320] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d13dc0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d87c80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+[h264 @ 0x1da0310] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1c7c460] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1c7a600] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d20c70] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+[h264 @ 0x1cb7e80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d249d0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d0f320] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d13dc0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+[h264 @ 0x1d87c80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1da0310] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1c7c460] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1c7a600] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d20c70] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1cb7e80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+[h264 @ 0x1d249d0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d0f320] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d13dc0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d87c80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1da0310] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1c7c460] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+[h264 @ 0x1c7a600] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d20c70] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1cb7e80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d249d0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d0f320] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d13dc0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d87c80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+[h264 @ 0x1da0310] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1c7c460] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1c7a600] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+[h264 @ 0x1d20c70] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1cb7e80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d249d0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d0f320] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d13dc0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+[h264 @ 0x1d87c80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1da0310] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+frame=    0 fps=0.0 q=0.0 size=N/A time=00:00:00.00 bitrate=N/A speed=   0x    cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1c7c460] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1c7a600] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+[h264 @ 0x1d20c70] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1cb7e80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d249d0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d0f320] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+[h264 @ 0x1d13dc0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d87c80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1da0310] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1c7c460] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1c7a600] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d20c70] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1cb7e80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+[h264 @ 0x1d249d0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d0f320] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d13dc0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d87c80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1da0310] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1c7c460] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1c7a600] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d20c70] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1cb7e80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+[h264 @ 0x1d249d0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d0f320] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d13dc0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d87c80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1da0310] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1c7c460] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1c7a600] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+[h264 @ 0x1d20c70] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1cb7e80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+[h264 @ 0x1d249d0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d0f320] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d13dc0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d87c80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1da0310] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+[h264 @ 0x1c7c460] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1c7a600] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d20c70] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1cb7e80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+[h264 @ 0x1d249d0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d0f320] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d13dc0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d87c80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1da0310] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1c7c460] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1c7a600] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d20c70] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+[h264 @ 0x1cb7e80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d249d0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d0f320] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+[h264 @ 0x1d13dc0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d87c80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1da0310] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1c7c460] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1c7a600] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d20c70] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1cb7e80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d249d0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d0f320] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+[h264 @ 0x1d13dc0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d87c80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+[h264 @ 0x1da0310] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1c7c460] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+[h264 @ 0x1c7a600] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d20c70] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1cb7e80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d249d0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d0f320] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d13dc0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d87c80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1da0310] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1c7c460] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+[h264 @ 0x1c7a600] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d20c70] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+[h264 @ 0x1cb7e80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d249d0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d0f320] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d13dc0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d87c80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1da0310] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1c7c460] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1c7a600] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d20c70] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1cb7e80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d249d0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+[h264 @ 0x1d0f320] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d13dc0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d87c80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1da0310] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1c7c460] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1c7a600] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d20c70] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1cb7e80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d249d0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d0f320] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d13dc0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d87c80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1da0310] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1c7c460] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1c7a600] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d20c70] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1cb7e80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d249d0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d0f320] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d13dc0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d87c80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1da0310] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1c7c460] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1c7a600] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+[h264 @ 0x1d20c70] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1cb7e80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d249d0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d0f320] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d13dc0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d87c80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1da0310] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+[h264 @ 0x1c7c460] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1c7a600] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d20c70] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1cb7e80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d249d0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d0f320] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d13dc0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d87c80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1da0310] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1c7c460] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1c7a600] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d20c70] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1cb7e80] nal_unit_type: 5(IDR), nal_ref_idc: 3
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d249d0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d0f320] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d13dc0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d87c80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1da0310] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+[h264 @ 0x1c7c460] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1c7a600] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1d20c70] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+frame=    0 fps=0.0 q=0.0 size=N/A time=00:00:00.00 bitrate=N/A speed=   0x    cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x1cb7e80] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+[h264 @ 0x1d249d0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+[thumbnail_opencl @ 0x1cba130] Filter input: opencl, 1280x720 (107520) [1] frame
+[thumbnail_opencl @ 0x1cba130] Filter output: opencl, 1280x720 (107520).
+*** 0 dup!
+[image2 @ 0x1c8e0e0] Opening 'thumbnail.jpg' for writing
+[file @ 0x23f6360] Setting default whitelist 'file,crypto,data'
+[AVIOContext @ 0x23fa1b0] Statistics: 0 seeks, 1 writeouts
+No more output streams to write to, finishing.
+frame=    1 fps=0.9 q=5.0 Lsize=N/A time=00:00:00.04 bitrate=N/A dup=1 drop=1 speed=0.0372x    
+video:30kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: unknown
+Input file #0 (bunny.mp4):
+  Input stream #0:0 (video): 221 packets read (2094072 bytes); 212 frames decoded; 
+  Input stream #0:1 (audio): 1 packets read (967 bytes); 
+  Total: 222 packets (2095039 bytes) demuxed
+Output file #0 (thumbnail.jpg):
+  Output stream #0:0 (video): 1 frames encoded; 1 packets muxed (31094 bytes); 
+  Total: 1 packets (31094 bytes) muxed
+212 frames successfully decoded, 0 decoding errors
+[AVIOContext @ 0x1c57740] Statistics: 2573182 bytes read, 2 seeks

@@ -1,7 +1,7 @@
-ffmpeg started on 2020-05-22 at 10:00:52
-Report written to "ffmpeg-20200522-100052.log"
+ffmpeg started on 2020-05-22 at 11:01:56
+Report written to "ffmpeg-20200522-110156.log"
 Log level: 48
-ffmpeg version N-96868-g3c6bd84c99 Copyright (c) 2000-2020 the FFmpeg developers
+ffmpeg version N-96869-gbbea5d6f4c Copyright (c) 2000-2020 the FFmpeg developers
   built with gcc 7 (Ubuntu/Linaro 7.5.0-3ubuntu1~18.04)
   configuration: --enable-gpl --enable-libx264 --enable-opencl
   libavutil      56. 42.100 / 56. 42.100
@@ -28,8 +28,8 @@ Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'bunny.mp4':
 Stream mapping:
   Stream #0:0 -> #0:0 (h264 (native) -> mjpeg (native))
 Press [q] to stop, [?] for help
-[swscaler @ 0x21d36b0] deprecated pixel format used, make sure you did set range correctly
-Output #0, image2, to '/home/seralee/thumbnail.jpg':
+[swscaler @ 0x21d1560] deprecated pixel format used, make sure you did set range correctly
+Output #0, image2, to 'thumbnail.jpg':
   Metadata:
     major_brand     : isom
     minor_version   : 512
@@ -41,7 +41,7 @@ Output #0, image2, to '/home/seralee/thumbnail.jpg':
       encoder         : Lavc58.73.102 mjpeg
     Side data:
       cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A
-[*] decode_video start
+frame=    0 fps=0.0 q=0.0 size=N/A time=00:00:00.00 bitrate=N/A speed=   0x    [*] decode_video start
 [*] decode_video start
 [*] decode_video start
 [*] decode_video start
@@ -53,20 +53,21 @@ Output #0, image2, to '/home/seralee/thumbnail.jpg':
 [*] decode_video start
 [*] decode_video start
 send_frame_to_filters before 0
-[*] next target filter 0x1d7ba50
-[*] input frame addr 0x1c8b7b0
+[*] next target filter 0x1d79a50
+[*] input frame addr 0x1c897a0
 [*] key_frame: 1
 clCreateCommandQueue error code: 0
 
-thumbnail_opencl_filter_frame:462
+thumbnail_opencl_filter_frame:465
 [*] seralee thumbnail_is_good_pgm_kernel Start!
 [*] seralee thumbnail_is_good_pgm_kernel End!
-thumbnail_opencl_filter_frame:524
+[*] test read 0 0
+[*] test read after 0 0
+thumbnail_opencl_filter_frame:530
 [*] seralee here is what i want
-[*] value  0 0[*] ret 1
-thumbnail_opencl_filter_frame:539
-thumbnail_opencl_filter_frame:546
-[*] test decoded_frame addr 0x1d7ba50
+[*] test read after 0 0
+[*] ret 0
+[*] test decoded_frame addr 0x1d79a50
 send_frame_to_filters after 0
 [*] decode_video start
 [*] decode_video start
@@ -213,7 +214,6 @@ send_frame_to_filters after 0
 [*] decode_video start
 [*] decode_video start
 [*] decode_video start
-[*] deframe=    0 fps=0.0 q=0.0 size=N/A time=00:00:00.00 bitrate=N/A speed=   0x    code_video start
 [*] decode_video start
 [*] decode_video start
 [*] decode_video start
@@ -391,10 +391,11 @@ send_frame_to_filters after 0
 [*] decode_video start
 [*] decode_video start
 [*] decode_video start
-[*] decoframe=    1 fps=0.3 q=5.0 Lsize=N/A time=00:00:00.04 bitrate=N/A dup=1 drop=1 speed=0.0119x    
+[*] decode_video start
+[*] decode_video start
+[frame=    0 fps=0.0 q=0.0 size=N/A time=00:00:00.00 bitrate=N/A speed=   0x    frame=    1 fps=0.7 q=5.0 Lsize=N/A time=00:00:00.04 bitrate=N/A dup=1 drop=1 speed=0.0274x    
 video:30kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: unknown
-de_video start
-[*] decode_video start
+*] decode_video start
 [*] decode_video start
 [*] decode_video start
 [*] decode_video start
@@ -491,23 +492,27 @@ de_video start
 [*] decode_video start
 [*] decode_video start
 send_frame_to_filters before 0
-[*] next target filter 0x1d7ba50
-[*] input frame addr 0x23f80a0
+[*] next target filter 0x1d79a50
+[*] input frame addr 0x24529d0
 [*] key_frame: 1
-thumbnail_opencl_filter_frame:462
+thumbnail_opencl_filter_frame:465
 [*] seralee thumbnail_is_good_pgm_kernel Start!
 [*] seralee thumbnail_is_good_pgm_kernel End!
-thumbnail_opencl_filter_frame:524
+[*] test read 0 0
+[*] test read after 0 0
+thumbnail_opencl_filter_frame:530
 [*] seralee here is what i want
-[*] value  0 0[*] ret 1
-thumbnail_opencl_filter_frame:539
+[*] test read after 0 0
+[*] ret 0
 thumbnail_opencl_filter_frame:546
+thumbnail_opencl_filter_frame:553
 [*] seralee best done 
-[*] test decoded_frame addr 0x1d7ba50
+[*] test decoded_frame addr 0x1d79a50
 send_frame_to_filters after 0
 [*] decode_video start
 [*] decode_video start
+libavutil/hwcontext_opencl.c opencl_device_free 161
 
-real	0m3.583s
-user	0m4.708s
-sys	0m0.323s
+real	0m2.240s
+user	0m4.769s
+sys	0m0.407s

@@ -175,11 +175,9 @@ static double frame_sum_square_err(const int *hist, const double *median)
 }
 
 int verify_frame(int* point, int* sum_diff, int width) {
-    int _point;
-    int _sum_diff;
-    printf("[*] value ");
+    int _point = 0;
+    int _sum_diff= 0;
     for(int i =0; i < width ; i++) {
-        printf(" %d %d", point[i], sum_diff[i]);
         if(point[i] != -1) {
             _point += point[i];
             _sum_diff += sum_diff[i];
@@ -192,7 +190,6 @@ int verify_frame(int* point, int* sum_diff, int width) {
             }
         }
     }
-    printf("\n");
     return 0;
 }
 
@@ -441,7 +438,9 @@ printf("[*] input frame addr %p\n", input);
     ctx->sum_diff = clCreateBuffer(ctx->ocf.hwctx->context, 0,
                                sizeof(int) * input->height, NULL, &cle);
     int* point = (int*) malloc(sizeof(int) *input->height);
-    int* sum_diff = (int*) malloc(sizeof(int)* input->height);
+    int* sum_diff = (int*) malloc(sizeof(int) *input->height);
+    memset(point, 0, sizeof(int) * input->height);
+    memset(sum_diff, 0, sizeof(int) * input->height);
 //////
 //    static int cnt = 0;
 //    double st = getMicroTimestamp();
@@ -452,6 +451,10 @@ printf("[*] input frame addr %p\n", input);
     // update current frame to histogram
     //cle = clEnqueueWriteBuffer(ctx->command_queue, ctx->hist, CL_FALSE,
       //                         0, sizeof(int) * HIST_SIZE, hist, 0, NULL, NULL);
+    cle = clEnqueueWriteBuffer(ctx->command_queue, ctx->point, CL_FALSE,
+                               0, sizeof(int) * input->height, point, 0, NULL, NULL);
+    cle = clEnqueueWriteBuffer(ctx->command_queue, ctx->sum_diff, CL_FALSE,
+                               0, sizeof(int) * input->height, sum_diff, 0, NULL, NULL);
 
 //    double dt = getMicroTimestamp();
 //    fprintf(stdout, "%d\t%lf\t", cnt, st); //time count
@@ -490,10 +493,13 @@ printf("[*] input frame addr %p\n", input);
 //    fprintf(stdout, "%lf\t", 0);
 //    fprintf(stdout, "%s\t%s\n", "clEnqueueReadBuffer", "start"); //time count
 
+    printf("[*] test read %d %d\n", point[0], point[1]);
+
     cle = clEnqueueReadBuffer(ctx->command_queue, ctx->point, CL_FALSE,
                               0, sizeof(int) * input->height, point, 0, NULL, NULL);
     cle = clEnqueueReadBuffer(ctx->command_queue, ctx->sum_diff, CL_FALSE,
                               0, sizeof(int) * input->height, sum_diff, 0, NULL, NULL);
+    printf("[*] test read after %d %d\n", point[0], point[1]);
 
     clReleaseMemObject(ctx->sum_diff);
     clReleaseMemObject(ctx->point);
@@ -524,6 +530,7 @@ printf("[*] input frame addr %p\n", input);
     fprintf(stdout, "%s:%d\n", __FUNCTION__, __LINE__);
     ctx->n++;
     printf("[*] seralee here is what i want\n");
+    printf("[*] test read after %d %d\n", point[0], point[1]);
     int ret_verifying = verify_frame(point, sum_diff, input->height);
     printf("[*] ret %d\n", ret_verifying);
     free(point);
