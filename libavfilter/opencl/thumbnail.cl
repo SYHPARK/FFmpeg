@@ -37,6 +37,7 @@ __kernel void _is_good_pgm (__global char *buf, const int wrap, const int xsize,
 
     if (target_y_offset != cnt_offset)
     {
+    if(target_y_offset % step == 0){
         __global char *s = cnt;
         __global char* d = buf + target_y_offset * wrap;
         is_different = 0;
@@ -50,6 +51,10 @@ __kernel void _is_good_pgm (__global char *buf, const int wrap, const int xsize,
 
         point[target_y_offset] = (is_different != 0);
         sum_diff[target_y_offset] = is_different;
+        } else {
+        point[target_y_offset] = -1;
+        sum_diff[target_y_offset] = -1;
+        }
     } else {
         point[target_y_offset] = -1;
         sum_diff[target_y_offset] = -1;

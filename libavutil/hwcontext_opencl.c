@@ -1961,6 +1961,8 @@ static int opencl_get_buffer(AVHWFramesContext *hwfc, AVFrame *frame)
     frame->width   = hwfc->width;
     frame->height  = hwfc->height;
 
+
+
     return 0;
 }
 
@@ -2100,6 +2102,7 @@ static int opencl_transfer_data_from(AVHWFramesContext *hwfc,
 //	}
 
 	cle = clEnqueueReadBuffer(priv->command_queue, (cl_mem)src->data[p], CL_FALSE, origin[0]*region[0]+origin[1], ((region[1]-origin[1])*(region[0]-origin[0])) * channels, dst->data[p], 0, NULL, &events[p]); 
+
 
 //	printf("%s:%d cle: %d\n", __FUNCTION__, __LINE__, cle);
 //*/

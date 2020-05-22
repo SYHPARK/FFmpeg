@@ -28,9 +28,10 @@
 #include "opencl_source.h"
 #include <time.h>
 // TIZEN CODE PARAMETERS
-#define _MM_CHUNK_NUM           8                               /*FIXME*/
+#define _MM_CHUNK_NUM           70                               /*FIXME*/
 #define _MM_CHUNK_LIMIT         (_MM_CHUNK_NUM >> 1)
 #define _MM_CHUNK_DIFF_LIMIT    ((_MM_CHUNK_LIMIT << 1) | 1)    /*FIXME*/
+int cnt_iframes;
 
 
 #define HIST_SIZE (3*256)
@@ -174,13 +175,14 @@ static double frame_sum_square_err(const int *hist, const double *median)
     return sum_sq_err;
 }
 
-int verify_frame(int* point, int* sum_diff, int width) {
+int verify_frame(int* point, int* sum_diff, int height) {
     int _point = 0;
     int _sum_diff= 0;
-    for(int i =0; i < width ; i++) {
+    for(int i =0; i < height ; i++) {
         if(point[i] != -1) {
             _point += point[i];
             _sum_diff += sum_diff[i];
+            printf("[*] _point _sum_diff %d %d\n", _point, _sum_diff);
             if (_point >= _MM_CHUNK_LIMIT)
             {
                 if (_sum_diff > _MM_CHUNK_DIFF_LIMIT)
@@ -280,7 +282,8 @@ static int thumbnail_is_good_pgm_kernel(AVFilterContext *avctx, AVFrame *in, cl_
 	height = (in->height) >> 1;
     }
     global_work[0] = height;
-    cl_int wrap = in->linesize[0];
+    //cl_int wrap = in->linesize[0];
+    cl_int wrap = width;
 
     CL_SET_KERNEL_ARG(kernel, 0, cl_mem, &src);
     CL_SET_KERNEL_ARG(kernel, 1, cl_int, &wrap);
@@ -298,7 +301,7 @@ static int thumbnail_is_good_pgm_kernel(AVFilterContext *avctx, AVFrame *in, cl_
     int gwsize=global_work[0];
 //    fprintf(stdout, "Opencl Kernel start: %lf\n", getMicroTimestamp());
     cle = clEnqueueNDRangeKernel(ctx->command_queue, kernel, 1, NULL,		//yongbak
-				&gwsize, NULL, 0, NULL, NULL);
+				&global_work, NULL, 0, NULL, NULL);
 //    fprintf(stdout, "Opencl Kernel end: %lf\n", getMicroTimestamp());
     //printf("clEnqueueNDRangeKernel Error message: %d\n\n", cle);
 #ifdef CPU_UTIL
@@ -533,10 +536,13 @@ printf("[*] input frame addr %p\n", input);
     printf("[*] test read after %d %d\n", point[0], point[1]);
     int ret_verifying = verify_frame(point, sum_diff, input->height);
     printf("[*] ret %d\n", ret_verifying);
+    cnt_iframes+=1;
+    printf("[*] inum %d\n",cnt_iframes);
     free(point);
     free(sum_diff);
 
     if((!ret_verifying) & (ctx->n != ctx->n_frames)) {
+        printf("[*] return 0 %d\n",ctx->n != ctx->n_frames);
         return 0;
     }
     //if (ctx->n < ctx->n_frames)
@@ -555,9 +561,6 @@ printf("[*] input frame addr %p\n", input);
     best = input;
     input->is_best_frame = 1;
 
-    if (ctx->n < ctx->n_frames){
-        return 0;
-    }
 
     // Copy the best frame to output.
     for (p = 0; p < FF_ARRAY_ELEMS(output->data); p++) {

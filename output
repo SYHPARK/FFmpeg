@@ -1,7 +1,7 @@
-ffmpeg started on 2020-05-22 at 11:01:56
-Report written to "ffmpeg-20200522-110156.log"
+ffmpeg started on 2020-05-22 at 11:52:04
+Report written to "ffmpeg-20200522-115204.log"
 Log level: 48
-ffmpeg version N-96869-gbbea5d6f4c Copyright (c) 2000-2020 the FFmpeg developers
+ffmpeg version N-96870-gd369184ad8 Copyright (c) 2000-2020 the FFmpeg developers
   built with gcc 7 (Ubuntu/Linaro 7.5.0-3ubuntu1~18.04)
   configuration: --enable-gpl --enable-libx264 --enable-opencl
   libavutil      56. 42.100 / 56. 42.100
@@ -28,8 +28,311 @@ Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'bunny.mp4':
 Stream mapping:
   Stream #0:0 -> #0:0 (h264 (native) -> mjpeg (native))
 Press [q] to stop, [?] for help
-[swscaler @ 0x21d1560] deprecated pixel format used, make sure you did set range correctly
-Output #0, image2, to 'thumbnail.jpg':
+[swscaler @ 0x2275640] deprecated pixel format used, make sure you did set range correctly
+[*] decode_video start
+[*] decode_video start
+[*] decode_video start
+[*] decode_video start
+[*] decode_video start
+[*] decode_video start
+[*] decode_video start
+[*] decode_video start
+[*] decode_video start
+[*] decode_video start
+[*] decode_video start
+send_frame_to_filters before 0
+[*] next target filter 0x1e1da50
+[*] input frame addr 0x1d2d6b0
+[*] key_frame: 1
+clCreateCommandQueue error code: 0
+
+thumbnail_opencl_filter_frame:468
+[*] seralee thumbnail_is_good_pgm_kernel Start!
+[*] seralee thumbnail_is_good_pgm_kernel End!
+[*] test read 0 0
+[*] test read after 0 0
+thumbnail_opencl_filter_frame:533
+[*] seralee here is what i want
+[*] test read after 1 -1
+[*] _point _sum_diff 1 35
+[*] _point _sum_diff 2 108
+[*] _point _sum_diff 3 140
+[*] _point _sum_diff 4 209
+[*] _point _sum_diff 5 274
+[*] _point _sum_diff 6 304
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 37Output #0, image2, to 'thumbnail.jpg':
   Metadata:
     major_brand     : isom
     minor_version   : 512
@@ -41,33 +344,99 @@ Output #0, image2, to 'thumbnail.jpg':
       encoder         : Lavc58.73.102 mjpeg
     Side data:
       cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A
-frame=    0 fps=0.0 q=0.0 size=N/A time=00:00:00.00 bitrate=N/A speed=   0x    [*] decode_video start
-[*] decode_video start
-[*] decode_video start
-[*] decode_video start
-[*] decode_video start
-[*] decode_video start
-[*] decode_video start
-[*] decode_video start
-[*] decode_video start
-[*] decode_video start
-[*] decode_video start
-send_frame_to_filters before 0
-[*] next target filter 0x1d79a50
-[*] input frame addr 0x1c897a0
-[*] key_frame: 1
-clCreateCommandQueue error code: 0
-
-thumbnail_opencl_filter_frame:465
-[*] seralee thumbnail_is_good_pgm_kernel Start!
-[*] seralee thumbnail_is_good_pgm_kernel End!
-[*] test read 0 0
-[*] test read after 0 0
-thumbnail_opencl_filter_frame:530
-[*] seralee here is what i want
-[*] test read after 0 0
+2
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
+[*] _point _sum_diff 7 372
 [*] ret 0
-[*] test decoded_frame addr 0x1d79a50
+[*] inum 1
+[*] return 0 1
+[*] test decoded_frame addr 0x1e1da50
 send_frame_to_filters after 0
 [*] decode_video start
 [*] decode_video start
@@ -139,6 +508,7 @@ send_frame_to_filters after 0
 [*] decode_video start
 [*] decode_video start
 [*] decode_video start
+[*] frame=    0 fps=0.0 q=0.0 size=N/A time=00:00:00.00 bitrate=N/A speed=   0x    decode_video start
 [*] decode_video start
 [*] decode_video start
 [*] decode_video start
@@ -393,9 +763,6 @@ send_frame_to_filters after 0
 [*] decode_video start
 [*] decode_video start
 [*] decode_video start
-[frame=    0 fps=0.0 q=0.0 size=N/A time=00:00:00.00 bitrate=N/A speed=   0x    frame=    1 fps=0.7 q=5.0 Lsize=N/A time=00:00:00.04 bitrate=N/A dup=1 drop=1 speed=0.0274x    
-video:30kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: unknown
-*] decode_video start
 [*] decode_video start
 [*] decode_video start
 [*] decode_video start
@@ -492,27 +859,397 @@ video:30kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing ov
 [*] decode_video start
 [*] decode_video start
 send_frame_to_filters before 0
-[*] next target filter 0x1d79a50
-[*] input frame addr 0x24529d0
+[*] next target filter 0x1e1da50
+[*] input frame addr 0x248be90
 [*] key_frame: 1
-thumbnail_opencl_filter_frame:465
+thumbnail_opencl_filter_frame:468
 [*] seralee thumbnail_is_good_pgm_kernel Start!
 [*] seralee thumbnail_is_good_pgm_kernel End!
 [*] test read 0 0
 [*] test read after 0 0
-thumbnail_opencl_filter_frame:530
+thumbnail_opencl_filter_frame:533
 [*] seralee here is what i want
-[*] test read after 0 0
+[*] test read after 1 -1
+[*] _point _sum_diff 1 9
+[*] _point _sum_diff 2 43
+[*] _point _sum_diff 3 47
+[*] _point _sum_diff 4 80
+[*] _point _sum_diff 5 125
+[*] _point _sum_diff 6 129
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _frame=    1 fps=0.7 q=5.0 Lsize=N/A time=00:00:00.04 bitrate=N/A dup=1 drop=1 speed=0.0296x    
+video:30kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: unknown
+point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
+[*] _point _sum_diff 7 161
 [*] ret 0
-thumbnail_opencl_filter_frame:546
-thumbnail_opencl_filter_frame:553
+[*] inum 2
+thumbnail_opencl_filter_frame:552
+thumbnail_opencl_filter_frame:559
 [*] seralee best done 
-[*] test decoded_frame addr 0x1d79a50
+[*] test decoded_frame addr 0x1e1da50
 send_frame_to_filters after 0
 [*] decode_video start
 [*] decode_video start
 libavutil/hwcontext_opencl.c opencl_device_free 161
 
-real	0m2.240s
-user	0m4.769s
-sys	0m0.407s
+real	0m1.572s
+user	0m4.672s
+sys	0m0.362s
