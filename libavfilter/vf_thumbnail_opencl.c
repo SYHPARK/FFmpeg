@@ -27,10 +27,16 @@
 #include "opencl.h"
 #include "opencl_source.h"
 #include <time.h>
+// TIZEN CODE PARAMETERS
+#define _MM_CHUNK_NUM           8                               /*FIXME*/
+#define _MM_CHUNK_LIMIT         (_MM_CHUNK_NUM >> 1)
+#define _MM_CHUNK_DIFF_LIMIT    ((_MM_CHUNK_LIMIT << 1) | 1)    /*FIXME*/
+
 
 #define HIST_SIZE (3*256)
 //#define TEST
 //#define CPU_UTIL
+int verify_frame(int* point, int* sum_diff, int width);
 
 double getMicroTimestamp(){
     long long ns;
@@ -89,7 +95,10 @@ typedef struct ThumbnailOpenCLContext {
 
     cl_kernel             kernel_uchar;
     cl_kernel             kernel_uchar2;
+    cl_kernel             kernel_is_good_pgm;
     cl_mem                hist;
+    cl_mem                point;
+    cl_mem                sum_diff;
     cl_command_queue      command_queue;
 } ThumbnailOpenCLContext;
 
@@ -122,14 +131,13 @@ static int thumbnail_opencl_init(AVFilterContext *avctx)
                      "command queue %d.\n", cle);
 
     // Create kernel.
-    ctx->kernel_uchar = clCreateKernel(ctx->ocf.program, "Thumbnail_uchar", &cle);
-    CL_FAIL_ON_ERROR(AVERROR(EIO), "Failed to create kernel %d.\n", cle);
+    //ctx->kernel_uchar = clCreateKernel(ctx->ocf.program, "Thumbnail_uchar", &cle);
+    //CL_FAIL_ON_ERROR(AVERROR(EIO), "Failed to create kernel %d.\n", cle);
 
-    ctx->kernel_uchar2 = clCreateKernel(ctx->ocf.program, "Thumbnail_uchar2", &cle);
-    CL_FAIL_ON_ERROR(AVERROR(EIO), "Failed to create kernel %d.\n", cle);
+    //ctx->kernel_uchar2 = clCreateKernel(ctx->ocf.program, "Thumbnail_uchar2", &cle);
+    //CL_FAIL_ON_ERROR(AVERROR(EIO), "Failed to create kernel %d.\n", cle);
+    ctx->kernel_is_good_pgm = clCreateKernel(ctx->ocf.program, "_is_good_pgm", &cle);
 
-    ctx->hist = clCreateBuffer(ctx->ocf.hwctx->context, 0,
-                               sizeof(int) * HIST_SIZE, NULL, &cle);
     CL_FAIL_ON_ERROR(AVERROR(EIO), "Failed to create hist buffer %d.\n", cle);
 
     ctx->initialised = 1;
@@ -164,6 +172,28 @@ static double frame_sum_square_err(const int *hist, const double *median)
         sum_sq_err += err*err;
     }
     return sum_sq_err;
+}
+
+int verify_frame(int* point, int* sum_diff, int width) {
+    int _point;
+    int _sum_diff;
+    printf("[*] value ");
+    for(int i =0; i < width ; i++) {
+        printf(" %d %d", point[i], sum_diff[i]);
+        if(point[i] != -1) {
+            _point += point[i];
+            _sum_diff += sum_diff[i];
+            if (_point >= _MM_CHUNK_LIMIT)
+            {
+                if (_sum_diff > _MM_CHUNK_DIFF_LIMIT)
+                    return 1;
+                else
+                    return 0;
+            }
+        }
+    }
+    printf("\n");
+    return 0;
 }
 
 static AVFrame *get_best_frame(AVFilterContext *ctx)
@@ -230,6 +260,62 @@ static AVFrame *get_best_frame(AVFilterContext *ctx)
     fprintf(stdout, "%s\t%s\n", __FUNCTION__, "end"); //time count
 #endif
     return picref;
+}
+
+static int thumbnail_is_good_pgm_kernel(AVFilterContext *avctx, AVFrame *in, cl_kernel kernel, cl_int offset, int pixel)
+{
+    int err;
+    cl_int cle;
+    ThumbnailOpenCLContext *ctx = avctx->priv;
+    size_t global_work[2];
+    cl_mem src = (cl_mem)in->data[pixel];		//always data[0]
+
+    err = ff_opencl_filter_work_size_from_image(avctx, global_work, in, pixel, 0);
+//    printf("global work = {%d, %d}\n", global_work[0], global_work[1]);
+    if (err < 0)
+        return err;
+
+    size_t memsize;
+    cle = clGetMemObjectInfo(src, CL_MEM_SIZE, sizeof(size_t), &memsize, NULL);
+    size_t width, height;
+    if(!pixel){
+	width = (in->width) >> 1;
+	height = (in->height) >> 1;
+    }
+    global_work[0] = height;
+    cl_int wrap = in->linesize[0];
+
+    CL_SET_KERNEL_ARG(kernel, 0, cl_mem, &src);
+    CL_SET_KERNEL_ARG(kernel, 1, cl_int, &wrap);
+    CL_SET_KERNEL_ARG(kernel, 2, cl_int, &width);
+    CL_SET_KERNEL_ARG(kernel, 3, cl_int, &height);
+    CL_SET_KERNEL_ARG(kernel, 4, cl_mem, &ctx->point);
+    CL_SET_KERNEL_ARG(kernel, 5, cl_mem, &ctx->sum_diff);
+
+#ifdef CPU_UTIL
+    double st = getMicroTimestamp();
+    fprintf(stdout, "%lf\t", st); //time count
+    fprintf(stdout, "\t");
+    fprintf(stdout, "%s\t%s\n", __FUNCTION__, "start"); //time count
+#endif
+    int gwsize=global_work[0];
+//    fprintf(stdout, "Opencl Kernel start: %lf\n", getMicroTimestamp());
+    cle = clEnqueueNDRangeKernel(ctx->command_queue, kernel, 1, NULL,		//yongbak
+				&gwsize, NULL, 0, NULL, NULL);
+//    fprintf(stdout, "Opencl Kernel end: %lf\n", getMicroTimestamp());
+    //printf("clEnqueueNDRangeKernel Error message: %d\n\n", cle);
+#ifdef CPU_UTIL
+    double dt = getMicroTimestamp();
+    fprintf(stdout, "%lf\t\t", dt); //time count
+    fprintf(stdout, "%s\t%s\n", __FUNCTION__, "end"); //time count
+#endif
+
+    CL_FAIL_ON_ERROR(AVERROR(EIO), "Failed to enqueue kernel: %d.\n", cle);
+    return 0;
+
+fail:
+    clFinish(ctx->command_queue);
+    return err;
 }
 
 static int thumbnail_kernel(AVFilterContext *avctx, AVFrame *in, cl_kernel kernel, cl_int offset, int pixel)
@@ -347,8 +433,15 @@ printf("[*] input frame addr %p\n", input);
     }
 
     // keep a reference of each frame
+    // TODO seralee
     ctx->frames[ctx->n].buf = input;
     hist = ctx->frames[ctx->n].histogram;
+    ctx->point = clCreateBuffer(ctx->ocf.hwctx->context, 0,
+                               sizeof(int) * input->height, NULL, &cle);
+    ctx->sum_diff = clCreateBuffer(ctx->ocf.hwctx->context, 0,
+                               sizeof(int) * input->height, NULL, &cle);
+    int* point = (int*) malloc(sizeof(int) *input->height);
+    int* sum_diff = (int*) malloc(sizeof(int)* input->height);
 //////
 //    static int cnt = 0;
 //    double st = getMicroTimestamp();
@@ -357,8 +450,8 @@ printf("[*] input frame addr %p\n", input);
 //    fprintf(stdout, "%s\t%s\n", "clEnqueueWriteBuffer", "start"); //time count
 
     // update current frame to histogram
-    cle = clEnqueueWriteBuffer(ctx->command_queue, ctx->hist, CL_FALSE,
-                               0, sizeof(int) * HIST_SIZE, hist, 0, NULL, NULL);
+    //cle = clEnqueueWriteBuffer(ctx->command_queue, ctx->hist, CL_FALSE,
+      //                         0, sizeof(int) * HIST_SIZE, hist, 0, NULL, NULL);
 
 //    double dt = getMicroTimestamp();
 //    fprintf(stdout, "%d\t%lf\t", cnt, st); //time count
@@ -371,8 +464,11 @@ printf("[*] input frame addr %p\n", input);
         case AV_PIX_FMT_NV12:
         case AV_PIX_FMT_P010LE:
         case AV_PIX_FMT_P016LE:
-            err = thumbnail_kernel(avctx, input, ctx->kernel_uchar, 0, 0);
-            err |= thumbnail_kernel(avctx, input, ctx->kernel_uchar2, 256, 1);
+            printf("[*] seralee thumbnail_is_good_pgm_kernel Start!\n");
+            err = thumbnail_is_good_pgm_kernel(avctx, input, ctx->kernel_is_good_pgm, 0, 0);
+            printf("[*] seralee thumbnail_is_good_pgm_kernel End!\n");
+            //err = thumbnail_kernel(avctx, input, ctx->kernel_uchar, 0, 0);
+            //err |= thumbnail_kernel(avctx, input, ctx->kernel_uchar2, 256, 1);
             if (err < 0)
                 goto fail;
             break;
@@ -394,8 +490,13 @@ printf("[*] input frame addr %p\n", input);
 //    fprintf(stdout, "%lf\t", 0);
 //    fprintf(stdout, "%s\t%s\n", "clEnqueueReadBuffer", "start"); //time count
 
-    cle = clEnqueueReadBuffer(ctx->command_queue, ctx->hist, CL_FALSE,
-                              0, sizeof(int) * HIST_SIZE, hist, 0, NULL, NULL);
+    cle = clEnqueueReadBuffer(ctx->command_queue, ctx->point, CL_FALSE,
+                              0, sizeof(int) * input->height, point, 0, NULL, NULL);
+    cle = clEnqueueReadBuffer(ctx->command_queue, ctx->sum_diff, CL_FALSE,
+                              0, sizeof(int) * input->height, sum_diff, 0, NULL, NULL);
+
+    clReleaseMemObject(ctx->sum_diff);
+    clReleaseMemObject(ctx->point);
 
 //    dt = getMicroTimestamp();
 //    fprintf(stdout, "%d\t%lf\t", cnt++, st); //time count
@@ -422,10 +523,17 @@ printf("[*] input frame addr %p\n", input);
 #endif
     fprintf(stdout, "%s:%d\n", __FUNCTION__, __LINE__);
     ctx->n++;
-    if (ctx->n < ctx->n_frames){
-//	ctx->n = 0;
+    printf("[*] seralee here is what i want\n");
+    int ret_verifying = verify_frame(point, sum_diff, input->height);
+    printf("[*] ret %d\n", ret_verifying);
+    free(point);
+    free(sum_diff);
+
+    if((!ret_verifying) & (ctx->n != ctx->n_frames)) {
         return 0;
     }
+    //if (ctx->n < ctx->n_frames)
+    //    return 0;
 
 
     fprintf(stdout, "%s:%d\n", __FUNCTION__, __LINE__);
@@ -436,8 +544,13 @@ printf("[*] input frame addr %p\n", input);
     }
     // Get best frame (Thumbnail).
     fprintf(stdout, "%s:%d\n", __FUNCTION__, __LINE__);
-    best = get_best_frame(avctx);
+    //best = get_best_frame(avctx);
+    best = input;
     input->is_best_frame = 1;
+
+    if (ctx->n < ctx->n_frames){
+        return 0;
+    }
 
     // Copy the best frame to output.
     for (p = 0; p < FF_ARRAY_ELEMS(output->data); p++) {
@@ -465,6 +578,7 @@ printf("[*] input frame addr %p\n", input);
     av_log(ctx, AV_LOG_DEBUG, "Filter output: %s, %ux%u (%"PRId64").\n",
            av_get_pix_fmt_name(output->format),
            output->width, output->height, output->pts);
+    printf("[*] seralee best done \n");
     return ff_filter_frame(outlink, output);
 
 fail:
