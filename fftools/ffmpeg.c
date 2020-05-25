@@ -2259,7 +2259,6 @@ static int send_frame_to_filters(InputStream *ist, AVFrame *decoded_frame)
                 break;
         } else
             f = decoded_frame;
-        printf("[*] next target filter %p\n", decoded_frame);
         ret = ifilter_send_frame(ist->filters[i], f);
         if (ret == AVERROR_EOF)
             ret = 0; /* ignore */
@@ -2461,10 +2460,7 @@ static int decode_video(InputStream *ist, AVPacket *pkt, int *got_output, int64_
 //yongbak
         if ( decoded_frame->pict_type != AV_PICTURE_TYPE_I && decoded_frame->key_frame == 0)
 	goto fail;
-    printf("send_frame_to_filters before %d\n", decoded_frame->is_best_frame);
     err = send_frame_to_filters(ist, decoded_frame);
-    printf("[*] test decoded_frame addr %p\n", decoded_frame);
-    printf("send_frame_to_filters after %d\n", decoded_frame->is_best_frame);
 	
 
 fail:

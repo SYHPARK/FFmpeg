@@ -28,11 +28,11 @@
 #include "opencl_source.h"
 #include <time.h>
 // TIZEN CODE PARAMETERS
-#define _MM_CHUNK_NUM           70                               /*FIXME*/
+#define _MM_CHUNK_NUM           500000000                               /*FIXME*/
 #define _MM_CHUNK_LIMIT         (_MM_CHUNK_NUM >> 1)
 #define _MM_CHUNK_DIFF_LIMIT    ((_MM_CHUNK_LIMIT << 1) | 1)    /*FIXME*/
 int cnt_iframes;
-
+AVFrame *saved_iframe;
 
 #define HIST_SIZE (3*256)
 //#define TEST
@@ -127,7 +127,6 @@ static int thumbnail_opencl_init(AVFilterContext *avctx)
     ctx->command_queue = clCreateCommandQueue(ctx->ocf.hwctx->context,
                                               ctx->ocf.hwctx->device_id,
                                               0, &cle);
-    printf("clCreateCommandQueue error code: %d\n\n", cle);
     CL_FAIL_ON_ERROR(AVERROR(EIO), "Failed to create OpenCL "
                      "command queue %d.\n", cle);
 
@@ -277,8 +276,8 @@ static int thumbnail_is_good_pgm_kernel(AVFilterContext *avctx, AVFrame *in, cl_
     cle = clGetMemObjectInfo(src, CL_MEM_SIZE, sizeof(size_t), &memsize, NULL);
     size_t width, height;
     if(!pixel){
-	width = (in->width) >> 1;
-	height = (in->height) >> 1;
+		width = (in->width) >> 1;
+		height = (in->height) >> 1;
     }
     global_work[0] = height;
     //cl_int wrap = in->linesize[0];
@@ -300,7 +299,7 @@ static int thumbnail_is_good_pgm_kernel(AVFilterContext *avctx, AVFrame *in, cl_
     int gwsize=global_work[0];
 //    fprintf(stdout, "Opencl Kernel start: %lf\n", getMicroTimestamp());
     cle = clEnqueueNDRangeKernel(ctx->command_queue, kernel, 1, NULL,		//yongbak
-				&global_work, NULL, 0, NULL, NULL);
+				&gwsize, NULL, 0, NULL, NULL);
 //    fprintf(stdout, "Opencl Kernel end: %lf\n", getMicroTimestamp());
     //printf("clEnqueueNDRangeKernel Error message: %d\n\n", cle);
 #ifdef CPU_UTIL
@@ -462,7 +461,6 @@ static int thumbnail_opencl_filter_frame(AVFilterLink *inlink, AVFrame *input)
 //    fprintf(stdout, "%s\t%s\n", "clEnqueueWriteBuffer", "end"); //time count
 //////
     CL_FAIL_ON_ERROR(AVERROR(EIO), "Failed to initialize hist buffer %d.\n", cle);
-    fprintf(stdout, "%s:%d\n", __FUNCTION__, __LINE__);
     switch(input_frames_ctx->sw_format) {
         case AV_PIX_FMT_NV12:
         case AV_PIX_FMT_P010LE:
@@ -499,7 +497,6 @@ static int thumbnail_opencl_filter_frame(AVFilterLink *inlink, AVFrame *input)
 
     clReleaseMemObject(ctx->sum_diff);
     clReleaseMemObject(ctx->point);
-
 //    dt = getMicroTimestamp();
 //    fprintf(stdout, "%d\t%lf\t", cnt++, st); //time count
 //    fprintf(stdout, "%lf\t", dt-st);
@@ -523,14 +520,19 @@ static int thumbnail_opencl_filter_frame(AVFilterLink *inlink, AVFrame *input)
     fprintf(stdout, "%lf\t\t", dt); //time count
     fprintf(stdout, "%s\t%s\n", __FUNCTION__, "end"); //time count
 #endif
-    fprintf(stdout, "%s:%d\n", __FUNCTION__, __LINE__);
     ctx->n++;
+	if(ctx->n == ctx->n_frames){
+		ctx->n = 0;
+	}
     int ret_verifying = verify_frame(point, sum_diff, input->height);
+	saved_iframe = input;
     cnt_iframes+=1;
     free(point);
     free(sum_diff);
 
     if((!ret_verifying) & (ctx->n != ctx->n_frames)) {
+	//printf("ctx->n%d ctx->n_frames%d\n", ctx->n, ctx->n_frames);
+	//if((!ret_verifying) | (cnt_iframes == ctx->n)) {
         return 0;
     }
     //if (ctx->n < ctx->n_frames)
@@ -648,11 +650,12 @@ static int request_frame(AVFilterLink *link)
     size_t origin[3] = {0, 0, 0};
     size_t region[3] = {0, 0, 1};
 
-    if (ret == AVERROR_EOF && ctx->n) {
+    if (ret == AVERROR_EOF) {
         // n_frames is larger than the total frame.
         output = ff_get_video_buffer(link, link->w, link->h);
         // Get best frame.
-        best = get_best_frame(avctx);
+        //best = get_best_frame(avctx);
+		best = saved_iframe;
         // Copy the best frame to output.
         for (p = 0; p < FF_ARRAY_ELEMS(output->data); p++) {
             src = (cl_mem)best->data[p];
