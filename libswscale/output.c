@@ -159,6 +159,8 @@ yuv2planeX_16_c_template(const int16_t *filter, int filterSize,
                          const int32_t **src, uint16_t *dest, int dstW,
                          int big_endian, int output_bits)
 {
+
+    //printf("[*]  seralee in output.c  %s start\n",__FUNCTION__);
     int i;
     int shift = 15;
     av_assert0(output_bits == 16);
@@ -184,6 +186,7 @@ static void yuv2p016cX_c(SwsContext *c, const int16_t *chrFilter, int chrFilterS
                          const int16_t **chrUSrc, const int16_t **chrVSrc,
                          uint8_t *dest8, int chrDstW)
 {
+    //printf("[*]  seralee in output.c  %s start\n",__FUNCTION__);
     uint16_t *dest = (uint16_t*)dest8;
     const int32_t **uSrc = (const int32_t **)chrUSrc;
     const int32_t **vSrc = (const int32_t **)chrVSrc;
@@ -211,6 +214,7 @@ static void yuv2p016cX_c(SwsContext *c, const int16_t *chrFilter, int chrFilterS
 static av_always_inline void
 yuv2plane1_float_c_template(const int32_t *src, float *dest, int dstW)
 {
+    //printf("[*]  seralee in output.c  %s start\n",__FUNCTION__);
     static const int big_endian = HAVE_BIGENDIAN;
     static const int shift = 3;
     static const float float_mult = 1.0f / 65535.0f;
@@ -227,6 +231,7 @@ yuv2plane1_float_c_template(const int32_t *src, float *dest, int dstW)
 static av_always_inline void
 yuv2plane1_float_bswap_c_template(const int32_t *src, uint32_t *dest, int dstW)
 {
+    //printf("[*]  seralee in output.c  %s start\n",__FUNCTION__);
     static const int big_endian = HAVE_BIGENDIAN;
     static const int shift = 3;
     static const float float_mult = 1.0f / 65535.0f;
@@ -244,6 +249,7 @@ static av_always_inline void
 yuv2planeX_float_c_template(const int16_t *filter, int filterSize, const int32_t **src,
                             float *dest, int dstW)
 {
+    //printf("[*]  seralee in output.c  %s start\n",__FUNCTION__);
     static const int big_endian = HAVE_BIGENDIAN;
     static const int shift = 15;
     static const float float_mult = 1.0f / 65535.0f;
@@ -264,6 +270,7 @@ static av_always_inline void
 yuv2planeX_float_bswap_c_template(const int16_t *filter, int filterSize, const int32_t **src,
                             uint32_t *dest, int dstW)
 {
+    //printf("[*]  seralee in output.c  %s start\n",__FUNCTION__);
     static const int big_endian = HAVE_BIGENDIAN;
     static const int shift = 15;
     static const float float_mult = 1.0f / 65535.0f;
@@ -320,6 +327,7 @@ static av_always_inline void
 yuv2plane1_10_c_template(const int16_t *src, uint16_t *dest, int dstW,
                          int big_endian, int output_bits)
 {
+    //printf("[*]  seralee in output.c  %s start\n",__FUNCTION__);
     int i;
     int shift = 15 - output_bits;
 
@@ -334,6 +342,7 @@ yuv2planeX_10_c_template(const int16_t *filter, int filterSize,
                          const int16_t **src, uint16_t *dest, int dstW,
                          int big_endian, int output_bits)
 {
+    //printf("[*]  seralee in output.c  %s start\n",__FUNCTION__);
     int i;
     int shift = 11 + 16 - output_bits;
 
@@ -381,20 +390,27 @@ static void yuv2planeX_8_c(const int16_t *filter, int filterSize,
                            const int16_t **src, uint8_t *dest, int dstW,
                            const uint8_t *dither, int offset)
 {
+    //printf("[*]  seralee in output.c  %s start\n",__FUNCTION__);
     int i;
+    //printf("[*] in yuv2planeX_8_c \n");
     for (i=0; i<dstW; i++) {
+        if(i%20 == 0);
+            //printf("\n");
         int val = dither[(i + offset) & 7] << 12;
         int j;
         for (j=0; j<filterSize; j++)
             val += src[j][i] * filter[j];
 
         dest[i]= av_clip_uint8(val>>19);
+        //printf(" %x", dest[i]);
     }
+    //printf("\n");
 }
 
 static void yuv2plane1_8_c(const int16_t *src, uint8_t *dest, int dstW,
                            const uint8_t *dither, int offset)
 {
+    //printf("[*]  seralee in output.c  %s start\n",__FUNCTION__);
     int i;
     for (i=0; i<dstW; i++) {
         int val = (src[i] + dither[(i + offset) & 7]) >> 7;
@@ -406,6 +422,7 @@ static void yuv2nv12cX_c(SwsContext *c, const int16_t *chrFilter, int chrFilterS
                         const int16_t **chrUSrc, const int16_t **chrVSrc,
                         uint8_t *dest, int chrDstW)
 {
+    //printf("[*]  seralee in output.c  %s start\n",__FUNCTION__);
     enum AVPixelFormat dstFormat = c->dstFormat;
     const uint8_t *chrDither = c->chrDither8;
     int i;
@@ -451,6 +468,7 @@ static void yuv2p010l1_c(const int16_t *src,
                          uint16_t *dest, int dstW,
                          int big_endian)
 {
+    //printf("[*]  seralee in output.c  %s start\n",__FUNCTION__);
     int i;
     int shift = 5;
 
@@ -464,6 +482,7 @@ static void yuv2p010lX_c(const int16_t *filter, int filterSize,
                          const int16_t **src, uint16_t *dest, int dstW,
                          int big_endian)
 {
+    //printf("[*]  seralee in output.c  %s start\n",__FUNCTION__);
     int i, j;
     int shift = 17;
 
@@ -481,6 +500,7 @@ static void yuv2p010cX_c(SwsContext *c, const int16_t *chrFilter, int chrFilterS
                          const int16_t **chrUSrc, const int16_t **chrVSrc,
                          uint8_t *dest8, int chrDstW)
 {
+    //printf("[*]  seralee in output.c  %s start\n",__FUNCTION__);
     uint16_t *dest = (uint16_t*)dest8;
     int shift = 17;
     int big_endian = c->dstFormat == AV_PIX_FMT_P010BE;
@@ -504,6 +524,7 @@ static void yuv2p010l1_LE_c(const int16_t *src,
                             uint8_t *dest, int dstW,
                             const uint8_t *dither, int offset)
 {
+    //printf("[*]  seralee in output.c  %s start\n",__FUNCTION__);
     yuv2p010l1_c(src, (uint16_t*)dest, dstW, 0);
 }
 
@@ -511,6 +532,7 @@ static void yuv2p010l1_BE_c(const int16_t *src,
                             uint8_t *dest, int dstW,
                             const uint8_t *dither, int offset)
 {
+    //printf("[*]  seralee in output.c  %s start\n",__FUNCTION__);
     yuv2p010l1_c(src, (uint16_t*)dest, dstW, 1);
 }
 
@@ -518,6 +540,7 @@ static void yuv2p010lX_LE_c(const int16_t *filter, int filterSize,
                             const int16_t **src, uint8_t *dest, int dstW,
                             const uint8_t *dither, int offset)
 {
+    //printf("[*]  seralee in output.c  %s start\n",__FUNCTION__);
     yuv2p010lX_c(filter, filterSize, src, (uint16_t*)dest, dstW, 0);
 }
 
@@ -525,6 +548,7 @@ static void yuv2p010lX_BE_c(const int16_t *filter, int filterSize,
                             const int16_t **src, uint8_t *dest, int dstW,
                             const uint8_t *dither, int offset)
 {
+    //printf("[*]  seralee in output.c  %s start\n",__FUNCTION__);
     yuv2p010lX_c(filter, filterSize, src, (uint16_t*)dest, dstW, 1);
 }
 
@@ -549,6 +573,7 @@ yuv2mono_X_c_template(SwsContext *c, const int16_t *lumFilter,
                       const int16_t **alpSrc, uint8_t *dest, int dstW,
                       int y, enum AVPixelFormat target)
 {
+    //printf("[*]  seralee in output.c  %s start\n",__FUNCTION__);
     const uint8_t * const d128 = ff_dither_8x8_220[y&7];
     int i;
     unsigned acc = 0;
@@ -601,6 +626,7 @@ yuv2mono_2_c_template(SwsContext *c, const int16_t *buf[2],
                       int yalpha, int uvalpha, int y,
                       enum AVPixelFormat target)
 {
+    //printf("[*]  seralee in output.c  %s start\n",__FUNCTION__);
     const int16_t *buf0  = buf[0],  *buf1  = buf[1];
     const uint8_t * const d128 = ff_dither_8x8_220[y & 7];
     int  yalpha1 = 4096 - yalpha;
@@ -661,6 +687,7 @@ yuv2mono_1_c_template(SwsContext *c, const int16_t *buf0,
                       const int16_t *abuf0, uint8_t *dest, int dstW,
                       int uvalpha, int y, enum AVPixelFormat target)
 {
+    //printf("[*]  seralee in output.c  %s start\n",__FUNCTION__);
     const uint8_t * const d128 = ff_dither_8x8_220[y & 7];
     int i;
 
@@ -767,6 +794,7 @@ yuv2422_X_c_template(SwsContext *c, const int16_t *lumFilter,
                      const int16_t **alpSrc, uint8_t *dest, int dstW,
                      int y, enum AVPixelFormat target)
 {
+    //printf("[*]  seralee in output.c  %s start\n",__FUNCTION__);
     int i;
 
     for (i = 0; i < ((dstW + 1) >> 1); i++) {
@@ -805,6 +833,7 @@ yuv2422_2_c_template(SwsContext *c, const int16_t *buf[2],
                      int yalpha, int uvalpha, int y,
                      enum AVPixelFormat target)
 {
+    //printf("[*]  seralee in output.c  %s start\n",__FUNCTION__);
     const int16_t *buf0  = buf[0],  *buf1  = buf[1],
                   *ubuf0 = ubuf[0], *ubuf1 = ubuf[1],
                   *vbuf0 = vbuf[0], *vbuf1 = vbuf[1];
@@ -837,6 +866,7 @@ yuv2422_1_c_template(SwsContext *c, const int16_t *buf0,
                      const int16_t *abuf0, uint8_t *dest, int dstW,
                      int uvalpha, int y, enum AVPixelFormat target)
 {
+    //printf("[*]  seralee in output.c  %s start\n",__FUNCTION__);
     const int16_t *ubuf0 = ubuf[0], *vbuf0 = vbuf[0];
     int i;
 
@@ -899,6 +929,7 @@ yuv2ya16_X_c_template(SwsContext *c, const int16_t *lumFilter,
                         const int32_t **alpSrc, uint16_t *dest, int dstW,
                         int y, enum AVPixelFormat target, int unused_hasAlpha, int unused_eightbytes)
 {
+    //printf("[*]  seralee in output.c  %s start\n",__FUNCTION__);
     int hasAlpha = !!alpSrc;
     int i;
 
@@ -936,6 +967,7 @@ yuv2ya16_2_c_template(SwsContext *c, const int32_t *buf[2],
                         int yalpha, int unused_uvalpha, int y,
                         enum AVPixelFormat target, int unused_hasAlpha, int unused_eightbytes)
 {
+    //printf("[*]  seralee in output.c  %s start\n",__FUNCTION__);
     int hasAlpha = abuf && abuf[0] && abuf[1];
     const int32_t *buf0  = buf[0],  *buf1  = buf[1],
     *abuf0 = hasAlpha ? abuf[0] : NULL,
@@ -967,6 +999,7 @@ yuv2ya16_1_c_template(SwsContext *c, const int32_t *buf0,
                         const int32_t *abuf0, uint16_t *dest, int dstW,
                         int unused_uvalpha, int y, enum AVPixelFormat target, int unused_hasAlpha, int unused_eightbytes)
 {
+    //printf("[*]  seralee in output.c  %s start\n",__FUNCTION__);
     int hasAlpha = !!abuf0;
     int i;
 
@@ -995,6 +1028,7 @@ yuv2rgba64_X_c_template(SwsContext *c, const int16_t *lumFilter,
                        const int32_t **alpSrc, uint16_t *dest, int dstW,
                        int y, enum AVPixelFormat target, int hasAlpha, int eightbytes)
 {
+    //printf("[*]  seralee in output.c  %s start\n",__FUNCTION__);
     int i;
     int A1 = 0xffff<<14, A2 = 0xffff<<14;
 
@@ -1076,6 +1110,7 @@ yuv2rgba64_2_c_template(SwsContext *c, const int32_t *buf[2],
                        int yalpha, int uvalpha, int y,
                        enum AVPixelFormat target, int hasAlpha, int eightbytes)
 {
+    //printf("[*]  seralee in output.c  %s start\n",__FUNCTION__);
     const int32_t *buf0  = buf[0],  *buf1  = buf[1],
                   *ubuf0 = ubuf[0], *ubuf1 = ubuf[1],
                   *vbuf0 = vbuf[0], *vbuf1 = vbuf[1],
@@ -1245,6 +1280,7 @@ yuv2rgba64_full_X_c_template(SwsContext *c, const int16_t *lumFilter,
                        const int32_t **alpSrc, uint16_t *dest, int dstW,
                        int y, enum AVPixelFormat target, int hasAlpha, int eightbytes)
 {
+    //printf("[*]  seralee in output.c  %s start\n",__FUNCTION__);
     int i;
     int A = 0xffff<<14;
 
@@ -1308,6 +1344,7 @@ yuv2rgba64_full_2_c_template(SwsContext *c, const int32_t *buf[2],
                        int yalpha, int uvalpha, int y,
                        enum AVPixelFormat target, int hasAlpha, int eightbytes)
 {
+    //printf("[*]  seralee in output.c  %s start\n",__FUNCTION__);
     const int32_t *buf0  = buf[0],  *buf1  = buf[1],
                   *ubuf0 = ubuf[0], *ubuf1 = ubuf[1],
                   *vbuf0 = vbuf[0], *vbuf1 = vbuf[1],
@@ -1359,6 +1396,7 @@ yuv2rgba64_full_1_c_template(SwsContext *c, const int32_t *buf0,
                        const int32_t *abuf0, uint16_t *dest, int dstW,
                        int uvalpha, int y, enum AVPixelFormat target, int hasAlpha, int eightbytes)
 {
+    //printf("[*]  seralee in output.c  %s start\n",__FUNCTION__);
     const int32_t *ubuf0 = ubuf[0], *vbuf0 = vbuf[0];
     int i;
     int A = 0xffff<<14;
@@ -1522,6 +1560,7 @@ yuv2rgb_write(uint8_t *_dest, int i, int Y1, int Y2,
               const void *_r, const void *_g, const void *_b, int y,
               enum AVPixelFormat target, int hasAlpha)
 {
+    //printf("[*]  seralee in output.c  %s start\n",__FUNCTION__);
     if (target == AV_PIX_FMT_ARGB || target == AV_PIX_FMT_RGBA ||
         target == AV_PIX_FMT_ABGR || target == AV_PIX_FMT_BGRA) {
         uint32_t *dest = (uint32_t *) _dest;
@@ -1643,6 +1682,7 @@ yuv2rgb_X_c_template(SwsContext *c, const int16_t *lumFilter,
                      const int16_t **alpSrc, uint8_t *dest, int dstW,
                      int y, enum AVPixelFormat target, int hasAlpha)
 {
+    //printf("[*]  seralee in output.c  %s start\n",__FUNCTION__);
     int i;
 
     for (i = 0; i < ((dstW + 1) >> 1); i++) {
@@ -1736,6 +1776,7 @@ yuv2rgb_1_c_template(SwsContext *c, const int16_t *buf0,
                      int uvalpha, int y, enum AVPixelFormat target,
                      int hasAlpha)
 {
+    //printf("[*]  seralee in output.c  %s start\n",__FUNCTION__);
     const int16_t *ubuf0 = ubuf[0], *vbuf0 = vbuf[0];
     int i;
 
@@ -1844,15 +1885,16 @@ static av_always_inline void yuv2rgb_write_full(SwsContext *c,
     uint8_t *dest, int i, int Y, int A, int U, int V,
     int y, enum AVPixelFormat target, int hasAlpha, int err[4])
 {
+    //printf("[*]  seralee in output.c  %s start\n",__FUNCTION__);
     int R, G, B;
     int isrgb8 = target == AV_PIX_FMT_BGR8 || target == AV_PIX_FMT_RGB8;
 
     Y -= c->yuv2rgb_y_offset;
     Y *= c->yuv2rgb_y_coeff;
     Y += 1 << 21;
-    R = Y + V*c->yuv2rgb_v2r_coeff;
-    G = Y + V*c->yuv2rgb_v2g_coeff + U*c->yuv2rgb_u2g_coeff;
-    B = Y +                          U*c->yuv2rgb_u2b_coeff;
+    R = (unsigned)Y + V*c->yuv2rgb_v2r_coeff;
+    G = (unsigned)Y + V*c->yuv2rgb_v2g_coeff + U*c->yuv2rgb_u2g_coeff;
+    B = (unsigned)Y +                          U*c->yuv2rgb_u2b_coeff;
     if ((R | G | B) & 0xC0000000) {
         R = av_clip_uintp2(R, 30);
         G = av_clip_uintp2(G, 30);
@@ -1987,6 +2029,7 @@ yuv2rgb_full_X_c_template(SwsContext *c, const int16_t *lumFilter,
                           const int16_t **alpSrc, uint8_t *dest,
                           int dstW, int y, enum AVPixelFormat target, int hasAlpha)
 {
+    //printf("[*]  seralee in output.c  %s start\n",__FUNCTION__);
     int i;
     int step = (target == AV_PIX_FMT_RGB24 || target == AV_PIX_FMT_BGR24) ? 3 : 4;
     int err[4] = {0};
@@ -2036,6 +2079,7 @@ yuv2rgb_full_2_c_template(SwsContext *c, const int16_t *buf[2],
                      int yalpha, int uvalpha, int y,
                      enum AVPixelFormat target, int hasAlpha)
 {
+    //printf("[*]  seralee in output.c  %s start\n",__FUNCTION__);
     const int16_t *buf0  = buf[0],  *buf1  = buf[1],
                   *ubuf0 = ubuf[0], *ubuf1 = ubuf[1],
                   *vbuf0 = vbuf[0], *vbuf1 = vbuf[1],
@@ -2081,6 +2125,7 @@ yuv2rgb_full_1_c_template(SwsContext *c, const int16_t *buf0,
                      int uvalpha, int y, enum AVPixelFormat target,
                      int hasAlpha)
 {
+    //printf("[*]  seralee in output.c  %s start\n",__FUNCTION__);
     const int16_t *ubuf0 = ubuf[0], *vbuf0 = vbuf[0];
     int i;
     int step = (target == AV_PIX_FMT_RGB24 || target == AV_PIX_FMT_BGR24) ? 3 : 4;
@@ -2163,6 +2208,7 @@ yuv2gbrp_full_X_c(SwsContext *c, const int16_t *lumFilter,
                   const int16_t **alpSrc, uint8_t **dest,
                   int dstW, int y)
 {
+    //printf("[*]  seralee in output.c  %s start\n",__FUNCTION__);
     const AVPixFmtDescriptor *desc = av_pix_fmt_desc_get(c->dstFormat);
     int i;
     int hasAlpha = (desc->flags & AV_PIX_FMT_FLAG_ALPHA) && alpSrc;
@@ -2245,6 +2291,7 @@ yuv2gbrp16_full_X_c(SwsContext *c, const int16_t *lumFilter,
                     const int16_t **alpSrcx, uint8_t **dest,
                     int dstW, int y)
 {
+    //printf("[*]  seralee in output.c  %s start\n",__FUNCTION__);
     const AVPixFmtDescriptor *desc = av_pix_fmt_desc_get(c->dstFormat);
     int i;
     int hasAlpha = (desc->flags & AV_PIX_FMT_FLAG_ALPHA) && alpSrcx;
@@ -2278,7 +2325,7 @@ yuv2gbrp16_full_X_c(SwsContext *c, const int16_t *lumFilter,
             A = -0x40000000;
 
             for (j = 0; j < lumFilterSize; j++)
-                A += alpSrc[j][i] * lumFilter[j];
+                A += alpSrc[j][i] * (unsigned)lumFilter[j];
 
             A >>= 1;
             A += 0x20002000;
@@ -2313,11 +2360,89 @@ yuv2gbrp16_full_X_c(SwsContext *c, const int16_t *lumFilter,
 }
 
 static void
+yuv2gbrpf32_full_X_c(SwsContext *c, const int16_t *lumFilter,
+                    const int16_t **lumSrcx, int lumFilterSize,
+                    const int16_t *chrFilter, const int16_t **chrUSrcx,
+                    const int16_t **chrVSrcx, int chrFilterSize,
+                    const int16_t **alpSrcx, uint8_t **dest,
+                    int dstW, int y)
+{
+    //printf("[*]  seralee in output.c  %s start\n",__FUNCTION__);
+    const AVPixFmtDescriptor *desc = av_pix_fmt_desc_get(c->dstFormat);
+    int i;
+    int hasAlpha = (desc->flags & AV_PIX_FMT_FLAG_ALPHA) && alpSrcx;
+    uint32_t **dest32 = (uint32_t**)dest;
+    const int32_t **lumSrc  = (const int32_t**)lumSrcx;
+    const int32_t **chrUSrc = (const int32_t**)chrUSrcx;
+    const int32_t **chrVSrc = (const int32_t**)chrVSrcx;
+    const int32_t **alpSrc  = (const int32_t**)alpSrcx;
+    static const float float_mult = 1.0f / 65535.0f;
+
+    for (i = 0; i < dstW; i++) {
+        int j;
+        int Y = -0x40000000;
+        int U = -(128 << 23);
+        int V = -(128 << 23);
+        int R, G, B, A;
+
+        for (j = 0; j < lumFilterSize; j++)
+            Y += lumSrc[j][i] * (unsigned)lumFilter[j];
+
+        for (j = 0; j < chrFilterSize; j++) {
+            U += chrUSrc[j][i] * (unsigned)chrFilter[j];
+            V += chrVSrc[j][i] * (unsigned)chrFilter[j];
+        }
+
+        Y >>= 14;
+        Y += 0x10000;
+        U >>= 14;
+        V >>= 14;
+
+        if (hasAlpha) {
+            A = -0x40000000;
+
+            for (j = 0; j < lumFilterSize; j++)
+                A += alpSrc[j][i] * (unsigned)lumFilter[j];
+
+            A >>= 1;
+            A += 0x20002000;
+        }
+
+        Y -= c->yuv2rgb_y_offset;
+        Y *= c->yuv2rgb_y_coeff;
+        Y += 1 << 13;
+        R = V * c->yuv2rgb_v2r_coeff;
+        G = V * c->yuv2rgb_v2g_coeff + U * c->yuv2rgb_u2g_coeff;
+        B =                            U * c->yuv2rgb_u2b_coeff;
+
+        R = av_clip_uintp2(Y + R, 30);
+        G = av_clip_uintp2(Y + G, 30);
+        B = av_clip_uintp2(Y + B, 30);
+
+        dest32[0][i] = av_float2int(float_mult * (float)(G >> 14));
+        dest32[1][i] = av_float2int(float_mult * (float)(B >> 14));
+        dest32[2][i] = av_float2int(float_mult * (float)(R >> 14));
+        if (hasAlpha)
+            dest32[3][i] = av_float2int(float_mult * (float)(av_clip_uintp2(A, 30) >> 14));
+    }
+    if ((!isBE(c->dstFormat)) != (!HAVE_BIGENDIAN)) {
+        for (i = 0; i < dstW; i++) {
+            dest32[0][i] = av_bswap32(dest32[0][i]);
+            dest32[1][i] = av_bswap32(dest32[1][i]);
+            dest32[2][i] = av_bswap32(dest32[2][i]);
+            if (hasAlpha)
+                dest32[3][i] = av_bswap32(dest32[3][i]);
+        }
+    }
+}
+
+static void
 yuv2ya8_1_c(SwsContext *c, const int16_t *buf0,
             const int16_t *ubuf[2], const int16_t *vbuf[2],
             const int16_t *abuf0, uint8_t *dest, int dstW,
             int uvalpha, int y)
 {
+    //printf("[*]  seralee in output.c  %s start\n",__FUNCTION__);
     int hasAlpha = !!abuf0;
     int i;
 
@@ -2412,6 +2537,7 @@ yuv2ayuv64le_X_c(SwsContext *c, const int16_t *lumFilter,
                  const int16_t **_chrVSrc, int chrFilterSize,
                  const int16_t **_alpSrc, uint8_t *dest, int dstW, int y)
 {
+    //printf("[*]  seralee in output.c  %s start\n",__FUNCTION__);
     const int32_t **lumSrc  = (const int32_t **) _lumSrc,
                   **chrUSrc = (const int32_t **) _chrUSrc,
                   **chrVSrc = (const int32_t **) _chrVSrc,
@@ -2715,6 +2841,12 @@ av_cold void ff_sws_init_output_funcs(SwsContext *c,
         case AV_PIX_FMT_GBRAP16BE:
         case AV_PIX_FMT_GBRAP16LE:
             *yuv2anyX = yuv2gbrp16_full_X_c;
+            break;
+        case AV_PIX_FMT_GBRPF32BE:
+        case AV_PIX_FMT_GBRPF32LE:
+        case AV_PIX_FMT_GBRAPF32BE:
+        case AV_PIX_FMT_GBRAPF32LE:
+            *yuv2anyX = yuv2gbrpf32_full_X_c;
             break;
         }
         if (!*yuv2packedX && !*yuv2anyX)

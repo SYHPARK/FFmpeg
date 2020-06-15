@@ -77,6 +77,7 @@ static int alloc_lines(SwsSlice *s, int size, int width)
 
 static int alloc_slice(SwsSlice *s, enum AVPixelFormat fmt, int lumLines, int chrLines, int h_sub_sample, int v_sub_sample, int ring)
 {
+
     int i;
     int size[4] = { lumLines,
                     chrLines,
@@ -146,6 +147,7 @@ int ff_rotate_slice(SwsSlice *s, int lum, int chr)
 
 int ff_init_slice_from_src(SwsSlice * s, uint8_t *src[4], int stride[4], int srcW, int lumY, int lumH, int chrY, int chrH, int relative)
 {
+
     int i = 0;
 
     const int start[4] = {lumY,
@@ -174,8 +176,9 @@ int ff_init_slice_from_src(SwsSlice * s, uint8_t *src[4], int stride[4], int src
 
         if (start[i] >= first && n >= tot_lines) {
             s->plane[i].sliceH = FFMAX(tot_lines, s->plane[i].sliceH);
-            for (j = 0; j < lines; j+= 1)
+            for (j = 0; j < lines; j+= 1) {
                 s->plane[i].line[start[i] - first + j] = src_[i] +  j * stride[i];
+            }
         } else {
             s->plane[i].sliceY = start[i];
             lines = lines > n ? n : lines;
@@ -189,23 +192,26 @@ int ff_init_slice_from_src(SwsSlice * s, uint8_t *src[4], int stride[4], int src
     return 0;
 }
 
-static void fill_ones(SwsSlice *s, int n, int is16bit)
+static void fill_ones(SwsSlice *s, int n, int bpc)
 {
-    int i;
+    int i, j, k, size, end;
+
     for (i = 0; i < 4; ++i) {
-        int j;
-        int size = s->plane[i].available_lines;
+        size = s->plane[i].available_lines;
         for (j = 0; j < size; ++j) {
-            int k;
-            int end = is16bit ? n>>1: n;
-            // fill also one extra element
-            end += 1;
-            if (is16bit)
+            if (bpc == 16) {
+                end = (n>>1) + 1;
                 for (k = 0; k < end; ++k)
                     ((int32_t*)(s->plane[i].line[j]))[k] = 1<<18;
-            else
+            } else if (bpc == 32) {
+                end = (n>>2) + 1;
+                for (k = 0; k < end; ++k)
+                    ((int64_t*)(s->plane[i].line[j]))[k] = 1LL<<34;
+            } else {
+                end = n + 1;
                 for (k = 0; k < end; ++k)
                     ((int16_t*)(s->plane[i].line[j]))[k] = 1<<14;
+            }
         }
     }
 }
@@ -244,6 +250,9 @@ static void get_min_buffer_size(SwsContext *c, int *out_lum_size, int *out_chr_s
     }
 }
 
+//SERA START
+#include <CL/cl.h>
+//SERA END
 
 
 int ff_init_filters(SwsContext * c)
@@ -272,6 +281,9 @@ int ff_init_filters(SwsContext * c)
     if (c->dstBpc == 16)
         dst_stride <<= 1;
 
+    if (c->dstBpc == 32)
+        dst_stride <<= 2;
+
     num_ydesc = need_lum_conv ? 2 : 1;
     num_cdesc = need_chr_conv ? 2 : 1;
 
@@ -289,6 +301,8 @@ int ff_init_filters(SwsContext * c)
 
 
     res = alloc_slice(&c->slice[0], c->srcFormat, c->srcH, c->chrSrcH, c->chrSrcHSubSample, c->chrSrcVSubSample, 0);
+    c->slice[0].plane[0].cl_num_lines = c->srcH;
+    c->slice[0].plane[3].cl_num_lines = c->srcH;
     if (res < 0) goto cleanup;
     for (i = 1; i < c->numSlice-2; ++i) {
         res = alloc_slice(&c->slice[i], c->srcFormat, lumBufSize, chrBufSize, c->chrSrcHSubSample, c->chrSrcVSubSample, 0);
@@ -298,11 +312,32 @@ int ff_init_filters(SwsContext * c)
     }
     // horizontal scaler output
     res = alloc_slice(&c->slice[i], c->srcFormat, lumBufSize, chrBufSize, c->chrDstHSubSample, c->chrDstVSubSample, 1);
+
+    
     if (res < 0) goto cleanup;
     res = alloc_lines(&c->slice[i], dst_stride, c->dstW);
+
     if (res < 0) goto cleanup;
 
-    fill_ones(&c->slice[i], dst_stride>>1, c->dstBpc == 16);
+    fill_ones(&c->slice[i], dst_stride>>1, c->dstBpc);
+    //SERA START
+    int err = CL_SUCCESS;
+    int line_size = dst_stride + 16;
+    c->slice[i].plane[0].cl_line = clCreateBuffer(c->lum_context, CL_MEM_READ_WRITE, lumBufSize*line_size,
+            NULL, &err);
+    c->slice[i].plane[3].cl_line = clCreateBuffer(c->lum_context, CL_MEM_READ_WRITE, lumBufSize*line_size,
+            NULL, &err);
+    c->slice[i].plane[0].cl_size_per_line = line_size;
+    c->slice[i].plane[3].cl_size_per_line = line_size;
+    c->slice[i].plane[0].cl_num_lines = lumBufSize;
+    c->slice[i].plane[3].cl_num_lines = lumBufSize;
+    for(int line_idx=0;line_idx < lumBufSize;line_idx++) {
+        err |= clEnqueueWriteBuffer(c->lum_queue, c->slice[i].plane[0].cl_line, CL_TRUE,line_idx*line_size,line_size,\
+                c->slice[i].plane[0].line[line_idx] , 0, NULL, NULL);
+        err |= clEnqueueWriteBuffer(c->lum_queue, c->slice[i].plane[3].cl_line, CL_TRUE,line_idx*line_size,line_size,\
+                c->slice[i].plane[3].line[line_idx] , 0, NULL, NULL);
+    }
+    //SERA END
 
     // vertical scaler output
     ++i;
@@ -329,6 +364,7 @@ int ff_init_filters(SwsContext * c)
 
 
     dstIdx = FFMAX(num_ydesc, num_cdesc);
+    // here is always lum
     res = ff_init_desc_hscale(&c->desc[index], &c->slice[srcIdx], &c->slice[dstIdx], c->hLumFilter, c->hLumFilterPos, c->hLumFilterSize, c->lumXInc);
     if (res < 0) goto cleanup;
     c->desc[index].alpha = c->needAlpha;
@@ -346,10 +382,12 @@ int ff_init_filters(SwsContext * c)
         }
 
         dstIdx = FFMAX(num_ydesc, num_cdesc);
-        if (c->needs_hcscale)
+        if (c->needs_hcscale) {
             res = ff_init_desc_chscale(&c->desc[index], &c->slice[srcIdx], &c->slice[dstIdx], c->hChrFilter, c->hChrFilterPos, c->hChrFilterSize, c->chrXInc);
-        else
+        }
+        else {
             res = ff_init_desc_no_chr(&c->desc[index], &c->slice[srcIdx], &c->slice[dstIdx]);
+        }
         if (res < 0) goto cleanup;
     }
 

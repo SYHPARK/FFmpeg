@@ -1,0 +1,147 @@
+ffmpeg started on 2020-06-10 at 05:23:06
+Report written to "ffmpeg-20200610-052306.log"
+Log level: 48
+Command line:
+./ffmpeg -report -i thumbnail.jpg -vf "scale=320:160" -y output.jpg
+ffmpeg version N-96873-g3aea47fa8d Copyright (c) 2000-2020 the FFmpeg developers
+  built with gcc 7 (Ubuntu/Linaro 7.5.0-3ubuntu1~18.04)
+  configuration: --enable-gpl --enable-libx264 --enable-opencl
+  libavutil      56. 42.100 / 56. 42.100
+  libavcodec     58. 73.102 / 58. 73.102
+  libavformat    58. 39.101 / 58. 39.101
+  libavdevice    58.  9.103 / 58.  9.103
+  libavfilter     7. 77.100 /  7. 77.100
+  libswscale      5.  6.100 /  5.  6.100
+  libswresample   3.  6.100 /  3.  6.100
+  libpostproc    55.  6.100 / 55.  6.100
+Splitting the commandline.
+Reading option '-report' ... matched as option 'report' (generate a report) with argument '1'.
+Reading option '-i' ... matched as input url with argument 'thumbnail.jpg'.
+Reading option '-vf' ... matched as option 'vf' (set video filters) with argument 'scale=320:160'.
+Reading option '-y' ... matched as option 'y' (overwrite output files) with argument '1'.
+Reading option 'output.jpg' ... matched as output url.
+Finished splitting the commandline.
+Parsing a group of options: global .
+Applying option report (generate a report) with argument 1.
+Applying option y (overwrite output files) with argument 1.
+Successfully parsed a group of options.
+Parsing a group of options: input url thumbnail.jpg.
+Successfully parsed a group of options.
+Opening an input file: thumbnail.jpg.
+[NULL @ 0x1b8d4c0] Opening 'thumbnail.jpg' for reading
+[file @ 0x1b8dca0] Setting default whitelist 'file,crypto,data'
+[image2 @ 0x1b8d4c0] Format image2 probed with size=2048 and score=50
+[image2 @ 0x1b8d4c0] Before avformat_find_stream_info() pos: 0 bytes read:32768 seeks:0 nb_streams:1
+[mjpeg @ 0x1b8ec50] marker=d8 avail_size_in_buf=80766
+[mjpeg @ 0x1b8ec50] marker parser used 0 bytes (0 bits)
+[mjpeg @ 0x1b8ec50] marker=e0 avail_size_in_buf=80764
+[mjpeg @ 0x1b8ec50] marker parser used 16 bytes (128 bits)
+[mjpeg @ 0x1b8ec50] marker=fe avail_size_in_buf=80746
+[mjpeg @ 0x1b8ec50] marker parser used 16 bytes (128 bits)
+[mjpeg @ 0x1b8ec50] marker=db avail_size_in_buf=80728
+[mjpeg @ 0x1b8ec50] index=0
+[mjpeg @ 0x1b8ec50] qscale[0]: 8
+[mjpeg @ 0x1b8ec50] marker parser used 67 bytes (536 bits)
+[mjpeg @ 0x1b8ec50] marker=c4 avail_size_in_buf=80659
+[mjpeg @ 0x1b8ec50] marker parser used 0 bytes (0 bits)
+[mjpeg @ 0x1b8ec50] marker=c0 avail_size_in_buf=80490
+[mjpeg @ 0x1b8ec50] Changing bps from 0 to 8
+[mjpeg @ 0x1b8ec50] sof0: picture: 1280x720
+[mjpeg @ 0x1b8ec50] component 0 2:2 id: 0 quant:0
+[mjpeg @ 0x1b8ec50] component 1 1:1 id: 1 quant:0
+[mjpeg @ 0x1b8ec50] component 2 1:1 id: 2 quant:0
+[mjpeg @ 0x1b8ec50] pix fmt id 22111100
+[mjpeg @ 0x1b8ec50] Format yuvj420p chosen by get_format().
+[mjpeg @ 0x1b8ec50] marker parser used 17 bytes (136 bits)
+[mjpeg @ 0x1b8ec50] escaping removed 310 bytes
+[mjpeg @ 0x1b8ec50] marker=da avail_size_in_buf=80471
+[mjpeg @ 0x1b8ec50] marker parser used 80161 bytes (641288 bits)
+[mjpeg @ 0x1b8ec50] marker=d9 avail_size_in_buf=0
+[mjpeg @ 0x1b8ec50] decode frame unused 0 bytes
+[image2 @ 0x1b8d4c0] After avformat_find_stream_info() pos: 80768 bytes read:80768 seeks:0 frames:1
+Input #0, image2, from 'thumbnail.jpg':
+  Duration: 00:00:00.04, start: 0.000000, bitrate: 16153 kb/s
+    Stream #0:0, 1, 1/25: Video: mjpeg (Baseline), yuvj420p(pc, bt470bg/unknown/unknown), 1280x720 [SAR 1:1 DAR 16:9], 25 tbr, 25 tbn, 25 tbc
+Successfully opened the file.
+Parsing a group of options: output url output.jpg.
+Applying option vf (set video filters) with argument scale=320:160.
+Successfully parsed a group of options.
+Opening an output file: output.jpg.
+Successfully opened the file.
+Stream mapping:
+  Stream #0:0 -> #0:0 (mjpeg (native) -> mjpeg (native))
+Press [q] to stop, [?] for help
+cur_dts is invalid st:0 (0) [init:0 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[mjpeg @ 0x1b91390] marker=d8 avail_size_in_buf=80766
+[mjpeg @ 0x1b91390] marker parser used 0 bytes (0 bits)
+[mjpeg @ 0x1b91390] marker=e0 avail_size_in_buf=80764
+[mjpeg @ 0x1b91390] marker parser used 16 bytes (128 bits)
+[mjpeg @ 0x1b91390] marker=fe avail_size_in_buf=80746
+[mjpeg @ 0x1b91390] marker parser used 16 bytes (128 bits)
+[mjpeg @ 0x1b91390] marker=db avail_size_in_buf=80728
+[mjpeg @ 0x1b91390] index=0
+[mjpeg @ 0x1b91390] qscale[0]: 8
+[mjpeg @ 0x1b91390] marker parser used 67 bytes (536 bits)
+[mjpeg @ 0x1b91390] marker=c4 avail_size_in_buf=80659
+[mjpeg @ 0x1b91390] class=0 index=0 nb_codes=9
+[mjpeg @ 0x1b91390] class=0 index=1 nb_codes=8
+[mjpeg @ 0x1b91390] class=1 index=0 nb_codes=242
+[mjpeg @ 0x1b91390] class=1 index=1 nb_codes=242
+[mjpeg @ 0x1b91390] marker parser used 167 bytes (1336 bits)
+[mjpeg @ 0x1b91390] marker=c0 avail_size_in_buf=80490
+[mjpeg @ 0x1b91390] sof0: picture: 1280x720
+[mjpeg @ 0x1b91390] component 0 2:2 id: 0 quant:0
+[mjpeg @ 0x1b91390] component 1 1:1 id: 1 quant:0
+[mjpeg @ 0x1b91390] component 2 1:1 id: 2 quant:0
+[mjpeg @ 0x1b91390] pix fmt id 22111100
+[mjpeg @ 0x1b91390] Format yuvj420p chosen by get_format().
+[mjpeg @ 0x1b91390] marker parser used 17 bytes (136 bits)
+[mjpeg @ 0x1b91390] escaping removed 310 bytes
+[mjpeg @ 0x1b91390] marker=da avail_size_in_buf=80471
+[mjpeg @ 0x1b91390] component: 0
+[mjpeg @ 0x1b91390] component: 1
+[mjpeg @ 0x1b91390] component: 2
+[mjpeg @ 0x1b91390] marker parser used 80160 bytes (641273 bits)
+[mjpeg @ 0x1b91390] marker=d9 avail_size_in_buf=0
+[mjpeg @ 0x1b91390] decode frame unused 0 bytes
+detected 8 logical cores
+[Parsed_scale_0 @ 0x1bcfb60] Setting 'w' to value '320'
+[Parsed_scale_0 @ 0x1bcfb60] Setting 'h' to value '160'
+[Parsed_scale_0 @ 0x1bcfb60] Setting 'flags' to value 'bicubic'
+[Parsed_scale_0 @ 0x1bcfb60] w:320 h:160 flags:'bicubic' interl:0
+[graph 0 input from stream 0:0 @ 0x1bd0180] Setting 'video_size' to value '1280x720'
+[graph 0 input from stream 0:0 @ 0x1bd0180] Setting 'pix_fmt' to value '12'
+[graph 0 input from stream 0:0 @ 0x1bd0180] Setting 'time_base' to value '1/25'
+[graph 0 input from stream 0:0 @ 0x1bd0180] Setting 'pixel_aspect' to value '1/1'
+[graph 0 input from stream 0:0 @ 0x1bd0180] Setting 'frame_rate' to value '25/1'
+[graph 0 input from stream 0:0 @ 0x1bd0180] w:1280 h:720 pixfmt:yuvj420p tb:1/25 fr:25/1 sar:1/1
+[format @ 0x1bd00f0] Setting 'pix_fmts' to value 'yuvj420p|yuvj422p|yuvj444p'
+[AVFilterGraph @ 0x1b9d260] query_formats: 4 queried, 3 merged, 0 already done, 0 delayed
+[swscaler @ 0x1bd0d50] deprecated pixel format used, make sure you did set range correctly
+[Parsed_scale_0 @ 0x1bcfb60] w:1280 h:720 fmt:yuvj420p sar:1/1 -> w:320 h:160 fmt:yuvj420p sar:8/9 flags:0x4
+[mjpeg @ 0x1b95510] Forcing thread count to 1 for MJPEG encoding, use -thread_type slice or a constant quantizer if you want to use multiple cpu cores
+[mjpeg @ 0x1b95510] intra_quant_bias = 96 inter_quant_bias = 0
+Output #0, image2, to 'output.jpg':
+  Metadata:
+    encoder         : Lavf58.39.101
+    Stream #0:0, 0, 1/25: Video: mjpeg, yuvj420p(pc), 320x160 [SAR 8:9 DAR 16:9], q=2-31, 200 kb/s, 25 fps, 25 tbn, 25 tbc
+    Metadata:
+      encoder         : Lavc58.73.102 mjpeg
+    Side data:
+      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A
+Clipping frame in rate conversion by 0.000008
+[image2 @ 0x1b91ab0] Opening 'output.jpg' for writing
+[file @ 0x1c612e0] Setting default whitelist 'file,crypto,data'
+[AVIOContext @ 0x1c61460] Statistics: 0 seeks, 1 writeouts
+[out_0_0 @ 0x1bd07c0] EOF on sink link out_0_0:default.
+No more output streams to write to, finishing.
+frame=    1 fps=0.0 q=3.7 Lsize=N/A time=00:00:00.04 bitrate=N/A speed=1.21x    
+video:12kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: unknown
+Input file #0 (thumbnail.jpg):
+  Input stream #0:0 (video): 1 packets read (80768 bytes); 1 frames decoded; 
+  Total: 1 packets (80768 bytes) demuxed
+Output file #0 (output.jpg):
+  Output stream #0:0 (video): 1 frames encoded; 1 packets muxed (12446 bytes); 
+  Total: 1 packets (12446 bytes) muxed
+1 frames successfully decoded, 0 decoding errors
+[AVIOContext @ 0x1b95e70] Statistics: 80768 bytes read, 0 seeks

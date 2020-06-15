@@ -648,7 +648,7 @@ static int opencl_device_create_internal(AVHWDeviceContext *hwdev,
             props[1] = (intptr_t)platform_id;
     }
     //printf("platform id at ffmpeg: %d\n\n", *platform_id);
-    hwctx->context = clCreateContext(props, 1, &hwctx->device_id,
+    hwctx->context = clCreateContext(NULL, 1, &hwctx->device_id,
                                      &opencl_error_callback, hwdev, &cle);
 
     //hwctx->context = clCreateContext(NULL, 1, &hwctx->device_id,

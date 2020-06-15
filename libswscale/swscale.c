@@ -36,6 +36,16 @@
 #include "swscale_internal.h"
 #include "swscale.h"
 
+//SERA START
+typedef struct tmpFilterContext
+{
+    uint16_t *filter;
+    int *filter_pos;
+    int filter_size;
+    int xInc;
+} tmpFilterContext;
+//SERA END
+
 DECLARE_ALIGNED(8, const uint8_t, ff_dither_8x8_128)[9][8] = {
     {  36, 68,  60, 92,  34, 66,  58, 90, },
     { 100,  4, 124, 28,  98,  2, 122, 26, },
@@ -266,8 +276,6 @@ static int swscale(SwsContext *c, const uint8_t *src[],
 
     /* vars which will change and which we need to store back in the context */
     int dstY         = c->dstY;
-    int lumBufIndex  = c->lumBufIndex;
-    int chrBufIndex  = c->chrBufIndex;
     int lastInLumBuf = c->lastInLumBuf;
     int lastInChrBuf = c->lastInChrBuf;
 
@@ -298,15 +306,17 @@ static int swscale(SwsContext *c, const uint8_t *src[],
     srcStride[1] *= 1 << c->vChrDrop;
     srcStride[2] *= 1 << c->vChrDrop;
 
-    DEBUG_BUFFERS("swscale() %p[%d] %p[%d] %p[%d] %p[%d] -> %p[%d] %p[%d] %p[%d] %p[%d]\n",
+    /*
+    //printf("swscale() %p[%d] %p[%d] %p[%d] %p[%d] -> %p[%d] %p[%d] %p[%d] %p[%d]\n",
                   src[0], srcStride[0], src[1], srcStride[1],
                   src[2], srcStride[2], src[3], srcStride[3],
                   dst[0], dstStride[0], dst[1], dstStride[1],
                   dst[2], dstStride[2], dst[3], dstStride[3]);
-    DEBUG_BUFFERS("srcSliceY: %d srcSliceH: %d dstY: %d dstH: %d\n",
+    //printf("srcSliceY: %d srcSliceH: %d dstY: %d dstH: %d\n",
                   srcSliceY, srcSliceH, dstY, dstH);
-    DEBUG_BUFFERS("vLumFilterSize: %d vChrFilterSize: %d\n",
+    //printf("vLumFilterSize: %d vChrFilterSize: %d\n",
                   vLumFilterSize, vChrFilterSize);
+                  */
 
     if (dstStride[0]&15 || dstStride[1]&15 ||
         dstStride[2]&15 || dstStride[3]&15) {
@@ -336,8 +346,6 @@ static int swscale(SwsContext *c, const uint8_t *src[],
      * will not get executed. This is not really intended but works
      * currently, so people might do it. */
     if (srcSliceY == 0) {
-        lumBufIndex  = -1;
-        chrBufIndex  = -1;
         dstY         = 0;
         lastInLumBuf = -1;
         lastInChrBuf = -1;
@@ -351,8 +359,39 @@ static int swscale(SwsContext *c, const uint8_t *src[],
     ff_init_vscale_pfn(c, yuv2plane1, yuv2planeX, yuv2nv12cX,
                    yuv2packed1, yuv2packed2, yuv2packedX, yuv2anyX, c->use_mmx_vfilter);
 
-    ff_init_slice_from_src(src_slice, (uint8_t**)src, srcStride, c->srcW,
-            srcSliceY, srcSliceH, chrSrcSliceY, chrSrcSliceH, 1);
+    ff_init_slice_from_src(src_slice, (uint8_t**)src, srcStride, c->srcW, srcSliceY, srcSliceH, chrSrcSliceY, chrSrcSliceH, 1);
+
+    //SERA START
+    //src copy start
+    
+    int err = CL_SUCCESS;
+    int line_size = srcStride[0];
+    int num_lines = src_slice->plane[0].sliceH;
+    src_slice->plane[0].cl_line = clCreateBuffer(c->lum_context, CL_MEM_READ_WRITE, num_lines*line_size,
+            NULL, &err);
+    src_slice->plane[0].cl_size_per_line = line_size;
+    src_slice->plane[0].cl_num_lines = num_lines;
+    for(int line_idx=0;line_idx < num_lines;line_idx++) {
+        err |= clEnqueueWriteBuffer(c->lum_queue, src_slice->plane[0].cl_line, CL_TRUE, line_idx*line_size, line_size,\
+                src_slice->plane[0].line[line_idx], 0, NULL, NULL);
+        //for(int l=0; l < line_size; l++) {
+        //    printf(" %hhX", src_slice->plane[0].line[line_idx][l]);
+        //}
+    }
+    line_size = srcStride[3];
+    num_lines = src_slice->plane[3].sliceH;
+    if(line_size * num_lines) {
+        src_slice->plane[3].cl_line = clCreateBuffer(c->lum_context, CL_MEM_READ_WRITE, num_lines*line_size,
+                NULL, &err);
+        for(int line_idx=0;line_idx < num_lines;line_idx++) {
+            err |= clEnqueueWriteBuffer(c->lum_queue, src_slice->plane[3].cl_line, CL_TRUE, line_idx*line_size, line_size,\
+                    src_slice->plane[3].line[line_idx], 0, NULL, NULL);
+        }
+    }
+
+
+
+    //SERA END
 
     ff_init_slice_from_src(vout_slice, (uint8_t**)dst, dstStride, c->dstW,
             dstY, dstH, dstY >> c->chrDstVSubSample,
@@ -369,6 +408,70 @@ static int swscale(SwsContext *c, const uint8_t *src[],
         hout_slice->plane[3].sliceH = 0;
         hout_slice->width = dstW;
     }
+    int cl_dstW = hout_slice->plane[0].cl_size_per_line / sizeof(short);
+    int cl_srcW = src_slice->plane[0].cl_size_per_line;
+    //SERA START
+    // TODO : set kernel args
+    err = 0;
+    err |= clSetKernelArg(c->lum_kernel, 0, sizeof(int), (void*)&dstW);
+    err |= clSetKernelArg(c->lum_kernel, 1, sizeof(int), (void*)&desc[0].alpha);
+    err |= clSetKernelArg(c->lum_kernel, 2, sizeof(cl_mem), (void*)&c->cl_hLumFilter);
+    err |= clSetKernelArg(c->lum_kernel, 3, sizeof(cl_mem), (void*)&c->cl_hLumFilterPos);
+
+    int lum_idx = 0;
+
+    tmpFilterContext *instance = desc->instance;
+
+
+
+    /* For reference
+     * desc[i].process(c, &desc[i], firstPosY, lastPosY - firstPosY + 1);
+     * static int lum_h_scale_opencl(SwsContext *c, SwsFilterDescriptor *desc, int sliceY, int sliceH)
+     * */
+    int param_sliceH;
+    int param_sliceY;
+    cl_mem lum_param_sliceH = clCreateBuffer(c->lum_context, CL_MEM_READ_WRITE, sizeof(cl_int),
+            NULL, &err);
+    cl_mem lum_param_sliceY = clCreateBuffer(c->lum_context, CL_MEM_READ_WRITE, sizeof(cl_int),
+            NULL, &err);
+
+    const int srcW = c->srcW;
+
+
+    err |= clSetKernelArg(c->lum_kernel, 4, sizeof(int), (void*)&instance->filter_size);
+    err |= clSetKernelArg(c->lum_kernel, 5, sizeof(cl_mem), (void*)&lum_param_sliceH);
+    err |= clSetKernelArg(c->lum_kernel, 6, sizeof(cl_mem), (void*)&lum_param_sliceY);
+    err |= clSetKernelArg(c->lum_kernel, 7, sizeof(cl_mem), (void*)&desc[lum_idx].dst->plane[0].cl_line);
+    err |= clSetKernelArg(c->lum_kernel, 8, sizeof(cl_mem), (void*)&desc[lum_idx].src->plane[0].cl_line);
+    err |= clSetKernelArg(c->lum_kernel, 9, sizeof(cl_mem), (void*)&desc[lum_idx].dst->plane[3].cl_line);
+    err |= clSetKernelArg(c->lum_kernel, 10, sizeof(cl_mem), (void*)&desc[lum_idx].src->plane[3].cl_line);
+    err |= clSetKernelArg(c->lum_kernel, 11, sizeof(int), (void*)&c->lumConvertRange);
+
+
+    /* For ref
+     * c->hyScale(c, (int16_t*)dst[dst_pos], dstW, (const uint8_t *)src[src_pos], instance->filter,
+     *  instance->filter_pos, instance->filter_size);
+     *  desc->src->plane[0].sliceY
+     */
+
+    cl_mem lum_dst_0_sliceY = clCreateBuffer(c->lum_context, CL_MEM_READ_WRITE, sizeof(cl_int), 
+            NULL, &err);
+    cl_mem lum_dst_3_sliceY = clCreateBuffer(c->lum_context, CL_MEM_READ_WRITE, sizeof(cl_int),
+            NULL, &err);
+
+    err |= clSetKernelArg(c->lum_kernel, 12, sizeof(int), (void*)&desc[lum_idx].src->plane[0].sliceY);
+    //err |= clSetKernelArg(c->lum_kernel, 13, sizeof(cl_mem), (void*)&desc[lum_idx].dst->plane[0].sliceY);
+    err |= clSetKernelArg(c->lum_kernel, 13, sizeof(cl_mem), (void*)&lum_dst_0_sliceY);
+    err |= clSetKernelArg(c->lum_kernel, 14, sizeof(int), (void*)&desc[lum_idx].src->plane[3].sliceY);
+    //err |= clSetKernelArg(c->lum_kernel, 15, sizeof(cl_mem), (void*)&desc[lum_idx].dst->plane[3].sliceY);
+    err |= clSetKernelArg(c->lum_kernel, 15, sizeof(cl_mem), (void*)&lum_dst_3_sliceY);
+    err |= clSetKernelArg(c->lum_kernel, 16, sizeof(int), (void*)&cl_srcW);
+    err |= clSetKernelArg(c->lum_kernel, 17, sizeof(int), (void*)&cl_dstW);
+    int test = hout_slice->plane[0].cl_num_lines;
+    err |= clSetKernelArg(c->lum_kernel, 18, sizeof(int), (void*)&desc[lum_idx].dst->plane[0].available_lines);
+    err |= clSetKernelArg(c->lum_kernel, 18, sizeof(int), (void*)&test);
+    //SERA END
+    //
 
     for (; dstY < dstH; dstY++) {
         const int chrDstY = dstY >> c->chrDstVSubSample;
@@ -456,33 +559,102 @@ static int swscale(SwsContext *c, const uint8_t *src[],
 
         ff_rotate_slice(hout_slice, lastPosY, lastCPosY);
 
+
         if (posY < lastLumSrcY + 1) {
-            for (i = lumStart; i < lumEnd; ++i)
-                desc[i].process(c, &desc[i], firstPosY, lastPosY - firstPosY + 1);
+            //SERA START
+            //TODO : read src, dst
+            err = CL_SUCCESS;
+            int allocated_line_size = hout_slice->plane[0].cl_size_per_line;
+            num_lines = hout_slice->plane[0].cl_num_lines;
+            line_size = hout_slice->width * sizeof(short);
+           // printf("[*] before \n");
+            line_size = hout_slice->width;
+/*
+            for(int line_idx = 0;line_idx < num_lines;line_idx++) {
+                for(int l=0; l < line_size; l++) {
+                    if(l%20 == 0)
+                        printf("\n");
+                    short* dst = hout_slice->plane[0].line[line_idx];
+                    printf(" %x", (short*)dst[l]);
+                }
+                printf("\n");
+            }
+*/
+            for (i = lumStart; i < lumEnd; ++i) {
+                param_sliceH = lastPosY - firstPosY + 1;
+                param_sliceY = firstPosY;
+                err =  clEnqueueWriteBuffer(c->lum_queue, lum_param_sliceH, CL_TRUE, 0, sizeof(int),\
+                        &param_sliceH,0,0,0);
+                err =  clEnqueueWriteBuffer(c->lum_queue, lum_param_sliceY, CL_TRUE, 0, sizeof(int),\
+                        &param_sliceY,0,0,0);
+                err =  clEnqueueWriteBuffer(c->lum_queue, lum_dst_0_sliceY, CL_TRUE, 0, sizeof(int),\ 
+                        &desc[lum_idx].dst->plane[0].sliceY,0,0,0);
+                err =  clEnqueueWriteBuffer(c->lum_queue, lum_dst_3_sliceY, CL_TRUE, 0, sizeof(int),\ 
+                        &desc[lum_idx].dst->plane[3].sliceY,0,0,0);
+
+
+             //   printf("[*] print param\n");
+              //  printf("[*] dstW %d alpha %d convertOn %d, src0_sliceY %d dst0_sliceY %d src3_sliceY %d dst3_sliceY %d sliceH %d sliceY %d\n", \
+                        dstW,desc[i].alpha, c->lumConvertRange, desc[i].src->plane[0].sliceY, \
+                        desc[i].dst->plane[0].sliceY, desc[i].src->plane[3].sliceY, desc[i].dst->plane[3].sliceY, param_sliceH, param_sliceY);
+               // printf("[*] sliceY %d dst0_sliceY %d sliceH %d\n", param_sliceY, desc[lum_idx].dst->plane[0].sliceY, param_sliceH);
+                desc[i].process(c, &desc[i], param_sliceY, param_sliceH);
+
+                //post processing
+                desc[i].dst->plane[0].sliceH += param_sliceH;
+                line_size = srcStride[3];
+                num_lines = src_slice->plane[3].sliceH;
+                if(num_lines*line_size)
+                    desc[i].dst->plane[3].sliceH += param_sliceH;
+            }
+            //printf("[*] after \n");
+            //SERA START
+            //TODO : read src, dst
+            err = CL_SUCCESS;
+            allocated_line_size = hout_slice->plane[0].cl_size_per_line;
+            num_lines = hout_slice->plane[0].cl_num_lines;
+            line_size = hout_slice->width * sizeof(short);
+            //printf("[*] read buffer lines %d %d size %d\n", num_lines, hout_slice->plane[0].sliceH, line_size);
+            for(int line_idx = 0;line_idx < num_lines; line_idx++) {
+                if(OPENCL)
+                    err |= clEnqueueReadBuffer(c->lum_queue, hout_slice->plane[0].cl_line, CL_TRUE, line_idx*allocated_line_size, allocated_line_size,\
+                        hout_slice->plane[0].line[line_idx], 0, NULL, NULL);
+            }
+            line_size = hout_slice->width;
+/*
+            for(int line_idx = 0;line_idx < num_lines;line_idx++) {
+                for(int l=0; l < line_size; l++) {
+                    if(l%20 == 0)
+                        printf("\n");
+                    short* dst = hout_slice->plane[0].line[line_idx];
+                    printf(" %x", (short*)dst[l]);
+                }
+                printf("\n");
+            }
+*/
         }
 
-        lumBufIndex += lastLumSrcY - lastInLumBuf;
+    
+    //SERA END
+
+
+
+
         lastInLumBuf = lastLumSrcY;
 
         if (cPosY < lastChrSrcY + 1) {
-            for (i = chrStart; i < chrEnd; ++i)
+            for (i = chrStart; i < chrEnd; ++i) {
                 desc[i].process(c, &desc[i], firstCPosY, lastCPosY - firstCPosY + 1);
+            }
         }
 
-        chrBufIndex += lastChrSrcY - lastInChrBuf;
         lastInChrBuf = lastChrSrcY;
 
-        // wrap buf index around to stay inside the ring buffer
-        if (lumBufIndex >= vLumFilterSize)
-            lumBufIndex -= vLumFilterSize;
-        if (chrBufIndex >= vChrFilterSize)
-            chrBufIndex -= vChrFilterSize;
         if (!enough_lines)
             break;  // we can't output a dstY line so let's try with the next slice
 
 #if HAVE_MMX_INLINE
-        ff_updateMMXDitherTables(c, dstY, lumBufIndex, chrBufIndex,
-                              lastInLumBuf, lastInChrBuf);
+        ff_updateMMXDitherTables(c, dstY);
 #endif
         if (should_dither) {
             c->chrDither8 = ff_dither_8x8_128[chrDstY & 7];
@@ -499,10 +671,19 @@ static int swscale(SwsContext *c, const uint8_t *src[],
         }
 
         {
-            for (i = vStart; i < vEnd; ++i)
+            for (i = vStart; i < vEnd; ++i) {
+                //which slice?
                 desc[i].process(c, &desc[i], dstY, 1);
+            }
         }
+
     }
+
+
+
+
+
+    //seralee read desc[i] src, dst plane[0], plane[3]
     if (isPlanar(dstFormat) && isALPHA(dstFormat) && !needAlpha) {
         int length = dstW;
         int height = dstY - lastDstY;
@@ -512,6 +693,11 @@ static int swscale(SwsContext *c, const uint8_t *src[],
             fillPlane16(dst[3], dstStride[3], length, height, lastDstY,
                     1, desc->comp[3].depth,
                     isBE(dstFormat));
+        } else if (is32BPS(dstFormat)) {
+            const AVPixFmtDescriptor *desc = av_pix_fmt_desc_get(dstFormat);
+            fillPlane32(dst[3], dstStride[3], length, height, lastDstY,
+                    1, desc->comp[3].depth,
+                    isBE(dstFormat), desc->flags & AV_PIX_FMT_FLAG_FLOAT);
         } else
             fillPlane(dst[3], dstStride[3], length, height, lastDstY, 255);
     }
@@ -524,8 +710,6 @@ static int swscale(SwsContext *c, const uint8_t *src[],
 
     /* store changed local vars back in the context */
     c->dstY         = dstY;
-    c->lumBufIndex  = lumBufIndex;
-    c->chrBufIndex  = chrBufIndex;
     c->lastInLumBuf = lastInLumBuf;
     c->lastInChrBuf = lastInChrBuf;
 
@@ -587,6 +771,7 @@ static av_cold void sws_init_swscale(SwsContext *c)
     if (!(isGray(srcFormat) || isGray(c->dstFormat) ||
           srcFormat == AV_PIX_FMT_MONOBLACK || srcFormat == AV_PIX_FMT_MONOWHITE))
         c->needs_hcscale = 1;
+
 }
 
 SwsFunc ff_getSwsFunc(SwsContext *c)
@@ -599,8 +784,10 @@ SwsFunc ff_getSwsFunc(SwsContext *c)
         ff_sws_init_swscale_x86(c);
     if (ARCH_AARCH64)
         ff_sws_init_swscale_aarch64(c);
-    if (ARCH_ARM)
-        ff_sws_init_swscale_arm(c);
+    //SERA START
+    //if (ARCH_ARM)
+    //    ff_sws_init_swscale_arm(c);
+    //SERA END
 
     return swscale;
 }
@@ -975,7 +1162,9 @@ int attribute_align_arg sws_scale(struct SwsContext *c,
     /* reset slice direction at end of frame */
     if (srcSliceY_internal + srcSliceH == c->srcH)
         c->sliceDir = 0;
+    //printf("[*] seralee c->swscale start\n");
     ret = c->swscale(c, src2, srcStride2, srcSliceY_internal, srcSliceH, dst2, dstStride2);
+    //printf("[*] seralee c->swscale end\n");
 
     if (c->dstXYZ && !(c->srcXYZ && c->srcW==c->dstW && c->srcH==c->dstH)) {
         int dstY = c->dstY ? c->dstY : srcSliceY + srcSliceH;

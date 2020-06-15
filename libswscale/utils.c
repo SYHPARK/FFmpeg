@@ -63,6 +63,10 @@
 #include "swscale.h"
 #include "swscale_internal.h"
 
+//SERA START
+#include <CL/cl.h>
+//SERA END
+
 #if !FF_API_SWS_VECTOR
 static SwsVector *sws_getIdentityVec(void);
 static void sws_addVec(SwsVector *a, SwsVector *b);
@@ -236,6 +240,10 @@ static const FormatEntry format_entries[] = {
     [AV_PIX_FMT_GBRP14BE]    = { 1, 1 },
     [AV_PIX_FMT_GBRP16LE]    = { 1, 1 },
     [AV_PIX_FMT_GBRP16BE]    = { 1, 1 },
+    [AV_PIX_FMT_GBRPF32LE]   = { 1, 1 },
+    [AV_PIX_FMT_GBRPF32BE]   = { 1, 1 },
+    [AV_PIX_FMT_GBRAPF32LE]  = { 1, 1 },
+    [AV_PIX_FMT_GBRAPF32BE]  = { 1, 1 },
     [AV_PIX_FMT_GBRAP]       = { 1, 1 },
     [AV_PIX_FMT_GBRAP16LE]   = { 1, 1 },
     [AV_PIX_FMT_GBRAP16BE]   = { 1, 1 },
@@ -409,6 +417,7 @@ static av_cold int initFilter(int16_t **outFilter, int32_t **filterPos,
                 break;
             }
         }
+
         if (flags & SWS_LANCZOS)
             sizeFactor = param[0] != SWS_PARAM_DEFAULT ? ceil(2 * param[0]) : 6;
         av_assert0(sizeFactor > 0);
@@ -1162,6 +1171,14 @@ static enum AVPixelFormat alphaless_fmt(enum AVPixelFormat fmt)
     default: return AV_PIX_FMT_NONE;
     }
 }
+//SERA START
+extern const char *ff_opencl_source_lum_h_scale;
+#define CHECK_ERROR(err) \
+  if (err != CL_SUCCESS) { \
+    printf("[%s:%d] OpenCL error %d\n", __FILE__, __LINE__, err); \
+    exit(EXIT_FAILURE); \
+  }
+//SERA END
 
 av_cold int sws_init_context(SwsContext *c, SwsFilter *srcFilter,
                              SwsFilter *dstFilter)
@@ -1401,6 +1418,8 @@ av_cold int sws_init_context(SwsContext *c, SwsFilter *srcFilter,
         srcFormat != AV_PIX_FMT_GBRP14BE  && srcFormat != AV_PIX_FMT_GBRP14LE &&
         srcFormat != AV_PIX_FMT_GBRP16BE  && srcFormat != AV_PIX_FMT_GBRP16LE &&
         srcFormat != AV_PIX_FMT_GBRAP16BE  && srcFormat != AV_PIX_FMT_GBRAP16LE &&
+        srcFormat != AV_PIX_FMT_GBRPF32BE  && srcFormat != AV_PIX_FMT_GBRPF32LE &&
+        srcFormat != AV_PIX_FMT_GBRAPF32BE && srcFormat != AV_PIX_FMT_GBRAPF32LE &&
         ((dstW >> c->chrDstHSubSample) <= (srcW >> 1) ||
          (flags & SWS_FAST_BILINEAR)))
         c->chrSrcHSubSample = 1;
@@ -1607,6 +1626,47 @@ av_cold int sws_init_context(SwsContext *c, SwsFilter *srcFilter,
 #else
 #define USE_MMAP 0
 #endif
+    //SERA START
+    //TODO : add openCL start things : build kernel commandqueue 
+    cl_platform_id platform;
+    cl_device_id device;
+    cl_context context;
+    cl_command_queue queue;
+    cl_program program;
+    char *kernel_source;
+    size_t kernel_source_size = sizeof(ff_opencl_source_lum_h_scale);
+    cl_kernel kernel;
+    cl_int err;
+
+    // Get platform
+    err = clGetPlatformIDs(1, &platform, NULL);
+    CHECK_ERROR(err);
+
+    // Get device gpu
+    err = clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, 1, &device, NULL);
+    CHECK_ERROR(err);
+
+    // Create context
+    context = clCreateContext(NULL, 1, &device, NULL, NULL, &err);
+    c->lum_context = context;
+    CHECK_ERROR(err);
+
+    // Create Queue
+    queue = clCreateCommandQueue(context, device, 0, &err);
+    c->lum_queue = queue;
+    CHECK_ERROR(err);
+
+    // Create program
+    program = clCreateProgramWithSource(context, 1, (const char**)&ff_opencl_source_lum_h_scale,
+            NULL , &err);
+    CHECK_ERROR(err);
+
+    // Build program
+    err = clBuildProgram(program, 1, &device, "", NULL, NULL);
+    c->lum_kernel = clCreateKernel(program, "hScale8To15_c", &err); 
+    CHECK_ERROR(err);
+    //SERA END
+
 
     /* precalculate horizontal scaler filter coefficients */
     {
@@ -1651,6 +1711,7 @@ av_cold int sws_init_context(SwsContext *c, SwsFilter *srcFilter,
                 return AVERROR(ENOMEM);
             }
 
+
             FF_ALLOCZ_OR_GOTO(c, c->hLumFilter,    (dstW           / 8 + 8) * sizeof(int16_t), fail);
             FF_ALLOCZ_OR_GOTO(c, c->hChrFilter,    (c->chrDstW     / 4 + 8) * sizeof(int16_t), fail);
             FF_ALLOCZ_OR_GOTO(c, c->hLumFilterPos, (dstW       / 2 / 8 + 8) * sizeof(int32_t), fail);
@@ -1675,6 +1736,7 @@ av_cold int sws_init_context(SwsContext *c, SwsFilter *srcFilter,
                                     PPC_ALTIVEC(cpu_flags) ? 8 :
                                     have_neon(cpu_flags)   ? 8 : 1;
 
+
             if ((ret = initFilter(&c->hLumFilter, &c->hLumFilterPos,
                            &c->hLumFilterSize, c->lumXInc,
                            srcW, dstW, filterAlign, 1 << 14,
@@ -1684,6 +1746,18 @@ av_cold int sws_init_context(SwsContext *c, SwsFilter *srcFilter,
                            get_local_pos(c, 0, 0, 0),
                            get_local_pos(c, 0, 0, 0))) < 0)
                 goto fail;
+            //SERA START
+            //set createBuffer 
+            cl_int err;
+            c->cl_hLumFilter = clCreateBuffer(c->lum_context, CL_MEM_READ_WRITE, (dstW + 3) * c->hLumFilterSize* sizeof(int16_t),
+                    NULL, &err);
+            err = clEnqueueWriteBuffer(c->lum_queue, c->cl_hLumFilter, CL_TRUE, 0, (dstW + 3) * c->hLumFilterSize * sizeof(int16_t), c->hLumFilter, 0, NULL, NULL);
+            c->cl_hLumFilterPos =  clCreateBuffer(c->lum_context, CL_MEM_READ_WRITE, (dstW + 3) * sizeof(int),
+                    NULL, &err);
+            err = clEnqueueWriteBuffer(c->lum_queue, c->cl_hLumFilterPos, CL_TRUE, 0, (dstW + 3) * sizeof(int), c->hLumFilterPos, 0, NULL, NULL);
+            //printf("[*] filter err %d\n", err);
+            //TODO write FilterPos adn hLumFilter
+            //SERA END
             if ((ret = initFilter(&c->hChrFilter, &c->hChrFilterPos,
                            &c->hChrFilterSize, c->chrXInc,
                            c->chrSrcW, c->chrDstW, filterAlign, 1 << 14,

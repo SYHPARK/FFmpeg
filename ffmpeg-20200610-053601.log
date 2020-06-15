@@ -1,0 +1,412 @@
+ffmpeg started on 2020-06-10 at 05:36:01
+Report written to "ffmpeg-20200610-053601.log"
+Log level: 48
+Command line:
+./ffmpeg -report -i 4kvideo.mp4 -vf "scale=320:160" -y output.mp4
+ffmpeg version N-96873-g3aea47fa8d Copyright (c) 2000-2020 the FFmpeg developers
+  built with gcc 7 (Ubuntu/Linaro 7.5.0-3ubuntu1~18.04)
+  configuration: --enable-gpl --enable-libx264 --enable-opencl --enable-shared --disable-static --disable-optimizations --disable-mmx --disable-stripping --enable-debug=3 --disable-asm --extra-cflags=-fPIC
+  libavutil      56. 42.100 / 56. 42.100
+  libavcodec     58. 73.102 / 58. 73.102
+  libavformat    58. 39.101 / 58. 39.101
+  libavdevice    58.  9.103 / 58.  9.103
+  libavfilter     7. 77.100 /  7. 77.100
+  libswscale      5.  6.100 /  5.  6.100
+  libswresample   3.  6.100 /  3.  6.100
+  libpostproc    55.  6.100 / 55.  6.100
+Splitting the commandline.
+Reading option '-report' ... matched as option 'report' (generate a report) with argument '1'.
+Reading option '-i' ... matched as input url with argument '4kvideo.mp4'.
+Reading option '-vf' ... matched as option 'vf' (set video filters) with argument 'scale=320:160'.
+Reading option '-y' ... matched as option 'y' (overwrite output files) with argument '1'.
+Reading option 'output.mp4' ... matched as output url.
+Finished splitting the commandline.
+Parsing a group of options: global .
+Applying option report (generate a report) with argument 1.
+Applying option y (overwrite output files) with argument 1.
+Successfully parsed a group of options.
+Parsing a group of options: input url 4kvideo.mp4.
+Successfully parsed a group of options.
+Opening an input file: 4kvideo.mp4.
+[NULL @ 0x4494c0] Opening '4kvideo.mp4' for reading
+[file @ 0x449ca0] Setting default whitelist 'file,crypto,data'
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] Format mov,mp4,m4a,3gp,3g2,mj2 probed with size=2048 and score=100
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] ISO: File Type Major Brand: isom
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] Unknown dref type 0x206c7275 size 12
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] Processing st: 0, edit list 0 - media time: 2002, duration: 120120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 0 ctts: 2002, ctts_index: 0, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 1001 ctts: 5005, ctts_index: 1, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 2002 ctts: 2002, ctts_index: 2, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 3003 ctts: 0, ctts_index: 3, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 4004 ctts: 1001, ctts_index: 4, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 5005 ctts: 5005, ctts_index: 5, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 6006 ctts: 2002, ctts_index: 6, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 7007 ctts: 0, ctts_index: 7, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 8008 ctts: 1001, ctts_index: 8, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 9009 ctts: 5005, ctts_index: 9, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 10010 ctts: 2002, ctts_index: 10, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 11011 ctts: 0, ctts_index: 11, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 12012 ctts: 1001, ctts_index: 12, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 13013 ctts: 5005, ctts_index: 13, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 14014 ctts: 2002, ctts_index: 14, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 15015 ctts: 0, ctts_index: 15, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 16016 ctts: 1001, ctts_index: 16, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 17017 ctts: 5005, ctts_index: 17, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 18018 ctts: 2002, ctts_index: 18, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 19019 ctts: 0, ctts_index: 19, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 20020 ctts: 1001, ctts_index: 20, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 21021 ctts: 5005, ctts_index: 21, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 22022 ctts: 2002, ctts_index: 22, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 23023 ctts: 0, ctts_index: 23, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 24024 ctts: 1001, ctts_index: 24, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 25025 ctts: 5005, ctts_index: 25, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 26026 ctts: 2002, ctts_index: 26, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 27027 ctts: 0, ctts_index: 27, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 28028 ctts: 1001, ctts_index: 28, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 29029 ctts: 5005, ctts_index: 29, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 30030 ctts: 2002, ctts_index: 30, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 31031 ctts: 0, ctts_index: 31, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 32032 ctts: 1001, ctts_index: 32, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 33033 ctts: 5005, ctts_index: 33, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 34034 ctts: 2002, ctts_index: 34, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 35035 ctts: 0, ctts_index: 35, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 36036 ctts: 1001, ctts_index: 36, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 37037 ctts: 5005, ctts_index: 37, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 38038 ctts: 2002, ctts_index: 38, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 39039 ctts: 0, ctts_index: 39, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 40040 ctts: 1001, ctts_index: 40, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 41041 ctts: 5005, ctts_index: 41, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 42042 ctts: 2002, ctts_index: 42, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 43043 ctts: 0, ctts_index: 43, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 44044 ctts: 1001, ctts_index: 44, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 45045 ctts: 5005, ctts_index: 45, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 46046 ctts: 2002, ctts_index: 46, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 47047 ctts: 0, ctts_index: 47, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 48048 ctts: 1001, ctts_index: 48, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 49049 ctts: 5005, ctts_index: 49, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 50050 ctts: 2002, ctts_index: 50, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 51051 ctts: 0, ctts_index: 51, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 52052 ctts: 1001, ctts_index: 52, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 53053 ctts: 5005, ctts_index: 53, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 54054 ctts: 2002, ctts_index: 54, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 55055 ctts: 0, ctts_index: 55, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 56056 ctts: 1001, ctts_index: 56, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 57057 ctts: 5005, ctts_index: 57, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 58058 ctts: 2002, ctts_index: 58, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 59059 ctts: 0, ctts_index: 59, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 60060 ctts: 1001, ctts_index: 60, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 61061 ctts: 5005, ctts_index: 61, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 62062 ctts: 2002, ctts_index: 62, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 63063 ctts: 0, ctts_index: 63, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 64064 ctts: 1001, ctts_index: 64, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 65065 ctts: 5005, ctts_index: 65, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 66066 ctts: 2002, ctts_index: 66, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 67067 ctts: 0, ctts_index: 67, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 68068 ctts: 1001, ctts_index: 68, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 69069 ctts: 5005, ctts_index: 69, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 70070 ctts: 2002, ctts_index: 70, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 71071 ctts: 0, ctts_index: 71, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 72072 ctts: 1001, ctts_index: 72, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 73073 ctts: 5005, ctts_index: 73, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 74074 ctts: 2002, ctts_index: 74, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 75075 ctts: 0, ctts_index: 75, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 76076 ctts: 1001, ctts_index: 76, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 77077 ctts: 5005, ctts_index: 77, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 78078 ctts: 2002, ctts_index: 78, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 79079 ctts: 0, ctts_index: 79, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 80080 ctts: 1001, ctts_index: 80, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 81081 ctts: 5005, ctts_index: 81, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 82082 ctts: 2002, ctts_index: 82, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 83083 ctts: 0, ctts_index: 83, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 84084 ctts: 1001, ctts_index: 84, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 85085 ctts: 5005, ctts_index: 85, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 86086 ctts: 2002, ctts_index: 86, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 87087 ctts: 0, ctts_index: 87, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 88088 ctts: 1001, ctts_index: 88, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 89089 ctts: 5005, ctts_index: 89, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 90090 ctts: 2002, ctts_index: 90, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 91091 ctts: 0, ctts_index: 91, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 92092 ctts: 1001, ctts_index: 92, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 93093 ctts: 5005, ctts_index: 93, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 94094 ctts: 2002, ctts_index: 94, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 95095 ctts: 0, ctts_index: 95, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 96096 ctts: 1001, ctts_index: 96, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 97097 ctts: 5005, ctts_index: 97, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 98098 ctts: 2002, ctts_index: 98, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 99099 ctts: 0, ctts_index: 99, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 100100 ctts: 1001, ctts_index: 100, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 101101 ctts: 5005, ctts_index: 101, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 102102 ctts: 2002, ctts_index: 102, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 103103 ctts: 0, ctts_index: 103, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 104104 ctts: 1001, ctts_index: 104, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 105105 ctts: 5005, ctts_index: 105, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 106106 ctts: 2002, ctts_index: 106, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 107107 ctts: 0, ctts_index: 107, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 108108 ctts: 1001, ctts_index: 108, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 109109 ctts: 5005, ctts_index: 109, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 110110 ctts: 2002, ctts_index: 110, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 111111 ctts: 0, ctts_index: 111, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 112112 ctts: 1001, ctts_index: 112, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 113113 ctts: 5005, ctts_index: 113, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 114114 ctts: 2002, ctts_index: 114, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 115115 ctts: 0, ctts_index: 115, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 116116 ctts: 1001, ctts_index: 116, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 117117 ctts: 4004, ctts_index: 117, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 118118 ctts: 1001, ctts_index: 118, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] stts: 119119 ctts: 1001, ctts_index: 119, ctts_count: 120
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] Offset DTS by 2002 to make first pts zero.
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] Setting codecpar->delay to 2 for stream st: 0
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] Before avformat_find_stream_info() pos: 9822093 bytes read:35085 seeks:1 nb_streams:1
+[h264 @ 0x44a930] nal_unit_type: 7(SPS), nal_ref_idc: 3
+[h264 @ 0x44a930] nal_unit_type: 8(PPS), nal_ref_idc: 3
+[h264 @ 0x44a930] nal_unit_type: 6(SEI), nal_ref_idc: 0
+[h264 @ 0x44a930] nal_unit_type: 5(IDR), nal_ref_idc: 3
+[h264 @ 0x44a930] Format yuv420p chosen by get_format().
+[h264 @ 0x44a930] Reinit context to 3840x2160, pix_fmt: yuv420p
+[h264 @ 0x44a930] no picture 
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] All info found
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x4494c0] After avformat_find_stream_info() pos: 550449 bytes read:585486 seeks:2 frames:1
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '4kvideo.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf58.29.100
+  Duration: 00:00:04.00, start: 0.000000, bitrate: 19624 kb/s
+    Stream #0:0(eng), 1, 1/30000: Video: h264 (High) (avc1 / 0x31637661), yuv420p, 3840x2160 [SAR 1:1 DAR 16:9], 19619 kb/s, 29.97 fps, 29.97 tbr, 30k tbn, 59.94 tbc (default)
+    Metadata:
+      handler_name    : Mainconcept Video Media Handler
+Successfully opened the file.
+Parsing a group of options: output url output.mp4.
+Applying option vf (set video filters) with argument scale=320:160.
+Successfully parsed a group of options.
+Opening an output file: output.mp4.
+[file @ 0x465830] Setting default whitelist 'file,crypto,data'
+Successfully opened the file.
+detected 8 logical cores
+[h264 @ 0x4674b0] nal_unit_type: 7(SPS), nal_ref_idc: 3
+[h264 @ 0x4674b0] nal_unit_type: 8(PPS), nal_ref_idc: 3
+Stream mapping:
+  Stream #0:0 -> #0:0 (h264 (native) -> h264 (libx264))
+Press [q] to stop, [?] for help
+cur_dts is invalid st:0 (0) [init:0 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+cur_dts is invalid st:0 (0) [init:0 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x4674b0] nal_unit_type: 6(SEI), nal_ref_idc: 0
+[h264 @ 0x4674b0] nal_unit_type: 5(IDR), nal_ref_idc: 3
+[h264 @ 0x4674b0] Format yuv420p chosen by get_format().
+[h264 @ 0x4674b0] Reinit context to 3840x2160, pix_fmt: yuv420p
+[h264 @ 0x4674b0] no picture 
+cur_dts is invalid st:0 (0) [init:0 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x46c070] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+[h264 @ 0x46c070] no picture 
+cur_dts is invalid st:0 (0) [init:0 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x4fa560] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:0 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x512d40] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:0 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x52b530] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:0 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x543d20] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:0 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x55c510] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:0 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x574d00] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+[h264 @ 0x58d4f0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:0 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x4674b0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+frame=    0 fps=0.0 q=0.0 size=       0kB time=-577014:32:22.77 bitrate=  -0.0kbits/s speed=N/A    cur_dts is invalid st:0 (0) [init:0 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x46c070] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+[Parsed_scale_0 @ 0x5a6db0] Setting 'w' to value '320'
+[Parsed_scale_0 @ 0x5a6db0] Setting 'h' to value '160'
+[Parsed_scale_0 @ 0x5a6db0] Setting 'flags' to value 'bicubic'
+[Parsed_scale_0 @ 0x5a6db0] w:320 h:160 flags:'bicubic' interl:0
+[graph 0 input from stream 0:0 @ 0x5a7530] Setting 'video_size' to value '3840x2160'
+[graph 0 input from stream 0:0 @ 0x5a7530] Setting 'pix_fmt' to value '0'
+[graph 0 input from stream 0:0 @ 0x5a7530] Setting 'time_base' to value '1/30000'
+[graph 0 input from stream 0:0 @ 0x5a7530] Setting 'pixel_aspect' to value '1/1'
+[graph 0 input from stream 0:0 @ 0x5a7530] Setting 'frame_rate' to value '30000/1001'
+[graph 0 input from stream 0:0 @ 0x5a7530] w:3840 h:2160 pixfmt:yuv420p tb:1/30000 fr:30000/1001 sar:1/1
+[format @ 0x5a70e0] Setting 'pix_fmts' to value 'yuv420p|yuvj420p|yuv422p|yuvj422p|yuv444p|yuvj444p|nv12|nv16|nv21'
+[AVFilterGraph @ 0x5a6450] query_formats: 4 queried, 3 merged, 0 already done, 0 delayed
+[Parsed_scale_0 @ 0x5a6db0] w:3840 h:2160 fmt:yuv420p sar:1/1 -> w:320 h:160 fmt:yuv420p sar:8/9 flags:0x4
+[libx264 @ 0x44f000] using mv_range_thread = 24
+[libx264 @ 0x44f000] using SAR=8/9
+[libx264 @ 0x44f000] using cpu capabilities: ARMv6 NEON
+[libx264 @ 0x44f000] profile High, level 1.2
+[libx264 @ 0x44f000] 264 - core 152 r2854 e9a5903 - H.264/MPEG-4 AVC codec - Copyleft 2003-2017 - http://www.videolan.org/x264.html - options: cabac=1 ref=3 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=5 lookahead_threads=1 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=2 keyint=250 keyint_min=25 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=23.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to 'output.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf58.39.101
+    Stream #0:0(eng), 0, 1/30000: Video: h264 (libx264) (avc1 / 0x31637661), yuv420p, 320x160 [SAR 8:9 DAR 16:9], q=-1--1, 29.97 fps, 30k tbn, 29.97 tbc (default)
+    Metadata:
+      handler_name    : Mainconcept Video Media Handler
+      encoder         : Lavc58.73.102 libx264
+    Side data:
+      cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
+Clipping frame in rate conversion by 0.000008
+frame=    1 fps=0.5 q=0.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+frame=    1 fps=0.4 q=0.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x4fa560] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x512d40] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x52b530] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x543d20] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x55c510] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x574d00] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x58d4f0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x4674b0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+[h264 @ 0x46c070] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x4fa560] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+frame=    1 fps=0.3 q=0.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x512d40] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x52b530] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x543d20] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+frame=    1 fps=0.2 q=0.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x55c510] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x574d00] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x58d4f0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x4674b0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x46c070] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x4fa560] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x512d40] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+[h264 @ 0x52b530] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x543d20] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+frame=    1 fps=0.2 q=0.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+frame=    1 fps=0.2 q=0.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x55c510] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+[h264 @ 0x574d00] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x58d4f0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x4674b0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+frame=    1 fps=0.2 q=0.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x46c070] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+[h264 @ 0x4fa560] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x512d40] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x52b530] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+[h264 @ 0x543d20] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x55c510] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x574d00] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+frame=    1 fps=0.1 q=0.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x58d4f0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x4674b0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+[h264 @ 0x46c070] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x4fa560] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+frame=    1 fps=0.1 q=0.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x512d40] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+[h264 @ 0x52b530] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x543d20] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+frame=    1 fps=0.1 q=0.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x55c510] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x574d00] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x58d4f0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+[h264 @ 0x4674b0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x46c070] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+frame=    1 fps=0.1 q=0.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x4fa560] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x512d40] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x52b530] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+[h264 @ 0x543d20] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x55c510] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x574d00] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x58d4f0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+frame=    1 fps=0.1 q=0.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x4674b0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x46c070] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x4fa560] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+[h264 @ 0x512d40] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x52b530] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x543d20] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x55c510] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+[h264 @ 0x574d00] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x58d4f0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+frame=    1 fps=0.1 q=0.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+frame=    1 fps=0.1 q=0.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x4674b0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x46c070] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+[h264 @ 0x4fa560] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x512d40] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x52b530] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x543d20] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+[h264 @ 0x55c510] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 2
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x574d00] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+frame=    1 fps=0.1 q=0.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[h264 @ 0x58d4f0] nal_unit_type: 1(Coded slice of a non-IDR picture), nal_ref_idc: 0
+[libx264 @ 0x44f000] frame=   0 QP=31.06 NAL=3 Slice:I Poc:0   I:200  P:0    SKIP:0    size=5680 bytes
+Error writing trailer of output.mp4: Immediate exit requested
+frame=    1 fps=0.1 q=29.0 Lsize=       0kB time=00:00:00.00 bitrate=11636.4kbits/s speed=2.41e-06x    
+video:6kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: unknown
+Input file #0 (4kvideo.mp4):
+  Input stream #0:0 (video): 81 packets read (6647654 bytes); 72 frames decoded; 
+  Total: 81 packets (6647654 bytes) demuxed
+Output file #0 (output.mp4):
+  Output stream #0:0 (video): 1 frames encoded; 1 packets muxed (6369 bytes); 
+  Total: 1 packets (6369 bytes) muxed
+72 frames successfully decoded, 0 decoding errors
+[AVIOContext @ 0x44fac0] Statistics: 2 seeks, 4 writeouts
+[libx264 @ 0x44f000] frame I:1     Avg QP:31.06  size:  5680
+[libx264 @ 0x44f000] mb I  I16..4:  5.5% 45.5% 49.0%
+[libx264 @ 0x44f000] 8x8 transform intra:45.5%
+[libx264 @ 0x44f000] coded y,uvDC,uvAC intra: 85.1% 63.0% 30.5%
+[libx264 @ 0x44f000] i16 v,h,dc,p: 18% 45%  0% 36%
+[libx264 @ 0x44f000] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu: 20% 21% 15%  5%  6%  5% 10%  5% 12%
+[libx264 @ 0x44f000] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 30% 21% 12%  5%  6%  6%  9%  5%  6%
+[libx264 @ 0x44f000] i8c dc,h,v,p: 64% 17% 12%  7%
+[libx264 @ 0x44f000] kb/s:1361.84
+[AVIOContext @ 0x451e50] Statistics: 6682739 bytes read, 2 seeks
+Exiting normally, received signal 15.

@@ -32,9 +32,13 @@ void ff_yuv2planeX_8_neon(const int16_t *filter, int filterSize,
 av_cold void ff_sws_init_swscale_arm(SwsContext *c)
 {
     int cpu_flags = av_get_cpu_flags();
+    printf("[*] hihihihihihihihih\n");
 
     if (have_neon(cpu_flags)) {
-        if (c->srcBpc == 8 && c->dstBpc <= 14) {
+        if (c->srcBpc == 8 && c->dstBpc <= 14 &&
+            (c->hLumFilterSize % 8) == 0 &&
+            (c->hChrFilterSize % 8) == 0)
+        {
             c->hyScale = c->hcScale = ff_hscale_8_to_15_neon;
         }
         if (c->dstBpc == 8) {

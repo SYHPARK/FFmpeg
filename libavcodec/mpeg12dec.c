@@ -657,6 +657,7 @@ static inline int get_dmv(MpegEncContext *s)
 
 static int mpeg_decode_mb(MpegEncContext *s, int16_t block[12][64])
 {
+
     int i, j, k, cbp, val, mb_type, motion_type;
     const int mb_block_count = 4 + (1 << s->chroma_format);
     int ret;

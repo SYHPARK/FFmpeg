@@ -28,7 +28,7 @@
 #include "opencl_source.h"
 #include <time.h>
 // TIZEN CODE PARAMETERS
-#define _MM_CHUNK_NUM           500000000                               /*FIXME*/
+#define _MM_CHUNK_NUM           8                               /*FIXME*/
 #define _MM_CHUNK_LIMIT         (_MM_CHUNK_NUM >> 1)
 #define _MM_CHUNK_DIFF_LIMIT    ((_MM_CHUNK_LIMIT << 1) | 1)    /*FIXME*/
 int cnt_iframes;
@@ -127,6 +127,8 @@ static int thumbnail_opencl_init(AVFilterContext *avctx)
     ctx->command_queue = clCreateCommandQueue(ctx->ocf.hwctx->context,
                                               ctx->ocf.hwctx->device_id,
                                               0, &cle);
+
+    printf("[*] err %d\n", cle);
     CL_FAIL_ON_ERROR(AVERROR(EIO), "Failed to create OpenCL "
                      "command queue %d.\n", cle);
 
@@ -272,6 +274,12 @@ static int thumbnail_is_good_pgm_kernel(AVFilterContext *avctx, AVFrame *in, cl_
     if (err < 0)
         return err;
 
+    unsigned char* test = malloc(global_work[0]*global_work[1]);
+    err = clEnqueueReadBuffer(ctx->command_queue, src, CL_TRUE, 0, global_work[0]*global_work[1], test, 0, 0, 0);
+
+    
+
+
     size_t memsize;
     cle = clGetMemObjectInfo(src, CL_MEM_SIZE, sizeof(size_t), &memsize, NULL);
     size_t width, height;
@@ -281,7 +289,7 @@ static int thumbnail_is_good_pgm_kernel(AVFilterContext *avctx, AVFrame *in, cl_
     }
     global_work[0] = height;
     //cl_int wrap = in->linesize[0];
-    cl_int wrap = width;
+    cl_int wrap = width * 3;
 
     CL_SET_KERNEL_ARG(kernel, 0, cl_mem, &src);
     CL_SET_KERNEL_ARG(kernel, 1, cl_int, &wrap);
@@ -525,6 +533,7 @@ static int thumbnail_opencl_filter_frame(AVFilterLink *inlink, AVFrame *input)
 		ctx->n = 0;
 	}
     int ret_verifying = verify_frame(point, sum_diff, input->height);
+    printf("[*] verifying result %d\n", ret_verifying);
 	saved_iframe = input;
     cnt_iframes+=1;
     free(point);

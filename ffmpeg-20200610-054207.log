@@ -1,0 +1,41 @@
+ffmpeg started on 2020-06-10 at 05:42:07
+Report written to "ffmpeg-20200610-054207.log"
+Log level: 48
+Command line:
+./ffmpeg -init_hw_device "opencl=ocl:0.0" -filter_hw_device ocl -report -i bunny -vf "format=nv12,hwupload,thumbnail_opencl=2,hwdownload,format=nv12" -vframes 1 -y thumbnail.jpg
+ffmpeg version N-96873-g3aea47fa8d Copyright (c) 2000-2020 the FFmpeg developers
+  built with gcc 7 (Ubuntu/Linaro 7.5.0-3ubuntu1~18.04)
+  configuration: --enable-gpl --enable-libx264 --enable-opencl --enable-shared --disable-static --disable-optimizations --disable-mmx --disable-stripping --enable-debug=3 --disable-asm --extra-cflags=-fPIC
+  libavutil      56. 42.100 / 56. 42.100
+  libavcodec     58. 73.102 / 58. 73.102
+  libavformat    58. 39.101 / 58. 39.101
+  libavdevice    58.  9.103 / 58.  9.103
+  libavfilter     7. 77.100 /  7. 77.100
+  libswscale      5.  6.100 /  5.  6.100
+  libswresample   3.  6.100 /  3.  6.100
+  libpostproc    55.  6.100 / 55.  6.100
+Splitting the commandline.
+Reading option '-init_hw_device' ... matched as option 'init_hw_device' (initialise hardware device) with argument 'opencl=ocl:0.0'.
+Reading option '-filter_hw_device' ... matched as option 'filter_hw_device' (set hardware device used when filtering) with argument 'ocl'.
+Reading option '-report' ... matched as option 'report' (generate a report) with argument '1'.
+Reading option '-i' ... matched as input url with argument 'bunny'.
+Reading option '-vf' ... matched as option 'vf' (set video filters) with argument 'format=nv12,hwupload,thumbnail_opencl=2,hwdownload,format=nv12'.
+Reading option '-vframes' ... matched as option 'vframes' (set the number of video frames to output) with argument '1'.
+Reading option '-y' ... matched as option 'y' (overwrite output files) with argument '1'.
+Reading option 'thumbnail.jpg' ... matched as output url.
+Finished splitting the commandline.
+Parsing a group of options: global .
+Applying option init_hw_device (initialise hardware device) with argument opencl=ocl:0.0.
+[AVHWDeviceContext @ 0x487530] 2 OpenCL platforms found.
+[AVHWDeviceContext @ 0x487530] 2 OpenCL devices found on platform "ARM Platform".
+[AVHWDeviceContext @ 0x487530] 0.0: ARM Platform / Mali-T628
+Applying option filter_hw_device (set hardware device used when filtering) with argument ocl.
+Applying option report (generate a report) with argument 1.
+Applying option y (overwrite output files) with argument 1.
+Successfully parsed a group of options.
+Parsing a group of options: input url bunny.
+Successfully parsed a group of options.
+Opening an input file: bunny.
+[NULL @ 0x4f81d0] Opening 'bunny' for reading
+[file @ 0x4fb7f0] Setting default whitelist 'file,crypto,data'
+bunny: No such file or directory

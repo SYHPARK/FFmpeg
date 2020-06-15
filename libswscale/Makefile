@@ -18,6 +18,8 @@ OBJS = alphablend.o                                     \
        utils.o                                          \
        yuv2rgb.o                                        \
        vscale.o                                         \
+       lum_h_scale.o \
+#SERA ADD
 
 OBJS-$(CONFIG_SHARED)        += log2_tab.o
 

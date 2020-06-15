@@ -33,6 +33,8 @@
 #include <stdatomic.h>
 #include <stdint.h>
 
+int num_frame = 0;
+
 #if HAVE_IO_H
 #include <io.h>
 #endif
@@ -2458,9 +2460,12 @@ static int decode_video(InputStream *ist, AVPacket *pkt, int *got_output, int64_
     if (ist->st->sample_aspect_ratio.num)
         decoded_frame->sample_aspect_ratio = ist->st->sample_aspect_ratio;
 //yongbak
-        if ( decoded_frame->pict_type != AV_PICTURE_TYPE_I && decoded_frame->key_frame == 0)
-	goto fail;
+    num_frame += 1;
+    if ( decoded_frame->pict_type != AV_PICTURE_TYPE_I && decoded_frame->key_frame == 0) {
+        goto fail;
+    }
     err = send_frame_to_filters(ist, decoded_frame);
+
 	
 
 fail:

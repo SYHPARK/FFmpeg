@@ -35,48 +35,61 @@ typedef struct ColorContext
     uint32_t *pal;
 } ColorContext;
 
+static int lum_h_scale_opencl(SwsContext *c, SwsFilterDescriptor *desc, int sliceY, int sliceH)
+{
+    //TODO : setARG:vs
+    //
+
+    int err;
+    err = clEnqueueNDRangeKernel(c->lum_queue, c->lum_kernel, 1, NULL, &sliceH, NULL, 0, NULL, NULL);
+    err |= clFinish(c->lum_queue);
+    return sliceH;
+
+}
+
 static int lum_h_scale(SwsContext *c, SwsFilterDescriptor *desc, int sliceY, int sliceH)
 {
+    //printf("[*] seralee lum_h_scale Start\n");
     FilterContext *instance = desc->instance;
     int srcW = desc->src->width;
     int dstW = desc->dst->width;
-    int xInc = instance->xInc;
+
 
     int i;
+    /*
+    printf("[*] range %d-%d\n", sliceY - desc->dst->plane[0].sliceY, sliceY - desc->dst->plane[0].sliceY+sliceH);
+    printf("[*] available %d\n", desc->dst->plane[0].available_lines);
+    printf("[*] dstW %d\n", dstW);
+
+    printf("[*] tmp %p\n", desc->dst->plane[0].tmp);
+    */
     for (i = 0; i < sliceH; ++i) {
         uint8_t ** src = desc->src->plane[0].line;
-        uint8_t ** dst = desc->dst->plane[0].line;
+        uint16_t ** dst = desc->dst->plane[0].line;
         int src_pos = sliceY+i - desc->src->plane[0].sliceY;
         int dst_pos = sliceY+i - desc->dst->plane[0].sliceY;
 
 
-        if (c->hyscale_fast) {
-            c->hyscale_fast(c, (int16_t*)dst[dst_pos], dstW, src[src_pos], srcW, xInc);
-        } else {
-            c->hyScale(c, (int16_t*)dst[dst_pos], dstW, (const uint8_t *)src[src_pos], instance->filter,
-                       instance->filter_pos, instance->filter_size);
+        c->hyScale(c, (int16_t*)dst[dst_pos], dstW, (const uint8_t *)src[src_pos], instance->filter,
+                instance->filter_pos, instance->filter_size);
+
+        if (c->lumConvertRange) {
+            //printf("[*] c->lumConvertRange executed\n");
+            c->lumConvertRange((int16_t*)dst[dst_pos], dstW);
         }
 
-        if (c->lumConvertRange)
-            c->lumConvertRange((int16_t*)dst[dst_pos], dstW);
-
-        desc->dst->plane[0].sliceH += 1;
 
         if (desc->alpha) {
+            //printf("[*] desc->alpha executed\n");
             src = desc->src->plane[3].line;
             dst = desc->dst->plane[3].line;
 
             src_pos = sliceY+i - desc->src->plane[3].sliceY;
             dst_pos = sliceY+i - desc->dst->plane[3].sliceY;
 
-            desc->dst->plane[3].sliceH += 1;
 
-            if (c->hyscale_fast) {
-                c->hyscale_fast(c, (int16_t*)dst[dst_pos], dstW, src[src_pos], srcW, xInc);
-            } else {
-                c->hyScale(c, (int16_t*)dst[dst_pos], dstW, (const uint8_t *)src[src_pos], instance->filter,
-                            instance->filter_pos, instance->filter_size);
-            }
+            c->hyScale(c, (int16_t*)dst[dst_pos], dstW, (const uint8_t *)src[src_pos], instance->filter,
+                    instance->filter_pos, instance->filter_size);
         }
     }
 
@@ -85,6 +98,7 @@ static int lum_h_scale(SwsContext *c, SwsFilterDescriptor *desc, int sliceY, int
 
 static int lum_convert(SwsContext *c, SwsFilterDescriptor *desc, int sliceY, int sliceH)
 {
+    //printf("[*] lum executed\n");
     int srcW = desc->src->width;
     ColorContext * instance = desc->instance;
     uint32_t * pal = instance->pal;
@@ -158,7 +172,10 @@ int ff_init_desc_hscale(SwsFilterDescriptor *desc, SwsSlice *src, SwsSlice *dst,
     desc->src = src;
     desc->dst = dst;
 
-    desc->process = &lum_h_scale;
+    if(OPENCL)
+        desc->process = &lum_h_scale_opencl;
+else
+        desc->process = &lum_h_scale;
 
     return 0;
 }
